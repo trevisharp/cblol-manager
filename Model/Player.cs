@@ -9,7 +9,8 @@ public class Player
     public string Name { get; set; }
     public Position Role { get; set; }
     public Nationality Nationality { get; set; }
-    public DateOnly BirthDate { get; set; }
+    public DateTime BirthDate { get; set; }
+    public string Photo { get; set; }
 
     public int LanePhase { get; set; }
     public int Mentality { get; set; }

@@ -52,6 +52,23 @@ form.Load += delegate
     g.Clear(Color.Black);
     pb.Image = bmp;
     tm.Start();
+    
+    // Player tin = new Player();
+
+    // tin.BirthDate = new DateTime(1997, 10, 14);
+    // tin.Name = "Matheus Rossini Miranda";
+    // tin.Nickname = "dyNquedo";
+    // tin.Photo = "dynkedo.webp";
+    // tin.Nationality = Nationality.BR;
+    // tin.Role = Position.MidLaner;
+    // tin.LanePhase = 85;
+    // tin.Mentality = 80;
+    // tin.GameVision = 80;
+    // tin.MechanicSkill = 80;
+    // tin.Leadership = 75;
+    // tin.TeamFigth = 80;
+
+    // Players.All.Add(tin);
 };
 
 form.KeyDown += (o, e) =>
