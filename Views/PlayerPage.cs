@@ -19,7 +19,7 @@ public class PlayerPage : BaseView
         this.player = player;
         this.size = size;
 
-        status.Location = new PointF(point.X + size / 3 - 10f, point.Y + 50f);
+        status.Location = new PointF(point.X + size / 3 - 60f, point.Y + 50f);
         status.Size = size / 4;
     }
 
@@ -35,7 +35,7 @@ public class PlayerPage : BaseView
         
         Font font = new Font(FontFamily.GenericMonospace, 20f);
         g.DrawString(applyEffect(player.Nickname), font, Brushes.White, 
-            p.X + 2 * size / 3 - 10f, p.Y + 10f);
+            p.X + 2 * size / 3 - 60f, p.Y + 10f);
 
         font = new Font(FontFamily.GenericMonospace, 10f);
         StringFormat format = new StringFormat();
@@ -43,13 +43,13 @@ public class PlayerPage : BaseView
         format.LineAlignment = StringAlignment.Center;
 
         g.DrawString(applyEffect($"{player.Name} ({player.BirthDate.ToShortDateString()})"), 
-            font, Brushes.White, p.X + 2 * size / 3 - 10f, p.Y + 60f);
+            font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 60f);
         
         g.DrawString(applyEffect($"Rota: {player.Role}"), 
-            font, Brushes.White, p.X + 2 * size / 3 - 10f, p.Y + 80f);
+            font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 80f);
         
         g.DrawString(applyEffect($"Nacionalidade: {player.Nationality}"), 
-            font, Brushes.White, p.X + 2 * size / 3 - 10f, p.Y + 100f);
+            font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 100f);
 
         status.Draw(bmp, g);
 
