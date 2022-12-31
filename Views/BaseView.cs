@@ -64,10 +64,10 @@ public abstract class BaseView
         _g?.DrawPolygon(pen, pts);
     }
 
-    protected void img(RectangleF rect, Func<Bitmap> create, string code)
+    protected void img(float x, float y, float height, Func<Bitmap> create, string code)
     {
         var bmp = loadOrStore(code, create) as Bitmap;
-        _g.DrawImage(bmp, rect, 
+        _g.DrawImage(bmp, new RectangleF(x, y, height / bmp.Height * bmp.Width, height), 
             new Rectangle(0, 0, bmp.Width, bmp.Height),
             GraphicsUnit.Pixel);
     }

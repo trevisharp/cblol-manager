@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Drawing;
 using System.Threading;
@@ -5,7 +6,6 @@ using System.Windows.Forms;
 
 using CBLoLManager.Model;
 using CBLoLManager.Views;
-using System;
 
 Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
 Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -30,7 +30,7 @@ var player = Players.All
     .Skip(2)
     .FirstOrDefault();
 
-PlayerPage page = new PlayerPage(player, new PointF(100, 100), 100f);
+PlayerPage page = new PlayerPage(player, new PointF(100, 100), 1000f);
 
 tm.Tick += delegate
 {

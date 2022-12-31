@@ -37,12 +37,6 @@ public class PlayerStatusView : BaseView
             );
         }
 
-        poly(Pens.White, i => new PointF(
-                cx + raddius * MathF.Sin(i * a),
-                cy - raddius * MathF.Cos(i * a)
-            ), 6, $"cont"
-        );
-
         Pen pen = new Pen(Color.Yellow, 3f);
         float moment = frame < 20 ? frame / 20f : 1f;
         List<PointF> pts = new List<PointF>();
@@ -113,5 +107,11 @@ public class PlayerStatusView : BaseView
             80f, 12f
         ), format);
         g.DrawPolygon(pen, pts.ToArray());
+
+        poly(Pens.White, i => new PointF(
+                cx + raddius * MathF.Sin(i * a),
+                cy - raddius * MathF.Cos(i * a)
+            ), 6, "cont"
+        );
     }
 }
