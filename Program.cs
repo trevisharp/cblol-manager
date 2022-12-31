@@ -1,10 +1,11 @@
-using System;
+using System.Linq;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
 using CBLoLManager.Model;
 using CBLoLManager.Views;
+using System;
 
 Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
 Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -25,23 +26,16 @@ form.Controls.Add(pb);
 var tm = new System.Windows.Forms.Timer();
 tm.Interval = 20;
 
-Player player = new Player();
-player.LanePhase = 80;
-player.GameVision = 72;
-player.MechanicSkill = 84;
-player.Leadership = 59;
-player.TeamFigth = 79;
-player.Mentality = 55;
+var player = Players.All
+    .Skip(2)
+    .FirstOrDefault();
 
-PlayerStatusView status = new PlayerStatusView();
-status.Player = player;
-status.Location = new PointF(300, 300);
-status.Size = 200;
+PlayerPage page = new PlayerPage(player, new PointF(100, 100), 100f);
 
 tm.Tick += delegate
 {
     g.Clear(Color.Black);
-    status.Draw(bmp, g);
+    page.Draw(bmp, g);
     pb.Refresh();
 };
 
@@ -56,17 +50,17 @@ form.Load += delegate
     // Player tin = new Player();
 
     // tin.BirthDate = new DateTime(1997, 10, 14);
-    // tin.Name = "Matheus Rossini Miranda";
-    // tin.Nickname = "dyNquedo";
-    // tin.Photo = "dynkedo.webp";
-    // tin.Nationality = Nationality.BR;
-    // tin.Role = Position.MidLaner;
-    // tin.LanePhase = 85;
+    // tin.Name = "Choi Eui-seok";
+    // tin.Nickname = "Wizer";
+    // tin.Photo = "wizer.png";
+    // tin.Nationality = Nationality.KR;
+    // tin.Role = Position.TopLaner;
+    // tin.LanePhase = 90;
     // tin.Mentality = 80;
     // tin.GameVision = 80;
-    // tin.MechanicSkill = 80;
-    // tin.Leadership = 75;
-    // tin.TeamFigth = 80;
+    // tin.MechanicSkill = 90;
+    // tin.Leadership = 70;
+    // tin.TeamFigth = 85;
 
     // Players.All.Add(tin);
 };

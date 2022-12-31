@@ -20,22 +20,22 @@ public abstract class BaseView
 
     private Graphics _g;
     private Bitmap _bmp;
-    private Dictionary<string, PointF[]> structures = null;
+    private Dictionary<string, object> structures = null;
 
-    protected PointF[] register(string code, PointF[] structure)
+    protected object register(string code, object structure)
     {
         if (code == "")
             return structure;
             
         if (structures == null)
-            structures = new Dictionary<string, PointF[]>();
+            structures = new Dictionary<string, object>();
 
         structures.Add(code, structure);
 
         return structure;
     }
 
-    protected PointF[] loadOrStore(string code, Func<PointF[]> create)
+    protected object loadOrStore(string code, Func<object> create)
     {
         if (structures != null && structures.ContainsKey(code))
             return this.structures[code];
@@ -49,7 +49,7 @@ public abstract class BaseView
             Enumerable.Range(0, len)
                 .Select(sel)
                 .ToArray()
-        );
+        ) as PointF[];
         _g?.FillPolygon(brush, pts);
     }
     
@@ -60,7 +60,15 @@ public abstract class BaseView
             Enumerable.Range(0, len)
                 .Select(sel)
                 .ToArray()
-        );
+        ) as PointF[];
         _g?.DrawPolygon(pen, pts);
+    }
+
+    protected void img(RectangleF rect, Func<Bitmap> create, string code)
+    {
+        var bmp = loadOrStore(code, create) as Bitmap;
+        _g.DrawImage(bmp, rect, 
+            new Rectangle(0, 0, bmp.Width, bmp.Height),
+            GraphicsUnit.Pixel);
     }
 }
