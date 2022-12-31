@@ -114,4 +114,10 @@ public class PlayerStatusView : BaseView
             ), 6, "cont"
         );
     }
+
+    public override void Reset()
+    {
+        frame = 0;
+        base.Reset();
+    }
 }

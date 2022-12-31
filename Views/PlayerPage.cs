@@ -7,16 +7,26 @@ using Model;
 public class PlayerPage : BaseView
 {
     private PlayerStatusView status = null;
-    private Player player;
     private float size;
     private int frame = 0;
+    
+    private Player player = null;
+    public Player Player
+    {
+        get => this.player;
+        set
+        {
+            this.player = value;
+            this.status.Player = value;
+        }
+    }
 
     public PlayerPage(Player player, PointF point, float size)
     {
         this.status = new PlayerStatusView();
         this.status.Player = player;
         this.Location = point;
-        this.player = player;
+        this.Player = player;
         this.size = size;
 
         status.Location = new PointF(point.X + size / 3 - 60f, point.Y + 50f);
@@ -31,10 +41,10 @@ public class PlayerPage : BaseView
         var p = this.Location.Value;
 
         img(p.X + 10f, p.Y + 10f, size / 3 - 20f,
-            () => Bitmap.FromFile("Img/" + player.Photo) as Bitmap, "photo");
+            () => Bitmap.FromFile("Img/" + Player.Photo) as Bitmap, "photo");
         
         Font font = new Font(FontFamily.GenericMonospace, 20f);
-        g.DrawString(applyEffect(player.Nickname), font, Brushes.White, 
+        g.DrawString(applyEffect(Player.Nickname), font, Brushes.White, 
             p.X + 2 * size / 3 - 60f, p.Y + 10f);
 
         font = new Font(FontFamily.GenericMonospace, 10f);
@@ -42,38 +52,38 @@ public class PlayerPage : BaseView
         format.Alignment = StringAlignment.Center;
         format.LineAlignment = StringAlignment.Center;
 
-        g.DrawString(applyEffect($"{player.Name}"), 
+        g.DrawString(applyEffect($"{Player.Name}"), 
             font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 60f);
 
-        g.DrawString(applyEffect($"Data de Nascimento: {player.BirthDate.ToShortDateString()}"), 
+        g.DrawString(applyEffect($"Data de Nascimento: {Player.BirthDate.ToShortDateString()}"), 
             font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 80f);
         
-        g.DrawString(applyEffect($"Rota: {player.Role}"), 
+        g.DrawString(applyEffect($"Rota: {Player.Role}"), 
             font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 100f);
         
-        g.DrawString(applyEffect($"Nacionalidade: {player.Nationality}"), 
+        g.DrawString(applyEffect($"Nacionalidade: {Player.Nationality}"), 
             font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 120f);
         
-        g.DrawString(applyEffect($"Fase de Rota: {player.LanePhase}"), 
-            font, getBrush(player.LanePhase), p.X + 2 * size / 3 - 60f, p.Y + 160f);
+        g.DrawString(applyEffect($"Fase de Rota: {Player.LanePhase}"), 
+            font, getBrush(Player.LanePhase), p.X + 2 * size / 3 - 60f, p.Y + 160f);
         
-        g.DrawString(applyEffect($"Mecânica: {player.MechanicSkill}"), 
-            font, getBrush(player.MechanicSkill), p.X + 2 * size / 3 - 60f, p.Y + 180f);
+        g.DrawString(applyEffect($"Mecânica: {Player.MechanicSkill}"), 
+            font, getBrush(Player.MechanicSkill), p.X + 2 * size / 3 - 60f, p.Y + 180f);
         
-        g.DrawString(applyEffect($"Team Figth: {player.TeamFigth}"), 
-            font, getBrush(player.TeamFigth), p.X + 2 * size / 3 - 60f, p.Y + 200f);
+        g.DrawString(applyEffect($"Team Figth: {Player.TeamFigth}"), 
+            font, getBrush(Player.TeamFigth), p.X + 2 * size / 3 - 60f, p.Y + 200f);
         
-        g.DrawString(applyEffect($"Visão de Jogo: {player.GameVision}"), 
-            font, getBrush(player.GameVision), p.X + 2 * size / 3 - 60f, p.Y + 220f);
+        g.DrawString(applyEffect($"Visão de Jogo: {Player.GameVision}"), 
+            font, getBrush(Player.GameVision), p.X + 2 * size / 3 - 60f, p.Y + 220f);
         
-        g.DrawString(applyEffect($"Mentalidade: {player.Mentality}"), 
-            font, getBrush(player.Mentality), p.X + 2 * size / 3 - 60f, p.Y + 240f);
+        g.DrawString(applyEffect($"Mentalidade: {Player.Mentality}"), 
+            font, getBrush(Player.Mentality), p.X + 2 * size / 3 - 60f, p.Y + 240f);
         
-        g.DrawString(applyEffect($"Liderança: {player.Leadership}"), 
-            font, getBrush(player.Leadership), p.X + 2 * size / 3 - 60f, p.Y + 260f);
+        g.DrawString(applyEffect($"Liderança: {Player.Leadership}"), 
+            font, getBrush(Player.Leadership), p.X + 2 * size / 3 - 60f, p.Y + 260f);
             
-        int media = (player.LanePhase + player.MechanicSkill + player.TeamFigth +
-            player.GameVision + player.Mentality + player.Leadership) / 6;
+        int media = (Player.LanePhase + Player.MechanicSkill + Player.TeamFigth +
+            Player.GameVision + Player.Mentality + Player.Leadership) / 6;
         g.DrawString(applyEffect($"Media: {media}"), 
             font, getBrush(media), p.X + 2 * size / 3 - 60f, p.Y + 300f);
 
@@ -84,7 +94,7 @@ public class PlayerPage : BaseView
 
         string applyEffect(string text)
         {
-            int moment = frame / 2;
+            int moment = frame;
             return text.Substring(0,
                 moment > text.Length ? text.Length : moment);
         }
@@ -97,5 +107,12 @@ public class PlayerPage : BaseView
                 0
             ));
         }
+    }
+
+    public override void Reset()
+    {
+        this.frame = 0;
+        this.status.Reset();
+        base.Reset();
     }
 }

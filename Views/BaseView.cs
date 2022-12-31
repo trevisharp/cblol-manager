@@ -10,12 +10,21 @@ public abstract class BaseView
     public PointF? Location { get; set; }
 
     public abstract void draw(Bitmap bmp, Graphics g);
+    public virtual void MoseMove(PointF cursor, bool down) { }
+
 
     public void Draw(Bitmap bmp, Graphics g)
     {
         this._bmp = bmp;
         this._g = g;
         this.draw(this._bmp, this._g);
+    }
+
+    public virtual void Reset()
+    {
+        this._g = null;
+        this._bmp = null;
+        this.structures = null;
     }
 
     private Graphics _g;
@@ -63,6 +72,14 @@ public abstract class BaseView
         ) as PointF[];
         _g?.DrawPolygon(pen, pts);
     }
+
+    protected void lines(Pen pen,
+        Func<PointF[]> sel, string code = "")
+    {
+        PointF[] pts = loadOrStore(code, sel) as PointF[];
+        _g?.DrawLines(pen, pts);
+    }
+    
 
     protected void img(float x, float y, float height, Func<Bitmap> create, string code)
     {

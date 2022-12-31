@@ -13,6 +13,8 @@ ApplicationConfiguration.Initialize();
 
 Bitmap bmp = null;
 Graphics g = null;
+PointF cursor = PointF.Empty;
+bool down = false;
 
 var form = new Form();
 
@@ -26,12 +28,12 @@ form.Controls.Add(pb);
 var tm = new System.Windows.Forms.Timer();
 tm.Interval = 20;
 
-Player player = null;
-PlayerPage page = null;
+PlayerCarrousel page = null;
 
 tm.Tick += delegate
 {
     g.Clear(Color.Black);
+    page.MoseMove(cursor, down);
     page.Draw(bmp, g);
     pb.Refresh();
 };
@@ -44,24 +46,39 @@ form.Load += delegate
     pb.Image = bmp;
     tm.Start();
     
-    player = new Player();
+    // Player player = new Player();
 
-    player.BirthDate = new DateTime(1999, 9, 9);
-    player.Name = "Gabriel Vinicius Saes de Lemos";
-    player.Nickname = "Aegis";
-    player.Photo = "aegis.png";
-    player.Nationality = Nationality.BR;
-    player.Role = Position.Support;
-    player.LanePhase = 90;
-    player.Mentality = 80;
-    player.GameVision = 85;
-    player.MechanicSkill = 85;
-    player.Leadership = 80;
-    player.TeamFigth = 85;
+    // player.BirthDate = new DateTime(1999, 9, 9);
+    // player.Name = "Gabriel Vinicius Saes de Lemos";
+    // player.Nickname = "Aegis";
+    // player.Photo = "aegis.png";
+    // player.Nationality = Nationality.BR;
+    // player.Role = Position.Support;
+    // player.LanePhase = 90;
+    // player.Mentality = 80;
+    // player.GameVision = 85;
+    // player.MechanicSkill = 85;
+    // player.Leadership = 80;
+    // player.TeamFigth = 85;
 
-    Players.All.Add(player);
+    // Players.All.Add(player);
     
-    page = new PlayerPage(player, new PointF(100, 100), 1000f);
+    page = new PlayerCarrousel(new PointF(20, 20), 1400f, Players.All);
+};
+
+pb.MouseMove += (o, e) =>
+{
+    cursor = e.Location;
+};
+
+pb.MouseDown += (o, e) =>
+{
+    down = true;
+};
+
+pb.MouseUp += (o, e) =>
+{
+    down = false;
 };
 
 form.KeyDown += (o, e) =>
