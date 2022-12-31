@@ -26,11 +26,8 @@ form.Controls.Add(pb);
 var tm = new System.Windows.Forms.Timer();
 tm.Interval = 20;
 
-var player = Players.All
-    .Skip(2)
-    .FirstOrDefault();
-
-PlayerPage page = new PlayerPage(player, new PointF(100, 100), 1000f);
+Player player = null;
+PlayerPage page = null;
 
 tm.Tick += delegate
 {
@@ -47,22 +44,24 @@ form.Load += delegate
     pb.Image = bmp;
     tm.Start();
     
-    // Player tin = new Player();
+    player = new Player();
 
-    // tin.BirthDate = new DateTime(1997, 10, 14);
-    // tin.Name = "Choi Eui-seok";
-    // tin.Nickname = "Wizer";
-    // tin.Photo = "wizer.png";
-    // tin.Nationality = Nationality.KR;
-    // tin.Role = Position.TopLaner;
-    // tin.LanePhase = 90;
-    // tin.Mentality = 80;
-    // tin.GameVision = 80;
-    // tin.MechanicSkill = 90;
-    // tin.Leadership = 70;
-    // tin.TeamFigth = 85;
+    player.BirthDate = new DateTime(1999, 9, 9);
+    player.Name = "Gabriel Vinicius Saes de Lemos";
+    player.Nickname = "Aegis";
+    player.Photo = "aegis.png";
+    player.Nationality = Nationality.BR;
+    player.Role = Position.Support;
+    player.LanePhase = 90;
+    player.Mentality = 80;
+    player.GameVision = 85;
+    player.MechanicSkill = 85;
+    player.Leadership = 80;
+    player.TeamFigth = 85;
 
-    // Players.All.Add(tin);
+    Players.All.Add(player);
+    
+    page = new PlayerPage(player, new PointF(100, 100), 1000f);
 };
 
 form.KeyDown += (o, e) =>
