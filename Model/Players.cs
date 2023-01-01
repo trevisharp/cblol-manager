@@ -51,6 +51,12 @@ public class Players : IEnumerable<Player>
         this.Save();
     }
 
+    public void Remove(Player player)
+    {
+        this.players.Remove(player);
+        this.Save();
+    }
+
     public IEnumerator<Player> GetEnumerator()
         => players.GetEnumerator();
 

@@ -9,6 +9,12 @@ using Model;
 public class PlayerStatusView : BaseView
 {
     private int frame = 0;
+    private int oldLanePhase = 0;
+    private int oldTeamFigth = 0;
+    private int oldMechanicalSkill = 0;
+    private int oldGameVision = 0;
+    private int oldMentality = 0;
+    private int oldLeadership = 0;
 
     public Player Player { get; set; }
     public float Size { get; set; }
@@ -47,9 +53,11 @@ public class PlayerStatusView : BaseView
         };
         Font font = SystemFonts.CaptionFont;
 
+        float ratio = (1f - moment) * (oldLanePhase / 100f) + 
+            moment * (this.Player.LanePhase / 100f);
         pts.Add(new PointF(
-            cx + moment * (this.Player.LanePhase / 100f) * raddius * MathF.Sin(0 * a),
-            cy - moment * (this.Player.LanePhase / 100f) * raddius * MathF.Cos(0 * a)
+            cx + ratio * raddius * MathF.Sin(0 * a),
+            cy - ratio * raddius * MathF.Cos(0 * a)
         ));
         g.DrawString("Lan.Pha.", font, Brushes.White, new RectangleF(
             cx + 1.2f * raddius * MathF.Sin(0 * a) - 40f,
@@ -57,9 +65,11 @@ public class PlayerStatusView : BaseView
             80f, 12f
         ), format);
 
+        ratio = (1f - moment) * (oldMechanicalSkill / 100f) + 
+            moment * (this.Player.MechanicSkill / 100f);
         pts.Add(new PointF(
-            cx + moment * (this.Player.MechanicSkill / 100f) * raddius * MathF.Sin(1 * a),
-            cy - moment * (this.Player.MechanicSkill / 100f) * raddius * MathF.Cos(1 * a)
+            cx + ratio * raddius * MathF.Sin(1 * a),
+            cy - ratio * raddius * MathF.Cos(1 * a)
         ));
         g.DrawString("Mec.Ski.", font, Brushes.White, new RectangleF(
             cx + 1.2f * raddius * MathF.Sin(1 * a) - 30f,
@@ -67,9 +77,11 @@ public class PlayerStatusView : BaseView
             80f, 12f
         ), format);
 
+        ratio = (1f - moment) * (oldLeadership / 100f) + 
+            moment * (this.Player.Leadership / 100f);
         pts.Add(new PointF(
-            cx + moment * (this.Player.Leadership / 100f) * raddius * MathF.Sin(2 * a),
-            cy - moment * (this.Player.Leadership / 100f) * raddius * MathF.Cos(2 * a)
+            cx + ratio * raddius * MathF.Sin(2 * a),
+            cy - ratio * raddius * MathF.Cos(2 * a)
         ));
         g.DrawString("Leaders.", font, Brushes.White, new RectangleF(
             cx + 1.2f * raddius * MathF.Sin(2 * a) - 30f,
@@ -77,9 +89,11 @@ public class PlayerStatusView : BaseView
             80f, 12f
         ), format);
 
+        ratio = (1f - moment) * (oldMentality / 100f) + 
+            moment * (this.Player.Mentality / 100f);
         pts.Add(new PointF(
-            cx + moment * (this.Player.Mentality / 100f) * raddius * MathF.Sin(3 * a),
-            cy - moment * (this.Player.Mentality / 100f) * raddius * MathF.Cos(3 * a)
+            cx + ratio * raddius * MathF.Sin(3 * a),
+            cy - ratio * raddius * MathF.Cos(3 * a)
         ));
         g.DrawString("Mentali.", font, Brushes.White, new RectangleF(
             cx + 1.2f * raddius * MathF.Sin(3 * a) - 40f,
@@ -87,9 +101,11 @@ public class PlayerStatusView : BaseView
             80f, 12f
         ), format);
 
+        ratio = (1f - moment) * (oldGameVision / 100f) + 
+            moment * (this.Player.GameVision / 100f);
         pts.Add(new PointF(
-            cx + moment * (this.Player.GameVision / 100f) * raddius * MathF.Sin(4 * a),
-            cy - moment * (this.Player.GameVision / 100f) * raddius * MathF.Cos(4 * a)
+            cx + ratio * raddius * MathF.Sin(4 * a),
+            cy - ratio * raddius * MathF.Cos(4 * a)
         ));
         g.DrawString("Gam.Vis.", font, Brushes.White, new RectangleF(
             cx + 1.2f * raddius * MathF.Sin(4 * a) - 50f,
@@ -97,9 +113,11 @@ public class PlayerStatusView : BaseView
             80f, 12f
         ), format);
 
+        ratio = (1f - moment) * (oldTeamFigth / 100f) + 
+            moment * (this.Player.TeamFigth / 100f);
         pts.Add(new PointF(
-            cx + moment * (this.Player.TeamFigth / 100f) * raddius * MathF.Sin(5 * a),
-            cy - moment * (this.Player.TeamFigth / 100f) * raddius * MathF.Cos(5 * a)
+            cx + ratio * raddius * MathF.Sin(5 * a),
+            cy - ratio * raddius * MathF.Cos(5 * a)
         ));
         g.DrawString("Tea.Fig.", font, Brushes.White, new RectangleF(
             cx + 1.2f * raddius * MathF.Sin(5 * a) - 50f,
@@ -118,6 +136,12 @@ public class PlayerStatusView : BaseView
     public override void Reset()
     {
         frame = 0;
+        oldGameVision = this.Player.GameVision;
+        oldLeadership = this.Player.Leadership;
+        oldMechanicalSkill = this.Player.MechanicSkill;
+        oldMentality = this.Player.Mentality;
+        oldTeamFigth = this.Player.TeamFigth;
+        oldLanePhase = this.Player.LanePhase;
         base.Reset();
     }
 }

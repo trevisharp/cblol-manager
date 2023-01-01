@@ -67,8 +67,8 @@ public class PlayerCarrousel : BaseView
                 crr = 0;
             else if (crr == -1)
                 crr = players.Length - 1;
-            page.Player = players[crr];
             page.Reset();
+            page.Player = players[crr];
         }
     }
 
