@@ -8,6 +8,8 @@ using Model;
 
 public class PlayerCarrousel : BaseView
 {
+    public Player Current => players[crr];
+
     private Player[] players;
     private PlayerPage page;
     private PointF cursor = PointF.Empty;

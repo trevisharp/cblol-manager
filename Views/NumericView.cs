@@ -2,6 +2,8 @@ using System.Drawing;
 
 namespace CBLoLManager.Views;
 
+using Util;
+
 public class NumericView : BaseView
 {
     public string Label { get; set; }
@@ -26,7 +28,8 @@ public class NumericView : BaseView
         var rect = new RectangleF(
             Rect.X + 40f, Rect.Y + 25f, Rect.Width - 80f, Rect.Height - 30f);
         g.FillRectangle(Brushes.Navy, rect);
-        g.DrawString(Value.ToString(), font, Brushes.White, rect, format);
+        var text = IsMoney ? Formatter.FormatMoney(Value) : Value.ToString();
+        g.DrawString(text, font, Brushes.White, rect, format);
         g.FillPolygon(Brushes.Navy, new PointF[]
         {
             new PointF(Rect.X + 30f, Rect.Y + 35f),

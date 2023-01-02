@@ -3,6 +3,7 @@ using System.Linq;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 using CBLoLManager.Model;
 using CBLoLManager.Views;
@@ -12,11 +13,14 @@ Graphics g = null;
 
 // App Login
 
+ProposeSystem sys = new ProposeSystem();
+
 BaseView crrPage = null;
 
 TeamSelectorPage teamSelectorPage = null;
 TeamPage teamPage = null;
 PlayerMarket market = null;
+MarketRoundSumary sumary = null;
 
 bool firstTimeInMarket = true;
 
@@ -29,13 +33,27 @@ teamSelectorPage.OnSelect += org =>
     team.Organization = org;
 
     Game.Current.Team = team;
+    team.Money = 100000;
+    List<float> moneys = new List<float>()
+    {
+        50000, 50000,
+        100000,
+        200000, 200000,
+        300000, 300000,
+        500000,
+        1000000
+    }
+    .OrderBy(x => Random.Shared.Next())
+    .ToList();
     foreach (var x in Organizations.All
         .Where(o => o.Name != org.Name))
     {
         Game.Current.Others.Add(new Team()
         {
-            Organization = x
+            Organization = x,
+            Money = moneys[0]
         });
+        moneys.RemoveAt(0);
     }
     Game.Current.FreeAgent.AddRange(Players.All);
 
@@ -47,18 +65,33 @@ teamSelectorPage.OnSelect += org =>
             var tutorial = new MarketTutorial();
             tutorial.Exit += delegate
             {
-                market = new PlayerMarket();
                 crrPage = market;
+                g.Clear(Color.Black);
             };
             crrPage = tutorial;
             return;
         }
         
-        market = new PlayerMarket();
         crrPage = market;
     };
 
     crrPage = teamPage;
+};
+
+market = new PlayerMarket();
+market.ProposeMaked += p =>
+{
+    var result = sys.RunRound(p);
+
+    sumary = new MarketRoundSumary();
+    sumary.Events = result.Item1;
+    sumary.Contract = result.Item2;
+    sumary.Exit += delegate
+    {
+        crrPage = market;
+    };
+
+    crrPage = sumary;
 };
 
 
@@ -98,6 +131,10 @@ form.Load += delegate
     g.Clear(Color.Black);
     pb.Image = bmp;
     tm.Start();
+
+    Players.All.FirstOrDefault(p => p.Nickname == "tinowns")
+        .GameVision = 95;
+    Players.All.Save();
 };
 
 pb.MouseMove += (o, e) =>

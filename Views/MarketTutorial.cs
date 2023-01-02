@@ -13,6 +13,8 @@ public class MarketTutorial : BaseView
         format.LineAlignment = StringAlignment.Center;
 
         string tutorial = @"
+            Informações/Tutorial sobre o Mercado:
+
             O Mercado é o lugar onde você pode comprar novos jogadores para seu time.
             Existem três tipos de jogadores disponíveis:
 
@@ -40,11 +42,21 @@ public class MarketTutorial : BaseView
 
             - Conseguir bons jogadores faz com que outros jogadores tenha vontade de jogar no seu 
             time que agora parece mais competitivo. Ao contratar um jogador você ganha vantagens em
-            outras negociações.
+            outras negociações. Jogadores não consideram liderança e mentalidade para realizar essa
+            avaliação.
 
             - Quando um jogador aceita uma proposta, você não precisa imediatamente contratá-lo. Exemplo:
             Você pode tentar negociar com vários AdCarrys e se 2 aceitarem suas propostas você pode
             aguardar para contratar qual você quiser no final do processo.
+
+            - Multas Recisórias altas e contratos longos podem assustar.
+
+            - Quanto mais perto do final da etapa de contratações (round 15), mais os jogadores ficam
+            ""desepserados"" e aceitam mais facilmente suas propostas mesquinhas. Mas isso se eles
+            não forem para outros times.
+
+            - Cuidado, você precisa pagar salários mensalmente (6 salários por Split), mas não se preocupe,
+            você receberá em premiações e venda de camisetas ao longo do tempo.
 
             Clique em qualquer lugar para sair...
         ";

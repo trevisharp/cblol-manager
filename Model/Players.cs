@@ -37,7 +37,8 @@ public class Players : IEnumerable<Player>
     #endregion
 
     private List<Player> players = new List<Player>();
-    private void Save()
+    
+    public void Save()
     {
         var file = File.Open("Data/players.dat", FileMode.OpenOrCreate);
         BinaryFormatter formatter = new BinaryFormatter();

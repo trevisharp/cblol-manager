@@ -6,6 +6,16 @@ using Model;
 
 public static class TeamAnalytics
 {
+    public static float SillyPower(this Team team)
+    {
+        var players = team.GetAll();
+        return players.Sum(p => 
+            (p.GameVision +
+            p.LanePhase +
+            p.MechanicSkill +
+            p.TeamFigth) / 400f - .8f);
+    }
+
     public static Player AveragePlayer(this Team team)
     {
         Player player = new Player();

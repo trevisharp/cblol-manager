@@ -1,8 +1,9 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CBLoLManager.GameRule;
 
-using System.Collections.Generic;
 using Model;
 
 [Serializable]
@@ -18,6 +19,13 @@ public class Game
     public List<Player> FreeAgent { get; set; } = new List<Player>();
     public List<Player> EndContract { get; set; } = new List<Player>();
     public List<Player> SeeingProposes { get; set; } = new List<Player>();
+
+    public IEnumerable<Player> PlayersInMarket =>
+        FreeAgent.Union(EndContract).Union(SeeingProposes);
+
+    public List<Contract> Contracts { get; set; } = new List<Contract>();
+
+    public int Round { get; set; } = 1;
 
     public static void New()
         => crr = new Game();

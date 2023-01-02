@@ -12,7 +12,25 @@ public class Team
     public Player AdCarry { get; set; }
     public Player Jungler { get; set; }
     public Player Support { get; set; }
-    public float Money { get; set; } = 100000;
+    public float Money { get; set; }
+
+    public void Add(Player player)
+    {
+        if (player.Role == Position.TopLaner)
+            this.TopLaner = player;
+            
+        if (player.Role == Position.Jungler)
+            this.Jungler = player;
+            
+        if (player.Role == Position.MidLaner)
+            this.MidLaner = player;
+            
+        if (player.Role == Position.AdCarry)
+            this.AdCarry = player;
+            
+        if (player.Role == Position.Support)
+            this.Support = player;
+    }
 
     public List<Player> GetAll()
     {

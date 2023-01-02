@@ -7,6 +7,7 @@ namespace CBLoLManager.Views;
 using Util;
 using Model;
 using GameRule;
+using System;
 
 public class PlayerMarket : BaseView
 {
@@ -15,9 +16,12 @@ public class PlayerMarket : BaseView
     PointF cursor = PointF.Empty;
     bool down = false;
 
-    PlayerCarrousel freeAgent = null;
+    PlayerCarrousel players = null;
     OptionsView options = null;
     NumericView wage = null;
+    NumericView time = null;
+    NumericView rescissionFee = null;
+    ButtonView propose = null;
 
     public PlayerMarket()
     {
@@ -26,6 +30,8 @@ public class PlayerMarket : BaseView
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
+        g.Clear(Color.Black);
+        
         var font = new Font(FontFamily.GenericMonospace, 15f);
         StringFormat format = new StringFormat();
         format.Alignment = StringAlignment.Center;
@@ -35,10 +41,10 @@ public class PlayerMarket : BaseView
         g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}",
             font, Brushes.White, new PointF(0, 25f));
 
-        if (freeAgent == null)
+        if (players == null)
         {
-            freeAgent = new PlayerCarrousel(
-                new PointF(5, 200),
+            players = new PlayerCarrousel(
+                new PointF(5, 150),
                 1500f,
                 Game.Current.FreeAgent
             );
@@ -131,8 +137,8 @@ public class PlayerMarket : BaseView
                         players = players.Where(p => p.Role != Position.Support);
                 }
 
-                freeAgent = new PlayerCarrousel(
-                    new PointF(5, 200),
+                this.players = new PlayerCarrousel(
+                    new PointF(5, 150),
                     1500f,
                     players
                 );
@@ -144,16 +150,74 @@ public class PlayerMarket : BaseView
             wage = new NumericView();
             wage.IsMoney = true;
             wage.Label = "Salário";
-            wage.Rect = new RectangleF(20, 800, 300, 60);
+            wage.Rect = new RectangleF(20, 700, 300, 60);
             wage.Value = 1000f;
             wage.Step = 100f;
         }
 
+        if (time == null)
+        {
+            time = new NumericView();
+            time.IsMoney = false;
+            time.Label = "Duração em Splits (Semestres):";
+            time.Rect = new RectangleF(20, 800, 300, 60);
+            time.Value = 2;
+            time.Step = 1;
+        }
+
+        if (rescissionFee == null)
+        {
+            rescissionFee = new NumericView();
+            rescissionFee.IsMoney = true;
+            rescissionFee.Label = "Multa Rescisória:";
+            rescissionFee.Rect = new RectangleF(20, 900, 300, 60);
+            rescissionFee.Value = 12000;
+            rescissionFee.Step = 1000;
+        }
+
+        if (propose == null)
+        {
+            propose = new ButtonView();
+            propose.Label = "Realizar Proposta";
+            propose.Color = Brushes.Navy;
+            propose.SelectedColor = Brushes.White;
+            propose.Rect = new RectangleF(350, 800, 300, 60);
+            propose.OnClick += delegate
+            {
+                if (ProposeMaked != null)
+                {
+                    Propose propose = new Propose();
+                    
+                    propose.Player = players.Current;
+                    propose.RescissionFee = rescissionFee.Value;
+                    propose.Time = time.Value;
+                    propose.Wage = wage.Value;
+                    propose.Team = Game.Current.Team;
+                    propose.Round = round;
+
+                    ProposeMaked(propose);
+                    g.Clear(Color.Black);
+                    round++;
+                }
+            };
+        }
+
+        g.DrawString("Proposta:", font, Brushes.White, new PointF(20, 670));
+
         wage.Draw(bmp, g);
         wage.MouseMove(cursor, down);
 
-        freeAgent.Draw(bmp, g);
-        freeAgent.MouseMove(cursor, down);
+        time.Draw(bmp, g);
+        time.MouseMove(cursor, down);
+
+        rescissionFee.Draw(bmp, g);
+        rescissionFee.MouseMove(cursor, down);
+
+        players.Draw(bmp, g);
+        players.MouseMove(cursor, down);
+
+        propose.Draw(bmp, g);
+        propose.MouseMove(cursor, down);
 
         options.Draw(bmp, g);
         options.MouseMove(cursor, down);
@@ -169,4 +233,6 @@ public class PlayerMarket : BaseView
     {
         g.Clear(Color.Black);
     }
+
+    public event Action<Propose> ProposeMaked;
 }

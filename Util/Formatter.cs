@@ -1,4 +1,8 @@
+using System.Linq;
+
 namespace CBLoLManager.Util;
+
+using Model;
 
 public static class Formatter
 {
@@ -21,5 +25,19 @@ public static class Formatter
         value /= 1000;
 
         return result;
+    }
+
+    public static string FormatPlayer(Player player)
+    {
+        var result = string.Empty;
+
+        var parts = player.Name.Split(' ');
+
+        return string.Concat(
+            parts.Skip(1)
+                .Prepend($"'{player.Nickname}'")
+                .Prepend(parts[0])
+                .Aggregate((n, s) => n + " " + s)
+        );
     }
 }
