@@ -12,12 +12,21 @@ public abstract class BaseView
     protected abstract void draw(Bitmap bmp, Graphics g);
     public virtual void MoseMove(PointF cursor, bool down) { }
 
-
     public void Draw(Bitmap bmp, Graphics g)
     {
         this._bmp = bmp;
         this._g = g;
+        if (first)
+        {
+            first = false;
+            Load(bmp, g);
+        }
         this.draw(this._bmp, this._g);
+    }
+
+    public virtual void Load(Bitmap bmp, Graphics g)
+    {
+
     }
 
     public virtual void Reset()
@@ -29,6 +38,7 @@ public abstract class BaseView
 
     private Graphics _g;
     private Bitmap _bmp;
+    private bool first = true;
     private Dictionary<string, object> structures = null;
 
     protected object register(string code, object structure)

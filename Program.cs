@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using CBLoLManager.Model;
 using CBLoLManager.Views;
 
+Graphics g = null;
+
 // App Login
 
 BaseView crrPage = null;
@@ -41,7 +43,6 @@ Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
 ApplicationConfiguration.Initialize();
 
 Bitmap bmp = null;
-Graphics g = null;
 PointF cursor = PointF.Empty;
 bool down = false;
 
@@ -59,7 +60,6 @@ tm.Interval = 20;
 
 tm.Tick += delegate
 {
-    g.Clear(Color.Black);
     crrPage.Draw(bmp, g);
     crrPage.MoseMove(cursor, down);
     pb.Refresh();

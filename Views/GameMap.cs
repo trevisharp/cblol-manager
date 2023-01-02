@@ -30,6 +30,10 @@ public class GameMap : BaseView
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
+    }
+
+    public override void Load(Bitmap bmp, Graphics g)
+    {
         img(this.rectangle.X, this.rectangle.Y,
             this.rectangle.Width, this.rectangle.Height,
             () => Bitmap.FromFile("Img/map.png") as Bitmap, "map");

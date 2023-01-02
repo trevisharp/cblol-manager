@@ -40,6 +40,8 @@ public class PlayerTeamView : BaseView
             return;
         var p = this.Location.Value;
 
+        g.FillRectangle(Brushes.Black, p.X, p.Y, size, size / 5 + 30f);
+
         var font = new Font(FontFamily.GenericMonospace, 10f);
         StringFormat format = new StringFormat();
         format.Alignment = StringAlignment.Center;
