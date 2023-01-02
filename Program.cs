@@ -21,6 +21,7 @@ TeamSelectorPage teamSelectorPage = null;
 TeamPage teamPage = null;
 PlayerMarket market = null;
 MarketRoundSumary sumary = null;
+PosMarketPage posmarket = null;
 
 bool firstTimeInMarket = true;
 
@@ -96,10 +97,17 @@ market.ProposeMaked += p =>
 };
 market.CloseMarket += () =>
 {
-    crrPage = teamPage;
-    teamPage.Reopen();
-};
+    while (Game.Current.EndContractStep)
+    {
+        sys.RunRound(null);
+    }
 
+    posmarket = new PosMarketPage();
+    crrPage = posmarket;
+
+    // crrPage = teamPage;
+    // teamPage.Reopen();
+};
 
 // View Logic
 

@@ -106,9 +106,11 @@ public class ProposeSystem
     {
         List<string> events = new List<string>();
 
-        var yourContract = MakeContract(yourPorpose);
+        Contract yourContract = null;
+        if (yourPorpose != null)
+            yourContract = MakeContract(yourPorpose);
 
-        int round = yourPorpose.Round;
+        int round = yourPorpose?.Round ?? 15;
 
         List<Position> list = new List<Position>()
         {
