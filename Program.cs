@@ -48,19 +48,19 @@ form.Load += delegate
     
     // Player player = new Player();
 
-    // player.BirthDate = new DateTime(1999, 9, 9);
-    // player.Name = "Gabriel Vinicius Saes de Lemos";
-    // player.Nickname = "Aegis";
-    // player.Photo = "aegis.png";
+    // player.BirthDate = new DateTime(1997, 8, 23);
+    // player.Name = "Bruno Miyaguchi";
+    // player.Nickname = "Goku";
+    // player.Photo = "goku.png";
     // player.Nationality = Nationality.BR;
-    // player.Role = Position.Support;
-    // player.LanePhase = 90;
+    // player.Role = Position.MidLaner;
+    // player.LanePhase = 85;
     // player.Mentality = 80;
     // player.GameVision = 85;
     // player.MechanicSkill = 85;
     // player.Leadership = 80;
     // player.TeamFigth = 85;
-
+    
     // Players.All.Add(player);
     
     page = new PlayerCarrousel(new PointF(20, 20), 1400f, Players.All);
