@@ -12,6 +12,7 @@ public class TeamPage : BaseView
     private PlayerTeamView playerView = null;
     private PlayerStatusView teamStatus = null;
     private GameMap map = null;
+    private OptionsView options = null;
 
     public TeamPage(Team team)
     {
@@ -52,6 +53,14 @@ public class TeamPage : BaseView
                 maphei
             ));
         }
+
+        if (options == null)
+        {
+            options = new OptionsView(
+
+                "Próximo Jogo"
+            );
+        }
         
         var brush = new SolidBrush(
             Color.FromArgb(32, 42, 68)
@@ -65,6 +74,7 @@ public class TeamPage : BaseView
         playerView.Draw(bmp, g);
         teamStatus.Draw(bmp, g);
         map.Draw(bmp, g);
+        options.Draw(bmp, g);
     }
 
     public override void Load(Bitmap bmp, Graphics g)
@@ -75,5 +85,6 @@ public class TeamPage : BaseView
     public override void MoseMove(PointF cursor, bool down)
     {
         playerView?.MoseMove(cursor, down);
+        options?.MoseMove(cursor, down);
     }
 }
