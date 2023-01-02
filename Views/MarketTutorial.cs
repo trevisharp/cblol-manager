@@ -34,9 +34,17 @@ public class MarketTutorial : BaseView
 
             Na primeira fase de contratação todos os jogadores estão Free Agent.
 
-            Detalhe interessante: Você nunca sabe exatamente qual é uma boa oferta para um jogador,
-            você precisa fazer propostas justas sem lhe comprometer financeiramente. Isso pode ser 
-            bem difícil.
+            Dicas: 
+            - Você nunca sabe exatamente qual é uma boa oferta para um jogador, você precisa fazer
+            propostas justas sem lhe comprometer financeiramente. Isso pode ser bem difícil.
+
+            - Conseguir bons jogadores faz com que outros jogadores tenha vontade de jogar no seu 
+            time que agora parece mais competitivo. Ao contratar um jogador você ganha vantagens em
+            outras negociações.
+
+            - Quando um jogador aceita uma proposta, você não precisa imediatamente contratá-lo. Exemplo:
+            Você pode tentar negociar com vários AdCarrys e se 2 aceitarem suas propostas você pode
+            aguardar para contratar qual você quiser no final do processo.
 
             Clique em qualquer lugar para sair...
         ";
@@ -46,7 +54,7 @@ public class MarketTutorial : BaseView
     }
 
     bool isdown = false;
-    public override void MoseMove(PointF cursor, bool down)
+    public override void MouseMove(PointF cursor, bool down)
     {
         if (down)
             isdown = true;

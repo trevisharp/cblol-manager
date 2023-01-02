@@ -114,10 +114,10 @@ public class TeamPage : BaseView
         g.Clear(Color.Black);
     }
 
-    public override void MoseMove(PointF cursor, bool down)
+    public override void MouseMove(PointF cursor, bool down)
     {
-        playerView?.MoseMove(cursor, down);
-        options?.MoseMove(cursor, down);
+        playerView?.MouseMove(cursor, down);
+        options?.MouseMove(cursor, down);
     }
 
     public event Action OnOpenMarket;

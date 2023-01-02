@@ -17,6 +17,7 @@ public class PlayerMarket : BaseView
 
     PlayerCarrousel freeAgent = null;
     OptionsView options = null;
+    NumericView wage = null;
 
     public PlayerMarket()
     {
@@ -138,14 +139,27 @@ public class PlayerMarket : BaseView
             };
         }
 
+        if (wage == null)
+        {
+            wage = new NumericView();
+            wage.IsMoney = true;
+            wage.Label = "Salário";
+            wage.Rect = new RectangleF(20, 800, 300, 60);
+            wage.Value = 1000f;
+            wage.Step = 100f;
+        }
+
+        wage.Draw(bmp, g);
+        wage.MouseMove(cursor, down);
+
         freeAgent.Draw(bmp, g);
-        freeAgent.MoseMove(cursor, down);
+        freeAgent.MouseMove(cursor, down);
 
         options.Draw(bmp, g);
-        options.MoseMove(cursor, down);
+        options.MouseMove(cursor, down);
     }
 
-    public override void MoseMove(PointF cursor, bool down)
+    public override void MouseMove(PointF cursor, bool down)
     {
         this.cursor = cursor;
         this.down = down;

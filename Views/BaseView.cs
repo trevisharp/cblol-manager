@@ -10,7 +10,7 @@ public abstract class BaseView
     public PointF? Location { get; set; }
 
     protected abstract void draw(Bitmap bmp, Graphics g);
-    public virtual void MoseMove(PointF cursor, bool down) { }
+    public virtual void MouseMove(PointF cursor, bool down) { }
 
     public void Draw(Bitmap bmp, Graphics g)
     {

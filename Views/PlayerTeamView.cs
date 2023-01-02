@@ -124,7 +124,7 @@ public class PlayerTeamView : BaseView
         }
     }
 
-    public override void MoseMove(PointF cursor, bool down)
+    public override void MouseMove(PointF cursor, bool down)
     {
         this.cursor = cursor;
         this.down = down;

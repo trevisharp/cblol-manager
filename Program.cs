@@ -87,7 +87,7 @@ tm.Interval = 20;
 tm.Tick += delegate
 {
     crrPage.Draw(bmp, g);
-    crrPage.MoseMove(cursor, down);
+    crrPage.MouseMove(cursor, down);
     pb.Refresh();
 };
 
