@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace CBLoLManager.Model;
 
+[Serializable]
 public class Team
 {
     public Organization Organization { get; set; }
@@ -10,6 +12,7 @@ public class Team
     public Player AdCarry { get; set; }
     public Player Jungler { get; set; }
     public Player Support { get; set; }
+    public float Money { get; set; } = 100000;
 
     public List<Player> GetAll()
     {

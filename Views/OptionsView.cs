@@ -48,6 +48,7 @@ public class OptionsView : BaseView
             {
                 g.DrawString(opt, font, Brushes.White, rect, format);
             }
+            x += 200f;
         }
         if (!down)
             selected = string.Empty;

@@ -15,7 +15,6 @@ BaseView crrPage = null;
 
 TeamSelectorPage teamSelectorPage = null;
 TeamPage teamPage = null;
-PlayerCarrousel page = null;
 
 // Team Selector Page Logic
 teamSelectorPage = new TeamSelectorPage();
@@ -24,11 +23,6 @@ teamSelectorPage.OnSelect += org =>
 {
     Team team = new Team();
     team.Organization = org;
-    team.TopLaner = Players.All.First(p => p.Role == Position.TopLaner);
-    team.Jungler = Players.All.First(p => p.Role == Position.Jungler);
-    team.MidLaner = Players.All.First(p => p.Role == Position.MidLaner);
-    team.Support = Players.All.First(p => p.Role == Position.Support);
-    team.AdCarry = Players.All.First(p => p.Role == Position.AdCarry);
 
     teamPage = new TeamPage(team);
 
@@ -72,25 +66,6 @@ form.Load += delegate
     g.Clear(Color.Black);
     pb.Image = bmp;
     tm.Start();
-    
-    // Player player = new Player();
-
-    // player.BirthDate = new DateTime(1997, 8, 23);
-    // player.Name = "Bruno Miyaguchi";
-    // player.Nickname = "Goku";
-    // player.Photo = "goku.png";
-    // player.Nationality = Nationality.BR;
-    // player.Role = Position.MidLaner;
-    // player.LanePhase = 85;
-    // player.Mentality = 80;
-    // player.GameVision = 85;
-    // player.MechanicSkill = 85;
-    // player.Leadership = 80;
-    // player.TeamFigth = 85;
-    
-    // Players.All.Add(player);
-    
-    // page = new PlayerCarrousel(new PointF(20, 20), 1400f, Players.All);
 };
 
 pb.MouseMove += (o, e) =>

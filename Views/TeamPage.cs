@@ -3,6 +3,7 @@ using System.Drawing;
 
 namespace CBLoLManager.Views;
 
+using Util;
 using Model;
 using GameRule;
 
@@ -17,6 +18,7 @@ public class TeamPage : BaseView
     public TeamPage(Team team)
     {
         this.team = team;
+        Game.Current.Team = team;
     }
 
     protected override void draw(Bitmap bmp, Graphics g)
@@ -28,6 +30,11 @@ public class TeamPage : BaseView
             margin = 40f;
         float mapwid = bmp.Width - mapStart - 10f - 2 * margin;
         float maphei = 8 * unity - 10f - 2 * margin;
+
+        var font = new Font(FontFamily.GenericMonospace, 10f);
+        StringFormat format = new StringFormat();
+        format.Alignment = StringAlignment.Center;
+        format.LineAlignment = StringAlignment.Center;
 
         if (teamStatus == null)
         {
@@ -57,9 +64,32 @@ public class TeamPage : BaseView
         if (options == null)
         {
             options = new OptionsView(
-
+                "Salvar",
+                "Carregar",
+                "Mercado de Jogadores",
                 "Próximo Jogo"
             );
+
+            options.OnOptionClick += s =>
+            {
+                switch (s)
+                {
+                    case "Salvar":
+                        
+                        break;
+
+                    case "Carregar":
+                        
+                        break;
+                    
+                    case "Mercado de Jogadores":
+
+                        break;
+                    
+                    case "Próximo Jogo":
+                        break;
+                }
+            };
         }
         
         var brush = new SolidBrush(
@@ -70,6 +100,8 @@ public class TeamPage : BaseView
         img(5f, 5f, 3 * unity, 3 * unity, 
             () => Bitmap.FromFile("Img/" + org.Photo) as Bitmap,
             "logo");
+        g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}", font, Brushes.White,
+            new RectangleF(5f, 3 * unity + 10f, 3 * unity, unity), format);
         
         playerView.Draw(bmp, g);
         teamStatus.Draw(bmp, g);
