@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using CBLoLManager.Model;
 using CBLoLManager.Views;
+using CBLoLManager.GameRule;
 
 Graphics g = null;
 
@@ -26,6 +27,17 @@ teamSelectorPage.OnSelect += org =>
 {
     Team team = new Team();
     team.Organization = org;
+
+    Game.Current.Team = team;
+    foreach (var x in Organizations.All
+        .Where(o => o.Name != org.Name))
+    {
+        Game.Current.Others.Add(new Team()
+        {
+            Organization = x
+        });
+    }
+    Game.Current.FreeAgent.AddRange(Players.All);
 
     teamPage = new TeamPage(team);
     teamPage.OnOpenMarket += () =>

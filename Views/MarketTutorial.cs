@@ -34,6 +34,10 @@ public class MarketTutorial : BaseView
 
             Na primeira fase de contratação todos os jogadores estão Free Agent.
 
+            Detalhe interessante: Você nunca sabe exatamente qual é uma boa oferta para um jogador,
+            você precisa fazer propostas justas sem lhe comprometer financeiramente. Isso pode ser 
+            bem difícil.
+
             Clique em qualquer lugar para sair...
         ";
 

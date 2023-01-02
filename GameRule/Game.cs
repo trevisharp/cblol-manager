@@ -2,6 +2,7 @@ using System;
 
 namespace CBLoLManager.GameRule;
 
+using System.Collections.Generic;
 using Model;
 
 [Serializable]
@@ -12,6 +13,11 @@ public class Game
     private Game() { }
 
     public Team Team { get; set;}
+    public List<Team> Others { get; set; } = new List<Team>();
+    
+    public List<Player> FreeAgent { get; set; } = new List<Player>();
+    public List<Player> EndContract { get; set; } = new List<Player>();
+    public List<Player> SeeingProposes { get; set; } = new List<Player>();
 
     public static void New()
         => crr = new Game();

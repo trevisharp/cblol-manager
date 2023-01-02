@@ -21,9 +21,13 @@ public class PlayerCarrousel : BaseView
     {
         this.players = players.ToArray();
         this.Location = location;
+        this.size = size;
+
+        if (players.Count() == 0)
+            return;
+        
         page = new PlayerPage(this.players[crr], 
             new PointF(location.X + 70f, location.Y), size);
-        this.size = size;
     }
 
     protected override void draw(Bitmap bmp, Graphics g)
@@ -32,7 +36,9 @@ public class PlayerCarrousel : BaseView
             return;
         var p = Location.Value;
 
-        page.Draw(bmp, g);
+        g.FillRectangle(Brushes.Black, 
+            new RectangleF(p.X, p.Y, 1.5f * size, size / 3));
+
         lines(Pens.White, () => new PointF[]{
             new PointF(p.X + 60f, p.Y + 3 * size / 27),
             new PointF(p.X + 10f, p.Y + 4.5f * size / 27),
@@ -43,6 +49,11 @@ public class PlayerCarrousel : BaseView
             new PointF(p.X + size + 70f + 60f, p.Y + 4.5f * size / 27),
             new PointF(p.X + size + 70f + 10f, p.Y + 6f * size / 27) 
         }, "rigth");
+
+        if (players.Count() == 0)
+            return;
+        
+        page.Draw(bmp, g);
 
         if (!new RectangleF(p.X, p.Y, size + 140f, size / 3).Contains(cursor))
             return;

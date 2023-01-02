@@ -19,7 +19,6 @@ public class TeamPage : BaseView
     public TeamPage(Team team)
     {
         this.team = team;
-        Game.Current.Team = team;
     }
 
     protected override void draw(Bitmap bmp, Graphics g)
