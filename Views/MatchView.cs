@@ -1,27 +1,61 @@
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace CBLoLManager.Views;
 
 using Model;
+using GameRule;
 
 public class MatchView : BaseView
 {
+    int frame = 0;
     int step = 0;
     Team a = null;
     Team b = null;
-
     Bitmap draft = null;
+    DraftSystem sys = null;
+    Champion[] champs = null;
+    IEnumerator<Champion> picks = null;
 
     public MatchView(Team A, Team B)
     {
         this.a = A;
         this.b = B;
+        this.sys = new DraftSystem
+        {
+            Blue = A,
+            Red = B
+        };
+        this.champs = new Champion[10];
+        this.picks = this.sys.Simulate().GetEnumerator();
 
-        draft = Bitmap.FromFile("Img/draft.png") as Bitmap;
+        this.draft = Bitmap.FromFile("Img/draft.png") as Bitmap;
     }
 
     protected override void draw(Bitmap bmp, Graphics g)
     {   
+        if (frame == 20)
+            bluePick();
+        else if (frame == 40)
+            redPick();
+        else if (frame == 60)
+            redPick();
+        else if (frame == 80)
+            bluePick();
+        else if (frame == 100)
+            bluePick();
+        else if (frame == 120)
+            redPick();
+        else if (frame == 140)
+            redPick();
+        else if (frame == 160)
+            bluePick();
+        else if (frame == 180)
+            bluePick();
+        else if (frame == 200)
+            redPick();
+        
+        frame++;
         var font = new Font(FontFamily.GenericMonospace, 20f);
         var font2 = new Font(FontFamily.GenericMonospace, 15f);
         StringFormat format = new StringFormat();
@@ -40,6 +74,16 @@ public class MatchView : BaseView
             g.DrawString(a.Organization.Name, font, Brushes.White,
                 new RectangleF(bmp.Width * .26f, bmp.Height - hei + 10f, 350f, 30f), format);
 
+            if (champs[0] != null)
+            {
+                img(
+                    bmp.Width * -.09f, 
+                    bmp.Height - hei + hei * .6f, 
+                    50, 
+                    50, 
+                    () => Bitmap.FromFile("Img/" + champs[0].Photo) as Bitmap, 
+                    champs[0].Name);
+            }
             g.DrawString(a.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * -.09f, 
                 bmp.Height - hei + hei * .6f,
@@ -93,6 +137,20 @@ public class MatchView : BaseView
                 bmp.Width * .91f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
+        }
+
+        void bluePick()
+        {
+            picks.MoveNext();
+            var pick = picks.Current;
+            this.champs[(int)pick.Role] = pick;
+        }
+
+        void redPick()
+        {
+            picks.MoveNext();
+            var pick = picks.Current;
+            this.champs[(int)pick.Role + 5] = pick;
         }
     }
 
