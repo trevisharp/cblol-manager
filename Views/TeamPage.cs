@@ -6,6 +6,7 @@ namespace CBLoLManager.Views;
 using Util;
 using Model;
 using GameRule;
+using System;
 
 public class TeamPage : BaseView
 {
@@ -83,7 +84,7 @@ public class TeamPage : BaseView
                         break;
                     
                     case "Mercado de Jogadores":
-
+                        OnOpenMarket();
                         break;
                     
                     case "Próximo Jogo":
@@ -119,4 +120,6 @@ public class TeamPage : BaseView
         playerView?.MoseMove(cursor, down);
         options?.MoseMove(cursor, down);
     }
+
+    public event Action OnOpenMarket;
 }

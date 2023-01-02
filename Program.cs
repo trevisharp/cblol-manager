@@ -15,6 +15,9 @@ BaseView crrPage = null;
 
 TeamSelectorPage teamSelectorPage = null;
 TeamPage teamPage = null;
+PlayerMarket market = null;
+
+bool firstTimeInMarket = true;
 
 // Team Selector Page Logic
 teamSelectorPage = new TeamSelectorPage();
@@ -25,6 +28,23 @@ teamSelectorPage.OnSelect += org =>
     team.Organization = org;
 
     teamPage = new TeamPage(team);
+    teamPage.OnOpenMarket += () =>
+    {
+        if (firstTimeInMarket)
+        {
+            var tutorial = new MarketTutorial();
+            tutorial.Exit += delegate
+            {
+                market = new PlayerMarket();
+                crrPage = market;
+            };
+            crrPage = tutorial;
+            return;
+        }
+        
+        market = new PlayerMarket();
+        crrPage = market;
+    };
 
     crrPage = teamPage;
 };
