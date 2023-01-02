@@ -32,7 +32,7 @@ public class MarketTutorial : BaseView
             contra-propostas e no aceite da proposta você ainda pode desistir da negociação, caso
             outra mais interessante de certo.
 
-            A fase de contratação dura 15 rodadas, você pode fazer uma proposta por rodada.
+            A fase de contratação dura até todos os times estarem completos.
 
             Na primeira fase de contratação todos os jogadores estão Free Agent.
 

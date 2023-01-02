@@ -38,6 +38,7 @@ public class TeamPage : BaseView
 
         if (teamStatus == null)
         {
+            g.Clear(Color.Black);
             teamStatus = new PlayerStatusView();
             teamStatus.Player = team.AveragePlayer();
             teamStatus.Location = new PointF(4 * unity, 40f);
@@ -46,6 +47,7 @@ public class TeamPage : BaseView
 
         if (playerView == null)
         {
+            g.Clear(Color.Black);
             playerView = new PlayerTeamView(team,
                 new PointF(10f + mapStart, 10f + maphei + 2 * margin), 10 * unity - 5f
             );
@@ -53,6 +55,7 @@ public class TeamPage : BaseView
 
         if (map == null)
         {
+            g.Clear(Color.Black);
             map = new GameMap(team.GetAll(), new RectangleF(
                 margin + 10f + mapStart,
                 margin + 5f,
@@ -63,6 +66,7 @@ public class TeamPage : BaseView
 
         if (options == null)
         {
+            g.Clear(Color.Black);
             options = new OptionsView(
                 "Salvar",
                 "Carregar",
@@ -107,6 +111,14 @@ public class TeamPage : BaseView
         teamStatus.Draw(bmp, g);
         map.Draw(bmp, g);
         options.Draw(bmp, g);
+    }
+
+    public void Reopen()
+    {
+        playerView = null;
+        teamStatus = null;
+        map = null;
+        options = null;
     }
 
     public override void Load(Bitmap bmp, Graphics g)

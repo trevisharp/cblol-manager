@@ -22,6 +22,9 @@ public class PlayerMarket : BaseView
     NumericView time = null;
     NumericView rescissionFee = null;
     ButtonView propose = null;
+    ButtonView counterpropose = null;
+    ButtonView contract = null;
+    Contract[] contracts = new Contract[0];
 
     public PlayerMarket()
     {
@@ -30,8 +33,15 @@ public class PlayerMarket : BaseView
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
+        if (Game.Current.EndContractStepForPlayer)
+        {
+            if (CloseMarket != null)
+                CloseMarket();
+            return;
+        }
+
         g.Clear(Color.Black);
-        
+
         var font = new Font(FontFamily.GenericMonospace, 15f);
         StringFormat format = new StringFormat();
         format.Alignment = StringAlignment.Center;
@@ -41,12 +51,12 @@ public class PlayerMarket : BaseView
         g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}",
             font, Brushes.White, new PointF(0, 25f));
 
-        if (players == null)
+        if (this.players == null)
         {
-            players = new PlayerCarrousel(
+            this.players = new PlayerCarrousel(
                 new PointF(5, 150),
                 1500f,
-                Game.Current.FreeAgent
+                Game.Current.PlayersInMarket
             );
         }
 
@@ -73,75 +83,7 @@ public class PlayerMarket : BaseView
 
             options.OnOptionClick += delegate
             {
-                var list = options.Checked;
-                IEnumerable<Player> players = null;
-                
-                bool fa = list.Contains("Ver Jogadores Free Agent");
-                bool op = list.Contains("Ver Jogadores Ouvindo Propostas");
-                bool ec = list.Contains("Ver Jogadores em Fim de Contrato");
-
-                bool pos = list.Contains("Ver TopLaners") ||
-                    list.Contains("Ver Junglers") ||
-                    list.Contains("Ver MidLaners") ||
-                    list.Contains("Ver AdCarries") ||
-                    list.Contains("Ver Supportes");
-
-                if (fa && op)
-                {
-                    players = Game.Current.FreeAgent.Union(
-                        Game.Current.SeeingProposes
-                    );
-                }
-                else if (fa && ec)
-                {
-                    players = Game.Current.FreeAgent.Union(
-                        Game.Current.EndContract
-                    );
-                }
-                else if (op && ec)
-                {
-                    players = Game.Current.SeeingProposes.Union(
-                        Game.Current.EndContract
-                    );
-                }
-                else if (fa)
-                    players = Game.Current.FreeAgent;
-                else if (op)
-                    players = Game.Current.SeeingProposes;
-                else if (ec)
-                    players = Game.Current.EndContract;
-                else
-                {
-                    players = Game.Current.FreeAgent.Union(
-                        Game.Current.EndContract
-                    ).Union(
-                        Game.Current.SeeingProposes
-                    );
-                }
-
-                if (pos)
-                {
-                    if (!list.Contains("Ver TopLaners"))
-                        players = players.Where(p => p.Role != Position.TopLaner);
-                        
-                    if (!list.Contains("Ver Junglers"))
-                        players = players.Where(p => p.Role != Position.Jungler);
-                        
-                    if (!list.Contains("Ver MidLaners"))
-                        players = players.Where(p => p.Role != Position.MidLaner);
-                        
-                    if (!list.Contains("Ver AdCarries"))
-                        players = players.Where(p => p.Role != Position.AdCarry);
-                        
-                    if (!list.Contains("Ver Supportes"))
-                        players = players.Where(p => p.Role != Position.Support);
-                }
-
-                this.players = new PlayerCarrousel(
-                    new PointF(5, 150),
-                    1500f,
-                    players
-                );
+                update();
             };
         }
 
@@ -152,7 +94,7 @@ public class PlayerMarket : BaseView
             wage.Label = "Salário";
             wage.Rect = new RectangleF(20, 700, 300, 60);
             wage.Value = 1000f;
-            wage.Step = 100f;
+            wage.Step = 500f;
         }
 
         if (time == null)
@@ -202,6 +144,69 @@ public class PlayerMarket : BaseView
             };
         }
 
+        if (counterpropose == null)
+        {
+            counterpropose = new ButtonView();
+            counterpropose.Label = "Tentar Contra-Proposta";
+            counterpropose.Color = Brushes.Navy;
+            counterpropose.SelectedColor = Brushes.White;
+            counterpropose.Rect = new RectangleF(350, 800, 300, 60);
+            counterpropose.OnClick += delegate
+            {
+                var contractCrr = contracts
+                    .LastOrDefault(c => c.Player == this.players.Current);
+
+                Game.Current.Contracts.Remove(contractCrr);
+                this.contracts = this.contracts
+                    .Where(c => c != contractCrr)
+                    .ToArray();
+            };
+        }
+
+        if (contract == null)
+        {
+            contract = new ButtonView();
+            contract.Label = "Contratar";
+            contract.Color = Brushes.Navy;
+            contract.SelectedColor = Brushes.White;
+            contract.Rect = new RectangleF(700, 800, 300, 60);
+
+            contract.OnClick += delegate
+            {
+                var contractCrr = contracts
+                    .LastOrDefault(c => c.Player == this.players.Current);
+                contractCrr.Closed = true;
+                Game.Current.Team.Add(contractCrr.Player);
+                Game.Current.FreeAgent.Remove(contractCrr.Player);
+                Game.Current.SeeingProposes.Remove(contractCrr.Player);
+                Game.Current.EndContract.Remove(contractCrr.Player);
+                this.contracts = this.contracts
+                    .Where(c => c != contractCrr)
+                    .ToArray();
+                update();
+            };
+        }
+
+        var contractCrr = contracts
+            .LastOrDefault(c => c.Player == this.players.Current);
+        if (contractCrr != null)
+        {
+            wage.Value = contractCrr.Wage;
+            time.Value = contractCrr.EndRound - Game.Current.Round;
+            rescissionFee.Value = contractCrr.RescissionFee;
+            
+            contract.Draw(bmp, g);
+            contract.MouseMove(cursor, down);
+
+            counterpropose.Draw(bmp, g);
+            counterpropose.MouseMove(cursor, down);
+        }
+        else
+        {
+            propose.Draw(bmp, g);
+            propose.MouseMove(cursor, down);
+        }
+
         g.DrawString("Proposta:", font, Brushes.White, new PointF(20, 670));
 
         wage.Draw(bmp, g);
@@ -213,14 +218,20 @@ public class PlayerMarket : BaseView
         rescissionFee.Draw(bmp, g);
         rescissionFee.MouseMove(cursor, down);
 
-        players.Draw(bmp, g);
-        players.MouseMove(cursor, down);
-
-        propose.Draw(bmp, g);
-        propose.MouseMove(cursor, down);
+        this.players.Draw(bmp, g);
+        this.players.MouseMove(cursor, down);
 
         options.Draw(bmp, g);
         options.MouseMove(cursor, down);
+
+    }
+
+    public void Reopen()
+    {
+        update();
+        this.contracts = Game.Current.Contracts
+            .Where(c => c.Team == Game.Current.Team)
+            .ToArray();
     }
 
     public override void MouseMove(PointF cursor, bool down)
@@ -234,5 +245,94 @@ public class PlayerMarket : BaseView
         g.Clear(Color.Black);
     }
 
+    void update()
+    {
+        var list = options.Checked;
+        IEnumerable<Player> players = null;
+        
+        bool fa = list.Contains("Ver Jogadores Free Agent");
+        bool op = list.Contains("Ver Jogadores Ouvindo Propostas");
+        bool ec = list.Contains("Ver Jogadores em Fim de Contrato");
+
+        bool pos = list.Contains("Ver TopLaners") ||
+            list.Contains("Ver Junglers") ||
+            list.Contains("Ver MidLaners") ||
+            list.Contains("Ver AdCarries") ||
+            list.Contains("Ver Supportes");
+
+        if (fa && op)
+        {
+            players = Game.Current.FreeAgent.Union(
+                Game.Current.SeeingProposes
+            );
+        }
+        else if (fa && ec)
+        {
+            players = Game.Current.FreeAgent.Union(
+                Game.Current.EndContract
+            );
+        }
+        else if (op && ec)
+        {
+            players = Game.Current.SeeingProposes.Union(
+                Game.Current.EndContract
+            );
+        }
+        else if (fa)
+            players = Game.Current.FreeAgent;
+        else if (op)
+            players = Game.Current.SeeingProposes;
+        else if (ec)
+            players = Game.Current.EndContract;
+        else
+        {
+            players = Game.Current.FreeAgent.Union(
+                Game.Current.EndContract
+            ).Union(
+                Game.Current.SeeingProposes
+            );
+        }
+
+        if (pos)
+        {
+            if (!list.Contains("Ver TopLaners"))
+                players = players.Where(p => p.Role != Position.TopLaner);
+                
+            if (!list.Contains("Ver Junglers"))
+                players = players.Where(p => p.Role != Position.Jungler);
+                
+            if (!list.Contains("Ver MidLaners"))
+                players = players.Where(p => p.Role != Position.MidLaner);
+                
+            if (!list.Contains("Ver AdCarries"))
+                players = players.Where(p => p.Role != Position.AdCarry);
+                
+            if (!list.Contains("Ver Supportes"))
+                players = players.Where(p => p.Role != Position.Support);
+        }
+        
+        if (Game.Current.Team.TopLaner != null)
+            players = players.Where(p => p.Role != Position.TopLaner);
+            
+        if (Game.Current.Team.Jungler != null)
+            players = players.Where(p => p.Role != Position.Jungler);
+            
+        if (Game.Current.Team.MidLaner != null)
+            players = players.Where(p => p.Role != Position.MidLaner);
+            
+        if (Game.Current.Team.AdCarry != null)
+            players = players.Where(p => p.Role != Position.AdCarry);
+            
+        if (Game.Current.Team.Support != null)
+            players = players.Where(p => p.Role != Position.Support);
+
+        this.players = new PlayerCarrousel(
+            new PointF(5, 150),
+            1500f,
+            players
+        );
+    }
+
     public event Action<Propose> ProposeMaked;
+    public event Action CloseMarket;
 }

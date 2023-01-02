@@ -88,10 +88,16 @@ market.ProposeMaked += p =>
     sumary.Contract = result.Item2;
     sumary.Exit += delegate
     {
+        market.Reopen();
         crrPage = market;
     };
 
     crrPage = sumary;
+};
+market.CloseMarket += () =>
+{
+    crrPage = teamPage;
+    teamPage.Reopen();
 };
 
 

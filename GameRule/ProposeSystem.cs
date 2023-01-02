@@ -60,7 +60,7 @@ public class ProposeSystem
         {
             first = false;
             propose.Wage *= 1.5f;
-            propose.RescissionFee *= 0.9f;
+            propose.RescissionFee *= 1.1f;
         }
 
         Contract contract = new Contract();

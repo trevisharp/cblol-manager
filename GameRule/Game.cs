@@ -25,6 +25,34 @@ public class Game
 
     public List<Contract> Contracts { get; set; } = new List<Contract>();
 
+    public bool EndContractStep
+    {
+        get
+        {
+            if (!EndContractStepForPlayer)
+                return false;
+            
+            foreach (var x in Others)
+            {
+                if (x.GetAll().Count < 5)
+                    return false;
+            }
+
+            return true;
+        }
+    }
+    
+    public bool EndContractStepForPlayer
+    {
+        get
+        {
+            if (Team.GetAll().Count < 5)
+                return false;
+
+            return true;
+        }
+    }
+
     public int Round { get; set; } = 1;
 
     public static void New()
