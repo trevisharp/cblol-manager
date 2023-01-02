@@ -90,7 +90,6 @@ public class PlayerPage : BaseView
         status.Draw(bmp, g);
 
         g.DrawRectangle(Pens.White, p.X, p.Y, size, size / 3);
-        // status.draw(bmp, g);
 
         string applyEffect(string text)
         {

@@ -22,8 +22,14 @@ teamSelectorPage.OnSelect += org =>
 {
     Team team = new Team();
     team.Organization = org;
+    team.TopLaner = Players.All.First(p => p.Role == Position.TopLaner);
+    team.Jungler = Players.All.First(p => p.Role == Position.Jungler);
+    team.MidLaner = Players.All.First(p => p.Role == Position.MidLaner);
+    team.Support = Players.All.First(p => p.Role == Position.Support);
+    team.AdCarry = Players.All.First(p => p.Role == Position.AdCarry);
 
     teamPage = new TeamPage(team);
+
     crrPage = teamPage;
 };
 
@@ -50,8 +56,6 @@ form.Controls.Add(pb);
 
 var tm = new System.Windows.Forms.Timer();
 tm.Interval = 20;
-
-
 
 tm.Tick += delegate
 {

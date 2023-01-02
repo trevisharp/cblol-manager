@@ -43,6 +43,15 @@ public class TeamSelectorPage : BaseView
                 rect(brush, () => orgrect, "i" + org.Name + "back");
                 img(x + 5, y + 5, size - 10, size - 10, 
                     () => Bitmap.FromFile("Img/" + org.Photo) as Bitmap, "i" + org.Name);
+                
+                if (down)
+                    selected = org;
+
+                if (!down && selected != null)
+                {
+                    if (OnSelect != null)
+                        OnSelect(selected);
+                }
             }
             else
             {
@@ -55,15 +64,6 @@ public class TeamSelectorPage : BaseView
             }
             g.DrawString(org.Name, font, Brushes.White,
                 new RectangleF(x, y + size + 5f, size, 20f), format);
-
-            if (down)
-                selected = org;
-
-            if (!down && selected != null)
-            {
-                if (OnSelect != null)
-                    OnSelect(selected);
-            }
 
             x += size + dx;
             count++;

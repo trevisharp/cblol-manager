@@ -90,6 +90,16 @@ public abstract class BaseView
         _g?.FillRectangle(brush, rect.Value);
     }
     
+    protected void rect(Pen pen,
+        Func<Rectangle> create, string code = "")
+    {
+        var rect = loadOrStore(code, () => (object)create()) as Rectangle?;
+        if (!rect.HasValue)
+            return;
+        
+        _g?.DrawRectangle(pen, rect.Value);
+    }
+    
     protected void lines(Pen pen,
         Func<PointF[]> sel, string code = "")
     {
