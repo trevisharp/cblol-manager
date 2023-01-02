@@ -54,6 +54,9 @@ public class ProposeSystem
 
     public Contract MakeContract(Propose propose)
     {
+        if (propose == null)
+            return null;
+        
         bool first = true;
 
         while (!TryAccept(propose))
@@ -85,8 +88,14 @@ public class ProposeSystem
                 p.MechanicSkill + p.Mentality +
                 p.TeamFigth + p.GameVision
             );
+        
+        if (players.Count() == 0)
+        {
+            return null;
+        }
+
         var player = players
-            .Skip(Random.Shared.Next(players.Count() - 1))
+            .Skip(Random.Shared.Next(players.Count() / 2))
             .FirstOrDefault();
 
         Propose propose = new Propose();
@@ -114,11 +123,11 @@ public class ProposeSystem
 
         List<Position> list = new List<Position>()
         {
+            Position.MidLaner, Position.MidLaner, Position.MidLaner,
+            Position.TopLaner, Position.TopLaner, Position.TopLaner,
+            Position.Jungler, Position.Jungler, Position.Jungler,
             Position.AdCarry, Position.AdCarry, Position.AdCarry,
             Position.Support, Position.Support, Position.Support,
-            Position.MidLaner, Position.MidLaner, Position.MidLaner,
-            Position.Jungler, Position.Jungler, Position.Jungler,
-            Position.TopLaner, Position.TopLaner, Position.TopLaner
         }
         .OrderBy(x => Random.Shared.Next())
         .ToList();
@@ -165,5 +174,84 @@ public class ProposeSystem
         }
 
         return (events, yourContract);
+    }
+
+    public void Complete()
+    {   
+        while (!Game.Current.EndContractStep)
+            foreach (var team in Game.Current.Others
+                .OrderByDescending(t => t.Money))
+            {
+                if (team.AdCarry == null)
+                {
+                    var contract = MakeContract(MakeRandomPropose(team, Position.AdCarry, 15));
+                    
+                    if (contract == null)
+                        return;
+                    
+                    contract.Accepted = true;
+                    contract.Closed = true;
+                    team.Add(contract.Player);
+                    Game.Current.FreeAgent.Remove(contract.Player);
+                    Game.Current.SeeingProposes.Remove(contract.Player);
+                    Game.Current.EndContract.Remove(contract.Player);
+                }
+                else if (team.TopLaner == null)
+                {
+                    var contract = MakeContract(MakeRandomPropose(team, Position.TopLaner, 15));
+
+                    if (contract == null)
+                        return;
+                    
+                    contract.Accepted = true;
+                    contract.Closed = true;
+                    team.Add(contract.Player);
+                    Game.Current.FreeAgent.Remove(contract.Player);
+                    Game.Current.SeeingProposes.Remove(contract.Player);
+                    Game.Current.EndContract.Remove(contract.Player);
+                }
+                else if (team.MidLaner == null)
+                {
+                    var contract = MakeContract(MakeRandomPropose(team, Position.MidLaner, 15));
+                    
+                    if (contract == null)
+                        return;
+                    
+                    contract.Accepted = true;
+                    contract.Closed = true;
+                    team.Add(contract.Player);
+                    Game.Current.FreeAgent.Remove(contract.Player);
+                    Game.Current.SeeingProposes.Remove(contract.Player);
+                    Game.Current.EndContract.Remove(contract.Player);
+                }
+                else if (team.Jungler == null)
+                {
+                    var contract = MakeContract(MakeRandomPropose(team, Position.Jungler, 15));
+                    
+                    if (contract == null)
+                        return; 
+                    
+                    contract.Accepted = true;
+                    contract.Closed = true;
+                    team.Add(contract.Player);
+                    Game.Current.FreeAgent.Remove(contract.Player);
+                    Game.Current.SeeingProposes.Remove(contract.Player);
+                    Game.Current.EndContract.Remove(contract.Player);
+                }
+                else if (team.Support == null)
+                {
+                    var contract = MakeContract(MakeRandomPropose(team, Position.Support, 15));
+                    
+                    if (contract == null)
+                        return;
+                    
+                    contract.Accepted = true;
+                    contract.Closed = true;
+                    team.Add(contract.Player);
+                    Game.Current.FreeAgent.Remove(contract.Player);
+                    Game.Current.SeeingProposes.Remove(contract.Player);
+                    Game.Current.EndContract.Remove(contract.Player);
+                }
+            }
     }
 }

@@ -90,4 +90,10 @@ public class PlayerCarrousel : BaseView
         this.cursor = cursor;
         this.down = down;
     }
+
+    public override void Reset()
+    {
+        crr = 0;
+        base.Reset();
+    }
 }

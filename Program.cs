@@ -97,16 +97,16 @@ market.ProposeMaked += p =>
 };
 market.CloseMarket += () =>
 {
-    while (Game.Current.EndContractStep)
-    {
-        sys.RunRound(null);
-    }
+    sys.Complete();
 
     posmarket = new PosMarketPage();
     crrPage = posmarket;
 
-    // crrPage = teamPage;
-    // teamPage.Reopen();
+    posmarket.Exit += delegate
+    {
+        crrPage = teamPage;
+        teamPage.Reopen();
+    };
 };
 
 // View Logic
@@ -145,10 +145,6 @@ form.Load += delegate
     g.Clear(Color.Black);
     pb.Image = bmp;
     tm.Start();
-
-    Players.All.FirstOrDefault(p => p.Nickname == "tinowns")
-        .GameVision = 95;
-    Players.All.Save();
 };
 
 pb.MouseMove += (o, e) =>
