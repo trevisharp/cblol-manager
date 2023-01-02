@@ -91,6 +91,7 @@ public class TeamPage : BaseView
                         break;
                     
                     case "Próximo Jogo":
+                        NextGame();
                         break;
                 }
             };
@@ -133,4 +134,5 @@ public class TeamPage : BaseView
     }
 
     public event Action OnOpenMarket;
+    public event Action NextGame;
 }

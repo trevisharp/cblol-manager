@@ -63,6 +63,7 @@ teamSelectorPage.OnSelect += org =>
     {
         if (firstTimeInMarket)
         {
+            firstTimeInMarket = false;
             var tutorial = new MarketTutorial();
             tutorial.Exit += delegate
             {
@@ -74,6 +75,12 @@ teamSelectorPage.OnSelect += org =>
         }
         
         crrPage = market;
+    };
+    teamPage.NextGame += () =>
+    {
+        crrPage = new MatchView(
+            Game.Current.Team, 
+            Game.Current.Others.First());
     };
 
     crrPage = teamPage;
