@@ -9,7 +9,7 @@ public abstract class BaseView
 {
     public PointF? Location { get; set; }
 
-    public abstract void draw(Bitmap bmp, Graphics g);
+    protected abstract void draw(Bitmap bmp, Graphics g);
     public virtual void MoseMove(PointF cursor, bool down) { }
 
 
@@ -52,6 +52,13 @@ public abstract class BaseView
     }
 
     protected void poly(Brush brush,
+        Func<PointF[]> create, string code = "")
+    {
+        PointF[] pts = loadOrStore(code, create) as PointF[];
+        _g?.FillPolygon(brush, pts);
+    }
+
+    protected void poly(Brush brush,
         Func<int, PointF> sel, int len, string code = "")
     {
         PointF[] pts = loadOrStore(code, () =>
@@ -73,6 +80,16 @@ public abstract class BaseView
         _g?.DrawPolygon(pen, pts);
     }
 
+    protected void rect(Brush brush,
+        Func<RectangleF> create, string code = "")
+    {
+        var rect = loadOrStore(code, () => (object)create()) as RectangleF?;
+        if (!rect.HasValue)
+            return;
+        
+        _g?.FillRectangle(brush, rect.Value);
+    }
+    
     protected void lines(Pen pen,
         Func<PointF[]> sel, string code = "")
     {
@@ -80,11 +97,31 @@ public abstract class BaseView
         _g?.DrawLines(pen, pts);
     }
     
-
     protected void img(float x, float y, float height, Func<Bitmap> create, string code)
     {
         var bmp = loadOrStore(code, create) as Bitmap;
         _g.DrawImage(bmp, new RectangleF(x, y, height / bmp.Height * bmp.Width, height), 
+            new Rectangle(0, 0, bmp.Width, bmp.Height),
+            GraphicsUnit.Pixel);
+    }
+
+    protected void img(float x, float y, float width, float height, Func<Bitmap> create, string code)
+    {
+        var bmp = loadOrStore(code, create) as Bitmap;
+        float r = bmp.Width / (float)bmp.Height;
+
+        if (r > 1f)
+        {
+            y += (height - width / r) / 2;
+            height = width / r;
+        }
+        else if (r < 1f)
+        {
+            x += (width - height * r) / 2;
+            width = height * r;
+        }
+
+        _g.DrawImage(bmp, new RectangleF(x, y, width, height), 
             new Rectangle(0, 0, bmp.Width, bmp.Height),
             GraphicsUnit.Pixel);
     }

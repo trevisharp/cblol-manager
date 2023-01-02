@@ -19,7 +19,7 @@ public class PlayerStatusView : BaseView
     public Player Player { get; set; }
     public float Size { get; set; }
 
-    public override void draw(Bitmap bmp, Graphics g)
+    protected override void draw(Bitmap bmp, Graphics g)
     {
         frame++;
 

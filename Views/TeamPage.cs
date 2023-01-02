@@ -7,12 +7,12 @@ using Model;
 
 public class TeamPage : BaseView
 {
-    public TeamPage(IEnumerable<Player> players)
+    public TeamPage(Team team)
     {
-        
+
     }
 
-    public override void draw(Bitmap bmp, Graphics g)
+    protected override void draw(Bitmap bmp, Graphics g)
     {
         throw new System.NotImplementedException();
     }

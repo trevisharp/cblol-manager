@@ -7,6 +7,29 @@ using System.Windows.Forms;
 using CBLoLManager.Model;
 using CBLoLManager.Views;
 
+// App Login
+
+BaseView crrPage = null;
+
+TeamSelectorPage teamSelectorPage = null;
+TeamPage teamPage = null;
+PlayerCarrousel page = null;
+
+// Team Selector Page Logic
+teamSelectorPage = new TeamSelectorPage();
+crrPage = teamSelectorPage;
+teamSelectorPage.OnSelect += org =>
+{
+    Team team = new Team();
+    team.Organization = org;
+
+    teamPage = new TeamPage(team);
+    crrPage = teamPage;
+};
+
+
+// View Logic
+
 Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
 Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
 ApplicationConfiguration.Initialize();
@@ -28,13 +51,13 @@ form.Controls.Add(pb);
 var tm = new System.Windows.Forms.Timer();
 tm.Interval = 20;
 
-PlayerCarrousel page = null;
+
 
 tm.Tick += delegate
 {
     g.Clear(Color.Black);
-    page.MoseMove(cursor, down);
-    page.Draw(bmp, g);
+    crrPage.Draw(bmp, g);
+    crrPage.MoseMove(cursor, down);
     pb.Refresh();
 };
 
@@ -63,7 +86,7 @@ form.Load += delegate
     
     // Players.All.Add(player);
     
-    page = new PlayerCarrousel(new PointF(20, 20), 1400f, Players.All);
+    // page = new PlayerCarrousel(new PointF(20, 20), 1400f, Players.All);
 };
 
 pb.MouseMove += (o, e) =>

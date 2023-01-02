@@ -33,7 +33,7 @@ public class PlayerPage : BaseView
         status.Size = size / 4;
     }
 
-    public override void draw(Bitmap bmp, Graphics g)
+    protected override void draw(Bitmap bmp, Graphics g)
     {
         frame++;
         if (!Location.HasValue)

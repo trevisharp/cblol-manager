@@ -2,9 +2,7 @@ namespace CBLoLManager.Model;
 
 public class Team
 {
-    public string Name { get; set; }
-    public string Photo { get; set; }
-
+    public Organization Organization { get; set; }
     public Player TopLaner { get; set; }
     public Player MidLaner { get; set; }
     public Player AdCarry { get; set; }

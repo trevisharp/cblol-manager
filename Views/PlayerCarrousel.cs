@@ -26,7 +26,7 @@ public class PlayerCarrousel : BaseView
         this.size = size;
     }
 
-    public override void draw(Bitmap bmp, Graphics g)
+    protected override void draw(Bitmap bmp, Graphics g)
     {
         if (!Location.HasValue)
             return;
