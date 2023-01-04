@@ -45,6 +45,7 @@ public class MatchView : BaseView
 
     int delay = 40;
     int pickCount = 0;
+    DateTime timer = DateTime.Now;
     protected override void draw(Bitmap bmp, Graphics g)
     {   
         float hei = bmp.Width / (float)draft.Width * draft.Height;
@@ -60,22 +61,25 @@ public class MatchView : BaseView
                 case 8:
                     bluePick();
                     break;
-
+                
                 default:
                     redPick();
                     break;
             }
             pickCount++;
+            if (pickCount == 10)
+                step++;
         }
-        
         frame++;
+
         var font = new Font(FontFamily.GenericMonospace, 20f);
         var font2 = new Font(FontFamily.GenericMonospace, 15f);
+        var font3 = new Font(FontFamily.GenericMonospace, 40f);
         StringFormat format = new StringFormat();
         format.LineAlignment = StringAlignment.Center;
 
         // Draft
-        if (step == 0)
+        if (step < 2)
         {
             if (arena == null)
             {
@@ -123,6 +127,18 @@ public class MatchView : BaseView
                 bmp.Width * .27f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
+
+            var timeSub = DateTime.Now - timer;
+            var crrTime = 30 - (int)timeSub.TotalSeconds;
+            if (step == 0)
+            {
+                g.DrawString(crrTime.ToString(), font3, Brushes.White,
+                    new RectangleF(bmp.Width * .42f, bmp.Height - hei * .9f + 10f, 200f, 200f), format);
+            }
+            else if (crrTime < 25)
+            {
+                step++;
+            }
   
             format.Alignment = StringAlignment.Near;
             g.DrawString(b?.Organization?.Name ?? "?", font, Brushes.White,
@@ -187,6 +203,7 @@ public class MatchView : BaseView
             var pick = picks.Current;
             this.champs[(int)pick.Role] = pick;
             delay += 40 + Random.Shared.Next(80);
+            timer = DateTime.Now;
         }
 
         void redPick()
@@ -195,6 +212,7 @@ public class MatchView : BaseView
             var pick = picks.Current;
             this.champs[(int)pick.Role + 5] = pick;
             delay += 40 + Random.Shared.Next(80);
+            timer = DateTime.Now;
         }
     }
 
