@@ -8,9 +8,18 @@ public static class Formatter
 {
     public static string FormatMoney(float number)
     {
+        bool negative = false;
+        if (number < 0)
+        {
+            negative = true;
+            number *= -1;
+        }
+
         int value = (int)number * 100;
         string result = $",{(value % 100).ToString("00")} R$";
         value /= 100;
+        if (value < 0)
+            value *= -1;
 
         result = $"{(value % 1000).ToString("000")}" + result;
         value /= 1000;
@@ -23,6 +32,9 @@ public static class Formatter
         
         result = $"{(value % 1000).ToString("###")}'" + result;
         value /= 1000;
+
+        if (negative)
+            result = "-" + result;
 
         return result;
     }

@@ -88,9 +88,11 @@ public class TeamPage : BaseView
                     
                     case "Mercado de Jogadores":
                         OnOpenMarket();
+                        Audio.Stop();
                         break;
                     
                     case "Próximo Jogo":
+                        Audio.Stop();
                         NextGame();
                         break;
                 }
@@ -105,7 +107,8 @@ public class TeamPage : BaseView
         img(5f, 5f, 3 * unity, 3 * unity, 
             () => Bitmap.FromFile("Img/" + org.Photo) as Bitmap,
             "logo");
-        g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}", font, Brushes.White,
+        g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}", font, 
+            Game.Current.Team.Money < 0 ? Brushes.Red : Brushes.White,
             new RectangleF(5f, 3 * unity + 10f, 3 * unity, unity), format);
         
         playerView.Draw(bmp, g);
@@ -114,17 +117,19 @@ public class TeamPage : BaseView
         options.Draw(bmp, g);
     }
 
-    public void Reopen()
+    public async void Reopen()
     {
         playerView = null;
         teamStatus = null;
         map = null;
         options = null;
+        await Audio.ConfiaNaCall();
     }
 
-    public override void Load(Bitmap bmp, Graphics g)
+    public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
+        await Audio.ConfiaNaCall();
     }
 
     public override void MouseMove(PointF cursor, bool down)

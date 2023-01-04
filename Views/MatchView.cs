@@ -138,6 +138,7 @@ public class MatchView : BaseView
             else if (crrTime < 25)
             {
                 step++;
+                Audio.Stop();
             }
   
             format.Alignment = StringAlignment.Near;
@@ -219,7 +220,7 @@ public class MatchView : BaseView
     public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
-        await Audio.PicksBans();
-        await Audio.Instalock();
+        Audio.PicksBans();
+        Audio.Instalock();
     }
 }

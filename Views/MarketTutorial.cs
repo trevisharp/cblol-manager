@@ -32,6 +32,9 @@ public class MarketTutorial : BaseView
             contra-propostas e no aceite da proposta você ainda pode desistir da negociação, caso
             outra mais interessante de certo.
 
+            Ao contratar o jogador você paga seu salário por 6 instantaneamente. Cuidado para não falir:
+            Se isso acontecer você precisa vender sua vaga na franquia e fim de jogo.
+
             A fase de contratação dura até todos os times estarem completos.
 
             Na primeira fase de contratação todos os jogadores estão Free Agent.

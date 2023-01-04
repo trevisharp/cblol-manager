@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace CBLoLManager.Views;
 
+using CBLoLManager.Util;
 using GameRule;
 using Model;
 
@@ -110,14 +111,18 @@ public class PosMarketPage : BaseView
             if (!started)
                 started = true;
             else if (Exit != null)
+            {
+                Audio.Stop();
                 Exit();
+            }
             isdown = false;
         }   
     }
 
-    public override void Load(Bitmap bmp, Graphics g)
+    public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
+        await Audio.FoiDeBase(true);
     }
 
     public event Action Exit;

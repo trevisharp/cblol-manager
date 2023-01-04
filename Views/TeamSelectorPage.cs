@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace CBLoLManager.Views;
 
+using CBLoLManager.Util;
 using Model;
 
 public class TeamSelectorPage : BaseView
@@ -50,7 +51,10 @@ public class TeamSelectorPage : BaseView
                 if (!down && selected != null)
                 {
                     if (OnSelect != null)
+                    {
+                        Audio.Stop();
                         OnSelect(selected);
+                    }
                 }
             }
             else
@@ -90,6 +94,11 @@ public class TeamSelectorPage : BaseView
     {
         this.cursor = cursor;
         this.down = down;   
+    }
+
+    public override async void Load(Bitmap bmp, Graphics g)
+    {
+        await Audio.BraboDemais();
     }
 
     public event Action<Organization> OnSelect;

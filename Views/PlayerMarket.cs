@@ -36,7 +36,10 @@ public class PlayerMarket : BaseView
         if (Game.Current.EndContractStepForPlayer)
         {
             if (CloseMarket != null)
+            {
+                Audio.Stop();
                 CloseMarket();
+            }
             return;
         }
 
@@ -180,6 +183,7 @@ public class PlayerMarket : BaseView
                 Game.Current.FreeAgent.Remove(contractCrr.Player);
                 Game.Current.SeeingProposes.Remove(contractCrr.Player);
                 Game.Current.EndContract.Remove(contractCrr.Player);
+                Game.Current.Team.Money -= contractCrr.Wage * 6;
                 this.contracts = this.contracts
                     .Where(c => c != contractCrr)
                     .ToArray();
@@ -240,9 +244,10 @@ public class PlayerMarket : BaseView
         this.down = down;
     }
 
-    public override void Load(Bitmap bmp, Graphics g)
+    public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
+        await Audio.BoraInvadir(true);
     }
 
     void update()
