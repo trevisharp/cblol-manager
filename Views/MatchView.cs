@@ -1,8 +1,11 @@
+using System;
+using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
 
 namespace CBLoLManager.Views;
 
+using Util;
 using Model;
 using GameRule;
 
@@ -13,47 +16,57 @@ public class MatchView : BaseView
     Team a = null;
     Team b = null;
     Bitmap draft = null;
+    Bitmap arena = null;
     DraftSystem sys = null;
     Champion[] champs = null;
     IEnumerator<Champion> picks = null;
+    Image[] champsThumbs = null;
 
     public MatchView(Team A, Team B)
     {
         this.a = A;
         this.b = B;
+
+        this.draft = Bitmap.FromFile("Img/draft.png") as Bitmap;
+
+        this.champs = new Champion[10];
+        this.champsThumbs = new Image[10];
+
+        if (A == null || B == null)
+            return;
+
         this.sys = new DraftSystem
         {
             Blue = A,
             Red = B
         };
-        this.champs = new Champion[10];
         this.picks = this.sys.Simulate().GetEnumerator();
-
-        this.draft = Bitmap.FromFile("Img/draft.png") as Bitmap;
     }
 
+    int delay = 40;
+    int pickCount = 0;
     protected override void draw(Bitmap bmp, Graphics g)
     {   
-        if (frame == 20)
-            bluePick();
-        else if (frame == 40)
-            redPick();
-        else if (frame == 60)
-            redPick();
-        else if (frame == 80)
-            bluePick();
-        else if (frame == 100)
-            bluePick();
-        else if (frame == 120)
-            redPick();
-        else if (frame == 140)
-            redPick();
-        else if (frame == 160)
-            bluePick();
-        else if (frame == 180)
-            bluePick();
-        else if (frame == 200)
-            redPick();
+        float hei = bmp.Width / (float)draft.Width * draft.Height;
+
+        if (frame > delay)
+        {
+            switch(pickCount)
+            {
+                case 0:
+                case 3:
+                case 4:
+                case 7:
+                case 8:
+                    bluePick();
+                    break;
+
+                default:
+                    redPick();
+                    break;
+            }
+            pickCount++;
+        }
         
         frame++;
         var font = new Font(FontFamily.GenericMonospace, 20f);
@@ -64,92 +77,107 @@ public class MatchView : BaseView
         // Draft
         if (step == 0)
         {
-            float hei = bmp.Width / (float)draft.Width * draft.Height;
+            if (arena == null)
+            {
+                this.arena = Bitmap.FromFile("Animations/arena.gif") as Bitmap;
+                ImageAnimator.Animate(this.arena, delegate { });
+            }
+            
+            ImageAnimator.UpdateFrames(this.arena);
+            g.DrawImage(this.arena, new Rectangle(0, 0, bmp.Width, bmp.Height));
             g.DrawImage(draft,
                 new RectangleF(0, bmp.Height - hei, bmp.Width, hei),
                 new RectangleF(0, 0, draft.Width, draft.Height),
                 GraphicsUnit.Pixel);
 
             format.Alignment = StringAlignment.Far;
-            g.DrawString(a.Organization.Name, font, Brushes.White,
+            g.DrawString(a?.Organization?.Name ?? "?", font, Brushes.White,
                 new RectangleF(bmp.Width * .26f, bmp.Height - hei + 10f, 350f, 30f), format);
 
-            g.DrawString(a.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(0);
+            g.DrawString(a?.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * -.09f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(0);
                 
-            g.DrawString(a.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(1);
+            g.DrawString(a?.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .0f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(1);
             
-            g.DrawString(a.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(2);
+            g.DrawString(a?.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .09f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(2);
             
-            g.DrawString(a.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(3);
+            g.DrawString(a?.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .18f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(3);
             
-            g.DrawString(a.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(4);
+            g.DrawString(a?.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .27f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(4);
   
             format.Alignment = StringAlignment.Near;
-            g.DrawString(b.Organization.Name, font, Brushes.White,
+            g.DrawString(b?.Organization?.Name ?? "?", font, Brushes.White,
                 new RectangleF(bmp.Width * .56f, bmp.Height - hei + 10f, 350f, 30f), format);
 
-            g.DrawString(b.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(5);
+            g.DrawString(b?.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .55f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(5);
                 
-            g.DrawString(b.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(6);
+            g.DrawString(b?.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .64f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(6);
             
-            g.DrawString(b.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(7);
+            g.DrawString(b?.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .73f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(7);
             
-            g.DrawString(b.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(8);
+            g.DrawString(b?.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .82f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(8);
             
-            g.DrawString(b.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            drawChamp(9);
+            g.DrawString(b?.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
                 bmp.Width * .91f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
-            drawChamp(9);
         }
         
         void drawChamp(int i)
         {
             if (champs[i] != null)
             {
-                img(
-                    bmp.Width * -.09f, 
-                    bmp.Height - hei + hei * .6f, 
-                    50, 
-                    50, 
-                    () => Bitmap.FromFile("Img/" + champs[i].Photo) as Bitmap, 
-                    champs[i].Name);
+                if (champsThumbs[i] == null)
+                {
+                    var bmp = Bitmap.FromFile("Img/" + champs[i].Photo);
+                    champsThumbs[i] = bmp.GetThumbnailImage(
+                        5 * (int)(bmp.Width * .09f), 5 * (int)(bmp.Width * .13f),
+                        null, IntPtr.Zero) as Bitmap;
+                }
+                
+                g.DrawImage(champsThumbs[i], 
+                    new RectangleF(
+                        5 + i * bmp.Width * 0.092f + (i > 4 ? bmp.Width * 0.078f : 0), 
+                        bmp.Height - hei * (1f - 0.12f), 
+                        bmp.Width * .09f, bmp.Width * .13f),
+                    new RectangleF(0, 0, champsThumbs[i].Width, champsThumbs[i].Height),
+                    GraphicsUnit.Pixel);
             }
         }
 
@@ -158,6 +186,7 @@ public class MatchView : BaseView
             picks.MoveNext();
             var pick = picks.Current;
             this.champs[(int)pick.Role] = pick;
+            delay += 40 + Random.Shared.Next(80);
         }
 
         void redPick()
@@ -165,11 +194,14 @@ public class MatchView : BaseView
             picks.MoveNext();
             var pick = picks.Current;
             this.champs[(int)pick.Role + 5] = pick;
+            delay += 40 + Random.Shared.Next(80);
         }
     }
 
-    public override void Load(Bitmap bmp, Graphics g)
+    public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
+        await Audio.PicksBans();
+        await Audio.Instalock();
     }
 }
