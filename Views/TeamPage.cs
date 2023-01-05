@@ -70,8 +70,7 @@ public class TeamPage : BaseView
             options = new OptionsView(
                 "Salvar",
                 "Carregar",
-                "Mercado de Jogadores",
-                "Próximo Jogo"
+                "Próxima Semana"
             );
 
             options.OnOptionClick += s =>
@@ -86,14 +85,17 @@ public class TeamPage : BaseView
                         
                         break;
                     
-                    case "Mercado de Jogadores":
-                        OnOpenMarket();
+                    case "Próxima Semana":
                         Audio.Stop();
-                        break;
-                    
-                    case "Próximo Jogo":
-                        Audio.Stop();
-                        NextGame();
+                        var weekEvent = Game.Current.CurrentWeekEvent;
+                        
+                        if (weekEvent == WeekEvent.MarketWeek)
+                            OnOpenMarket();
+                        else if (weekEvent == WeekEvent.GameEvent)
+                            NextGame();
+                        
+                        Game.Current.Week++;
+                        
                         break;
                 }
             };

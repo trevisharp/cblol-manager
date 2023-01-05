@@ -53,7 +53,24 @@ public class Game
         }
     }
 
-    public int Round { get; set; } = 1;
+    public int Week { get; set; } = 1;
+
+    public WeekEvent CurrentWeekEvent
+    {
+        get
+        {
+            int week = (Week - 1) % 24;
+
+            if (week == 0)
+            {
+                return WeekEvent.MarketWeek;
+            }
+            else
+            {
+                return WeekEvent.GameEvent;
+            }
+        }
+    }
 
     public static void New()
         => crr = new Game();

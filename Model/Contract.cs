@@ -11,5 +11,5 @@ public class Contract
     public bool Closed { get; set; } = false;
     public float Wage { get; set; }
     public float RescissionFee { get; set; }
-    public float EndRound { get; set; }
+    public float End { get; set; }
 }

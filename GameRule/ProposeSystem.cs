@@ -62,7 +62,7 @@ public class ProposeSystem
         while (!TryAccept(propose))
         {
             first = false;
-            propose.Wage *= 1.5f;
+            propose.Wage *= 1f + Random.Shared.NextSingle();
             propose.RescissionFee *= 1.1f;
         }
 
@@ -71,7 +71,7 @@ public class ProposeSystem
         contract.Team = propose.Team;
         contract.Wage = propose.Wage;
         contract.RescissionFee = propose.RescissionFee;
-        contract.EndRound = propose.Time + Game.Current.Round;
+        contract.End = propose.Time + Game.Current.Week / 24;
         contract.Accepted = first;
 
         Game.Current.Contracts.Add(contract);

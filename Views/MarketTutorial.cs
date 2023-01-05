@@ -54,7 +54,7 @@ public class MarketTutorial : BaseView
 
             - Multas Recisórias altas e contratos longos podem assustar.
 
-            - Quanto mais perto do final da etapa de contratações (round 15), mais os jogadores ficam
+            - Quanto mais perto do final da etapa de contratações, mais os jogadores ficam
             ""desepserados"" e aceitam mais facilmente suas propostas mesquinhas. Mas isso se eles
             não forem para outros times.
 

@@ -8,7 +8,7 @@ using Model;
 
 public class PlayerCarrousel : BaseView
 {
-    public Player Current => players[crr];
+    public Player Current => crr < 0 || crr > players.Length - 1 ? null : players[crr];
 
     private Player[] players;
     private PlayerPage page;
