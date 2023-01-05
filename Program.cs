@@ -8,10 +8,16 @@ using System.Collections.Generic;
 using CBLoLManager.Model;
 using CBLoLManager.Views;
 using CBLoLManager.GameRule;
+using CBLoLManager.Configuration;
 
 Graphics g = null;
 
-// App Login
+// App Config
+
+OrganizationInitializer orgInit = new OrganizationInitializer();
+orgInit.Initialize();
+
+// App Logic
 
 ProposeSystem sys = new ProposeSystem();
 
