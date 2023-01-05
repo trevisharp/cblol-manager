@@ -86,7 +86,6 @@ public class TeamPage : BaseView
                         break;
                     
                     case "Próxima Semana":
-                        Audio.Stop();
                         var weekEvent = Game.Current.CurrentWeekEvent;
                         
                         if (weekEvent == WeekEvent.MarketWeek)

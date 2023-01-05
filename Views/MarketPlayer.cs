@@ -9,7 +9,7 @@ using Model;
 using GameRule;
 using System;
 
-public class PlayerMarket : BaseView
+public class MarketPlayer : BaseView
 {
     int round = 1;
 
@@ -26,7 +26,7 @@ public class PlayerMarket : BaseView
     ButtonView contract = null;
     Contract[] contracts = new Contract[0];
 
-    public PlayerMarket()
+    public MarketPlayer()
     {
         
     }
@@ -37,7 +37,6 @@ public class PlayerMarket : BaseView
         {
             if (CloseMarket != null)
             {
-                Audio.Stop();
                 CloseMarket();
             }
             return;
@@ -196,7 +195,7 @@ public class PlayerMarket : BaseView
         if (contractCrr != null)
         {
             wage.Value = contractCrr.Wage;
-            time.Value = contractCrr.End - Game.Current.Week;
+            time.Value = contractCrr.End - Game.Current.Week / 24;
             rescissionFee.Value = contractCrr.RescissionFee;
             
             contract.Draw(bmp, g);
@@ -247,7 +246,6 @@ public class PlayerMarket : BaseView
     public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
-        await Audio.BoraInvadir(true);
     }
 
     void update()

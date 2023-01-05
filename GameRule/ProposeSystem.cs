@@ -56,6 +56,11 @@ public class ProposeSystem
     {
         if (propose == null)
             return null;
+
+        if (propose.Time < 1f || 
+            propose.Wage < 1f ||
+            propose.RescissionFee < 1f)
+            return null;
         
         bool first = true;
 

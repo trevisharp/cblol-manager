@@ -43,6 +43,9 @@ public static class Audio
         playing = false;
     }
 
+    public static void Clear()
+        => queue.Clear();
+
     public static async Task Next()
     {
         player.Stop();

@@ -220,7 +220,9 @@ public class MatchView : BaseView
     public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
-        Audio.PicksBans();
-        Audio.Instalock();
+        Audio.Clear();
+        Audio.Stop();
+        await Audio.PicksBans();
+        await Audio.Instalock();
     }
 }

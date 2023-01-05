@@ -119,10 +119,9 @@ public class PosMarketPage : BaseView
         }   
     }
 
-    public override async void Load(Bitmap bmp, Graphics g)
+    public override void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
-        await Audio.FoiDeBase(true);
     }
 
     public event Action Exit;

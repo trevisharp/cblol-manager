@@ -21,7 +21,7 @@ public class MarketRoundSumary : BaseView
 
         StringBuilder sb = new StringBuilder();
 
-        if (Contract.Accepted)
+        if (Contract?.Accepted ?? false)
             sb.AppendLine("Sua proposta foi aceita!");
         else sb.AppendLine("Você recebeu uma contra-proposta!");
 

@@ -19,7 +19,7 @@ BaseView crrPage = null;
 
 TeamSelectorPage teamSelectorPage = null;
 TeamPage teamPage = null;
-PlayerMarket market = null;
+MarketPlayer market = null;
 MarketRoundSumary sumary = null;
 PosMarketPage posmarket = null;
 
@@ -86,7 +86,7 @@ teamSelectorPage.OnSelect += org =>
     crrPage = teamPage;
 };
 
-market = new PlayerMarket();
+market = new MarketPlayer();
 market.ProposeMaked += p =>
 {
     var result = sys.RunRound(p);

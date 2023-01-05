@@ -52,7 +52,6 @@ public class TeamSelectorPage : BaseView
                 {
                     if (OnSelect != null)
                     {
-                        Audio.Stop();
                         OnSelect(selected);
                     }
                 }
