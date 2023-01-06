@@ -12,6 +12,9 @@ public class Team
     public Player AdCarry { get; set; }
     public Player Jungler { get; set; }
     public Player Support { get; set; }
+    public Sponsorship MainSponsorship { get; set; }
+    public Sponsorship SecondSponsorship { get; set; }
+    public Shirt Shirt { get; set; }
     public float Money { get; set; }
 
     public void Add(Player player)

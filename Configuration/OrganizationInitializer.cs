@@ -1,66 +1,107 @@
 using System.Linq;
+using System.Drawing;
 
 namespace CBLoLManager.Configuration;
 
 using Model;
 
-public class OrganizationInitializer
+public class OrganizationInitializer : Initializer
 {
-    public void Initialize()
+    public override void Initialize()
     {
         var orgs = Organizations.All;
 
         if (orgs.Count() > 0)
             return;
         
-        Organization pain = new Organization();
-        pain.Name = "paiN Gamming";
-        pain.Photo = "pain.png";
-        orgs.Add(pain);
+        orgs.Add(new Organization()
+        {
+            Name = "paiN Gamming",
+            Photo = "pain.png",
+            MainColor = Color.Black,
+            SecondColor = Color.Red,
+            ThirdColor = Color.White
+        });
         
-        Organization loud = new Organization();
-        loud.Name = "Loud";
-        loud.Photo = "loud.png";
-        orgs.Add(loud);
+        orgs.Add(new Organization()
+        {
+            Name = "Loud",
+            Photo = "loud.png",
+            MainColor = Color.Green,
+            SecondColor = Color.White,
+            ThirdColor = Color.Black
+        });
         
-        Organization red = new Organization();
-        red.Name = "Red Canids Kalunga";
-        red.Photo = "red.png";
-        orgs.Add(red);
+        orgs.Add(new Organization()
+        {
+            Name = "Red Canids Kalunga",
+            Photo = "red.png",
+            MainColor = Color.Red,
+            SecondColor = Color.White,
+            ThirdColor = Color.Black
+        });
         
-        Organization furia = new Organization();
-        furia.Name = "Furia";
-        furia.Photo = "furia.png";
-        orgs.Add(furia);
+        orgs.Add(new Organization()
+        {
+            Name = "Furia",
+            Photo = "furia.png",
+            MainColor = Color.Black,
+            SecondColor = Color.White,
+            ThirdColor = Color.DarkBlue
+        });
         
-        Organization fluxo = new Organization();
-        fluxo.Name = "Fluxo";
-        fluxo.Photo = "fluxo.png";
-        orgs.Add(fluxo);
+        orgs.Add(new Organization()
+        {
+            Name = "Fluxo",
+            Photo = "fluxo.png",
+            MainColor = Color.Black,
+            SecondColor = Color.White,
+            ThirdColor = Color.Purple
+        });
         
-        Organization intz = new Organization();
-        intz.Name = "INTZ";
-        intz.Photo = "intz.png";
-        orgs.Add(intz);
+        orgs.Add(new Organization()
+        {
+            Name = "INTZ",
+            Photo = "intz.png",
+            MainColor = Color.White,
+            SecondColor = Color.Black,
+            ThirdColor = Color.Pink
+        });
         
-        Organization los = new Organization();
-        los.Name = "Los Grandes";
-        los.Photo = "los.png";
-        orgs.Add(los);
+        orgs.Add(new Organization()
+        {
+            Name = "Los Grandes",
+            Photo = "los.png",
+            MainColor = Color.Orange,
+            SecondColor = Color.Black,
+            ThirdColor = Color.White
+        });
         
-        Organization keyd = new Organization();
-        keyd.Name = "Vivo Keyd Stars";
-        keyd.Photo = "keyd.png";
-        orgs.Add(keyd);
+        orgs.Add(new Organization()
+        {
+            Name = "Vivo Keyd Stars",
+            Photo = "keyd.png",
+            MainColor = Color.Purple,
+            SecondColor = Color.Black,
+            ThirdColor = Color.Yellow
+        });
         
-        Organization kabum = new Organization();
-        kabum.Name = "Kabum";
-        kabum.Photo = "kabum.png";
-        orgs.Add(kabum);
+        orgs.Add(new Organization()
+        {
+            Name = "Kabum",
+            Photo = "kabum.png",
+            MainColor = Color.Orange,
+            SecondColor = Color.Black,
+            ThirdColor = Color.Blue
+        });
         
-        Organization liberty = new Organization();
-        liberty.Name = "Liberty";
-        liberty.Photo = "liberty.png";
-        orgs.Add(liberty);
+        orgs.Add(new Organization()
+        {
+            Name = "Liberty",
+            Photo = "liberty.png",
+            MainColor = Color.Blue,
+            SecondColor = Color.DarkBlue,
+            ThirdColor = Color.White
+        });
     }
 }

@@ -61,7 +61,7 @@ public class PosMarketPage : BaseView
                 if (team.Organization.Name == "Vivo Keyd Stars")
                     writeTeam(team, 6);
                 
-                if (team.Organization.Name == "Pain Gamming")
+                if (team.Organization.Name == "paiN Gamming")
                     writeTeam(team, 7);
                 
                 if (team.Organization.Name == "Red Canids Kalunga")

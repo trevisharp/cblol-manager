@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace CBLoLManager.Model;
 
 [Serializable]
-public class Organizations : DataCollection<Organizations, Organization>
+public class Sponsors : DataCollection<Sponsors, Sponsor>
 {
     
 }

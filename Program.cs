@@ -14,9 +14,6 @@ Graphics g = null;
 
 // App Config
 
-OrganizationInitializer orgInit = new OrganizationInitializer();
-orgInit.Initialize();
-
 // App Logic
 
 ProposeSystem sys = new ProposeSystem();
@@ -153,6 +150,7 @@ tm.Tick += delegate
 
 form.Load += delegate
 {
+    Initializer.InitializeAll();
     bmp = new Bitmap(pb.Width, pb.Height);
     g = Graphics.FromImage(bmp);
     g.Clear(Color.Black);
