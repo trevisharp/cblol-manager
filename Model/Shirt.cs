@@ -5,6 +5,8 @@ namespace CBLoLManager.Model;
 [Serializable]
 public class Shirt
 {
+    public bool Alternative { get; set; }
+
     public int BodyStyle { get; set; }
     public int BodyColor { get; set; }
 
@@ -16,4 +18,6 @@ public class Shirt
     
     public int HemStyle { get; set; }
     public int HemColor { get; set; }
+
+    public int Color { get; set; }
 }

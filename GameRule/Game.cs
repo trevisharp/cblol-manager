@@ -63,6 +63,10 @@ public class Game
 
             if (week == 0)
             {
+                return WeekEvent.Sponsorship;
+            }
+            else if (week == 1)
+            {
                 return WeekEvent.MarketWeek;
             }
             else

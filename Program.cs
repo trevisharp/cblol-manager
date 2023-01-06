@@ -10,6 +10,8 @@ using CBLoLManager.Views;
 using CBLoLManager.GameRule;
 using CBLoLManager.Configuration;
 
+// TODO: Move Game initializations to GameRule or Configuration Namespace
+
 Graphics g = null;
 
 // App Config
@@ -25,8 +27,10 @@ TeamPage teamPage = null;
 MarketPlayer market = null;
 MarketRoundSumary sumary = null;
 PosMarketPage posmarket = null;
+ShirtSponsorPage sponsorPage = null;
 
 bool firstTimeInMarket = true;
+bool firstTimeInSponsorship = true;
 
 // Team Selector Page Logic
 teamSelectorPage = new TeamSelectorPage();
@@ -85,7 +89,24 @@ teamSelectorPage.OnSelect += org =>
             Game.Current.Team, 
             Game.Current.Others.First());
     };
-
+    teamPage.Sponsorship += () =>
+    {
+        if (firstTimeInSponsorship)
+        {
+            firstTimeInSponsorship = false;
+            var tutorial = new ShirtSponsorTutorialPage();
+            tutorial.Exit += delegate
+            {
+                crrPage = sponsorPage;
+                g.Clear(Color.Black);
+            };
+            crrPage = tutorial;
+            return;
+        }
+        
+        crrPage = sponsorPage;
+    };
+    
     crrPage = teamPage;
 };
 
@@ -118,6 +139,8 @@ market.CloseMarket += () =>
         teamPage.Reopen();
     };
 };
+
+sponsorPage = new ShirtSponsorPage();
 
 // View Logic
 

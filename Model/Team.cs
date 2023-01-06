@@ -16,6 +16,7 @@ public class Team
     public Sponsorship SecondSponsorship { get; set; }
     public Shirt Shirt { get; set; }
     public float Money { get; set; }
+    public float Popularity { get; set; }
 
     public void Add(Player player)
     {
