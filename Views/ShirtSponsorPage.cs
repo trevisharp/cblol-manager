@@ -4,6 +4,7 @@ using System.Drawing;
 namespace CBLoLManager.Views;
 
 using System;
+using CBLoLManager.Util;
 using GameRule;
 using Model;
 
@@ -43,6 +44,8 @@ public class ShirtSponsorPage : BaseView
     Sponsorship[] secondSponsorships;
     Image[] secondThumbs;
     RectangleF secondRect;
+    
+    ButtonView end;
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
@@ -120,6 +123,23 @@ public class ShirtSponsorPage : BaseView
         g.DrawPolygon(Pens.White, shirtpts);
         g.DrawImage(this.shirt.Alternative ? iorg : org, orgLogo);
 
+        var crrmain = mainSponsorships[ms % mainSponsorships.Length];
+        var crrseco = secondSponsorships[ss % secondSponsorships.Length];
+        string text =
+            $"Patrocínio Principal: {crrmain.Sponsor.Name}\n" +
+            $"Duração do contrato: {crrmain.Duration / 24} (splits)\n" +
+            $"Valor a ganhar: {Formatter.FormatMoney(crrmain.Value)}\n" +
+            "\n" +
+            $"Patrocínio Secundário: {crrseco.Sponsor.Name}\n" +
+            $"Duração do contrato: {crrseco.Duration / 24} (splits)\n" +
+            $"Valor a ganhar: {Formatter.FormatMoney(crrseco.Value)}\n";
+
+        g.DrawString(text, font, Brushes.White, 
+            new RectangleF(5, bmp.Height / 2 + 5, xmargin, bmp.Height / 2 - 10),
+            format);
+
+        end.Draw(bmp, g);
+
         void drawOpt(RectangleF opt, string text = "")
         {
             g.FillPolygon(Brushes.BlueViolet, new PointF[]
@@ -145,6 +165,8 @@ public class ShirtSponsorPage : BaseView
     bool isdown = false;
     public override void MouseMove(PointF cursor, bool down)
     {
+        end.MouseMove(cursor, down);
+
         if (down)
             isdown = true;
         
@@ -342,5 +364,28 @@ public class ShirtSponsorPage : BaseView
         optHemColor = new RectangleF(xmargin + size + 40, ymargin + 740, 60, 60);
         optMainSponsor = new RectangleF(xmargin + size + 40, ymargin + 840, 60, 60);
         optSecondSponsor = new RectangleF(xmargin + size + 40, ymargin + 940, 60, 60);
+
+        end = new ButtonView();
+        end.Rect = new RectangleF(5, bmp.Height - 80, 200, 60);
+        end.SelectedColor = Brushes.BlueViolet;
+        end.Color = Brushes.White;
+        end.Label = "Finalizar";
+        end.OnClick += delegate
+        {
+            var shirtBmp = new Bitmap(405, 300);
+            var _g = Graphics.FromImage(shirtBmp);
+            _g.DrawImage(bmp, new RectangleF(0, 0, shirtBmp.Width, shirtBmp.Height),
+                new RectangleF(xmargin, ymargin, size, hei), GraphicsUnit.Pixel);
+            shirt.Photo = shirtBmp;
+
+            team.Shirt = this.shirt;
+            team.MainSponsorship = mainSponsorships[ms % mainSponsorships.Length];
+            team.SecondSponsorship = secondSponsorships[ss % secondSponsorships.Length];
+            team.Money += team.MainSponsorship.Value;
+            team.Money += team.SecondSponsorship.Value;
+            Exit();
+        };
     }
+
+    public event Action Exit;
 }

@@ -141,6 +141,11 @@ market.CloseMarket += () =>
 };
 
 sponsorPage = new ShirtSponsorPage();
+sponsorPage.Exit += delegate
+{
+    teamPage.Reopen();
+    crrPage = teamPage;
+};
 
 // View Logic
 

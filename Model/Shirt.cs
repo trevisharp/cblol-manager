@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 
 namespace CBLoLManager.Model;
 
@@ -20,4 +21,6 @@ public class Shirt
     public int HemColor { get; set; }
 
     public int Color { get; set; }
+
+    public Image Photo { get; set; }
 }

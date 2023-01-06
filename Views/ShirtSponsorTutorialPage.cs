@@ -21,9 +21,6 @@ public class ShirtSponsorTutorialPage : BaseView
             demorará a poder fechar um novo patrocínio e assim ganhar mais dinheiro. Cabe a você ponderar e tomar a
             melhor decisão.
 
-            O custo da sua camisa também varia conforme os patrocínios e detalhes, isso pode fazer com que você gaste
-            mais na produção das camisas, porém, caso seu time fique popular, venderá muito mais.
-
             Clique em qualquer lugar para sair...
         ";
 
