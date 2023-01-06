@@ -113,6 +113,28 @@ public class TeamPage : BaseView
         g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}", font, 
             Game.Current.Team.Money < 0 ? Brushes.Red : Brushes.White,
             new RectangleF(5f, 3 * unity + 10f, 3 * unity, unity), format);
+
+        var shirt = Game.Current.Team.Shirt;
+        if (shirt != null)
+        {
+            img(7 * unity, .5f * unity, shirt.Photo.Width * 0.8f,
+                shirt.Photo.Height * 0.8f, () => shirt.Photo as Bitmap, "shirt");
+        }
+        
+        var weekEvent = Game.Current.CurrentWeekEvent;
+        string nextEvent = string.Empty;
+        
+        if (weekEvent == WeekEvent.MarketWeek)
+            nextEvent = "Fase de Contratações";
+        else if (weekEvent == WeekEvent.GameEvent)
+            nextEvent = "Jogo do CBLoL";
+        else if (weekEvent == WeekEvent.Sponsorship)
+            nextEvent = "Negociação com os Patrocinadores";
+        
+        g.DrawString($"Evento da Próxima semana: {nextEvent}", 
+            font, Brushes.White,
+            new Rectangle(5, bmp.Height - 80, bmp.Width, 40),
+            format);
         
         playerView.Draw(bmp, g);
         teamStatus.Draw(bmp, g);
