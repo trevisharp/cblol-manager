@@ -42,23 +42,19 @@ public class SponsorshipSystem
             .Where(s => !s.isMain)
             .Select(s =>
             {
-                int risk = Random.Shared.Next(2) + 1;
+                float rand = Random.Shared.NextSingle();
                 float baseValue = 50 +
-                    7.5f * team.Popularity + 
-                    50 * s.Strong;
-                
-                int riskPower = 0;
-                for (int i = risk, j = 2; i > 0; i--, j--)
-                    riskPower += j;
+                    5.5f * team.Popularity + 
+                    100 * s.Strong;
 
-                float value = 20 * baseValue * riskPower;
+                float value = 100 * baseValue;
 
                 Sponsorship sponsorship = new Sponsorship();
 
                 sponsorship.Sponsor = s;
                 sponsorship.Start = Game.Current.Week;
                 sponsorship.Value = value;
-                sponsorship.Duration = 24 * risk;
+                sponsorship.Duration = 24 * s.Strong;
 
                 return sponsorship;
             }).ToArray();

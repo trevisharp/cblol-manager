@@ -41,14 +41,12 @@ teamSelectorPage.OnSelect += org =>
     team.Organization = org;
 
     Game.Current.Team = team;
-    team.Money = 100000;
+    team.Money = 200000;
     List<float> moneys = new List<float>()
     {
-        50000, 50000,
-        100000,
         200000, 200000,
-        300000, 300000,
-        500000,
+        300000, 300000, 300000,
+        500000, 500000, 500000,
         1000000
     }
     .OrderBy(x => Random.Shared.Next())
