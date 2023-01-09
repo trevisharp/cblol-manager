@@ -102,6 +102,12 @@ public class ProposeSystem
         var player = players
             .Skip(Random.Shared.Next(players.Count() / 2))
             .FirstOrDefault();
+        
+        var budget = team.Money
+            / 3 // 2 splits + 1 future
+            / 5 // 5 players
+            / 6
+            * (4 + 2 * Random.Shared.NextSingle()) / 5; // random weigth [0.8 - 1.2]
 
         Propose propose = new Propose();
 
@@ -109,7 +115,7 @@ public class ProposeSystem
         propose.Team = team;
         propose.Round = round;
         propose.Time = Random.Shared.Next(4) + 1;
-        propose.Wage = team.Money * 0.01f * (1 + 4 * Random.Shared.NextSingle());
+        propose.Wage = budget;
         propose.RescissionFee = propose.Wage *
             ((2 * Random.Shared.NextSingle() + 1f) * 6 * propose.Time);
 

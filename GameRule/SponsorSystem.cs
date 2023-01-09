@@ -10,51 +10,53 @@ public class SponsorshipSystem
 {
     public Sponsorship[] GetMain(Team team)
     {
-        return Sponsors.All
+        var sponsors = Sponsors.All
             .Where(s => s.isMain)
-            .Select(s =>
-            {
-                int risk = Random.Shared.Next(4) + 1;
-                float baseValue = 50 +
-                    7.5f * team.Popularity + 
-                    50 * s.Strong;
-                
-                int riskPower = 0;
-                for (int i = risk, j = 4; i > 0; i--, j--)
-                    riskPower += j;
-
-                float value = 20 * baseValue * riskPower;
-
-                Sponsorship sponsorship = new Sponsorship();
-
-                sponsorship.Sponsor = s;
-                sponsorship.Start = Game.Current.Week;
-                sponsorship.Value = value;
-                sponsorship.Duration = 24 * risk;
-
-                return sponsorship;
-            }).ToArray();
+            .Zip(new int[] { 2, 4, 6, 8, }
+                .OrderBy(n => Random.Shared.Next()));
+        return build(team, sponsors)
+            .OrderBy(s => s.Value)
+            .ToArray();
     } 
 
     public Sponsorship[] GetSecond(Team team)
     {
-        return Sponsors.All
+        var sponsors = Sponsors.All
             .Where(s => !s.isMain)
-            .Select(s =>
-            {
-                float rand = Random.Shared.NextSingle();
-                float baseValue = 50 +
-                    5.5f * team.Popularity + 
-                    100 * s.Strong;
+            .Zip(new int[] { 1, 2, 3, 4, }
+                .OrderBy(n => Random.Shared.Next()));
+        return build(team, sponsors)
+            .OrderBy(s => s.Value)
+            .ToArray();
+    }
 
-                float value = 100 * baseValue;
+    private Sponsorship[] build(Team team, IEnumerable<(Sponsor, int)> sponsors)
+    {
+        return sponsors
+            .Select(x =>
+            {
+                var sponsor = x.Item1;
+                var duration = x.Item2;
+                float rand = Random.Shared.NextSingle();
+
+                float durationForce = 0;
+                for (int i = 0; i < duration; i++)
+                    durationForce += (10 - i);
+
+                float baseValue = 
+                    50 +
+                    50 * rand + 
+                    6 * team.Popularity + 
+                    (sponsor.isMain ? 300 : 0);
+
+                float value = 25 * durationForce * baseValue;
 
                 Sponsorship sponsorship = new Sponsorship();
 
-                sponsorship.Sponsor = s;
+                sponsorship.Sponsor = sponsor;
                 sponsorship.Start = Game.Current.Week;
                 sponsorship.Value = value;
-                sponsorship.Duration = 24 * s.Strong;
+                sponsorship.Duration = 24 * duration;
 
                 return sponsorship;
             }).ToArray();
