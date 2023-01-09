@@ -9,7 +9,7 @@ using Util;
 using Model;
 using GameRule;
 
-public class MatchView : BaseView
+public class DraftView : BaseView
 {
     int frame = 0;
     int step = 0;
@@ -22,7 +22,10 @@ public class MatchView : BaseView
     IEnumerator<Pick> picks = null;
     Image[] champsThumbs = null;
 
-    public MatchView(Team A, Team B)
+    int bmphei = 0;
+    int bmpwid = 0;
+
+    public DraftView(Team A, Team B)
     {
         this.a = A;
         this.b = B;
@@ -52,6 +55,8 @@ public class MatchView : BaseView
     DateTime timer = DateTime.Now;
     protected override void draw(Bitmap bmp, Graphics g)
     {   
+        bmphei = bmp.Height;
+        bmpwid = bmp.Width;
         float hei = bmp.Width / (float)draft.Width * draft.Height;
 
         var timeSub = DateTime.Now - timer;
@@ -220,19 +225,9 @@ public class MatchView : BaseView
                     GraphicsUnit.Pixel);
                 
                 if (optARect.Contains(cursor))
-                {
                     g.DrawRectangle(Pens.Yellow, Rectangle.Round(optARect));
-
-                    if (down)
-                        currentPick.MakeAPick(true);
-                }
                 else if (optBRect.Contains(cursor))
-                {
                     g.DrawRectangle(Pens.Yellow, Rectangle.Round(optBRect));
-
-                    if (down)
-                        currentPick.MakeAPick(false);
-                }
             }
         }
         
@@ -308,9 +303,44 @@ public class MatchView : BaseView
 
     PointF cursor;
     bool down;
+    bool isDown = false;
     public override void MouseMove(PointF cursor, bool down)
     {
         this.cursor = cursor;
         this.down = down;
+
+        if (waitingPlayer && optA != null && optB != null)
+        {
+            float hei = bmpwid / (float)draft.Width * draft.Height;
+            float optHei = bmphei - hei - 40;
+            float ra = optHei / optA.Height;
+            float rb = optHei / optB.Height;
+            float optWidA = ra * optA.Width;
+            float optWidB = rb * optB.Width;
+            float margin = (bmpwid - optWidA - optWidB) / 3;
+            var optARect = new RectangleF(margin, 20, optHei, optWidA);
+            var optBRect = new RectangleF(2 * margin + optWidA, 20, optHei, optWidB);
+
+            if (!down)
+                isDown = false;
+            
+            if (optARect.Contains(cursor))
+            {
+                if (down && !isDown)
+                {
+                    currentPick.MakeAPick(true);
+                    isDown = true;
+                }
+            }
+            else if (optBRect.Contains(cursor))
+            {
+                if (down && !isDown)
+                {
+                    currentPick.MakeAPick(false);
+                    isDown = true;
+                }
+            }
+        }
+
     }
 }

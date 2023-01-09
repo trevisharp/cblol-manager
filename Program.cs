@@ -83,7 +83,7 @@ teamSelectorPage.OnSelect += org =>
     };
     teamPage.NextGame += () =>
     {
-        crrPage = new MatchView(
+        crrPage = new DraftView(
             Game.Current.Team, 
             Game.Current.Others.First());
     };
