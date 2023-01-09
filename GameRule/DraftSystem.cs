@@ -12,36 +12,64 @@ public class DraftSystem
     public Team Blue { get; set; }
     public Team Red { get; set; }
 
-    public IEnumerable<Champion> Simulate()
+    public IEnumerable<Pick> Simulate()
     {
         var opts = Champions.All.ToList();
 
         var blueToPick = Blue.GetAll().ToList();
         var redToPick = Red.GetAll().ToList();
         
-        yield return bluePick();
-        yield return redPick();
-        yield return redPick();
-        yield return bluePick();
-        yield return bluePick();
-        yield return redPick();
-        
-        yield return redPick();
-        yield return bluePick();
-        yield return bluePick();
-        yield return redPick();
+        var pickOpt = bluePick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
 
-        Champion bluePick()
+        pickOpt = redPick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = redPick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = bluePick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = bluePick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = redPick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = redPick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = bluePick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = bluePick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        pickOpt = redPick();
+        yield return pickOpt;
+        opts.Remove(pickOpt.Selected);
+
+        Pick bluePick()
         {
             return pick(blueToPick, Blue);
         }
 
-        Champion redPick()
+        Pick redPick()
         {
             return pick(redToPick, Red);
         }
 
-        Champion pick(List<Player> toPick, Team team)
+        Pick pick(List<Player> toPick, Team team)
         {
             List<Player> poss = new List<Player>();
 
@@ -63,12 +91,17 @@ public class DraftSystem
                 
             var player = poss[Random.Shared.Next(poss.Count)];
 
-            var pick = opts.Where(c => c.Role == player.Role)
-                .OrderBy(c => Random.Shared.Next())
-                .FirstOrDefault();
+            var pickList = opts.Where(c => c.Role == player.Role)
+                .OrderBy(c => Random.Shared.Next());
+
+            var pick1 = pickList.FirstOrDefault();
+            var pick2 = pickList.Skip(1).FirstOrDefault();
             
-            opts.Remove(pick);
             toPick.Remove(player);
+
+            Pick pick = new Pick();
+            pick.OptionA = pick1;
+            pick.OptionB = pick2;
 
             return pick;
         }   

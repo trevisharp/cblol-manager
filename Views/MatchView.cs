@@ -19,7 +19,7 @@ public class MatchView : BaseView
     Bitmap arena = null;
     DraftSystem sys = null;
     Champion[] champs = null;
-    IEnumerator<Champion> picks = null;
+    IEnumerator<Pick> picks = null;
     Image[] champsThumbs = null;
 
     public MatchView(Team A, Team B)
@@ -45,33 +45,47 @@ public class MatchView : BaseView
 
     int delay = 40;
     int pickCount = 0;
+    Pick currentPick = null;
+    Image optA = null;
+    Image optB = null;
+    bool waitingPlayer = false;
     DateTime timer = DateTime.Now;
     protected override void draw(Bitmap bmp, Graphics g)
     {   
         float hei = bmp.Width / (float)draft.Width * draft.Height;
 
-        if (frame > delay)
+        var timeSub = DateTime.Now - timer;
+        var crrTime = 30 - (int)timeSub.TotalSeconds;
+        switch(pickCount)
         {
-            switch(pickCount)
-            {
-                case 0:
-                case 3:
-                case 4:
-                case 7:
-                case 8:
+            case 0:
+            case 3:
+            case 4:
+            case 7:
+            case 8:
+                if (!waitingPlayer)
+                    chooseOptions();
+                if (crrTime <= 0 || currentPick?.Selected != null)
+                {
                     bluePick();
-                    break;
-                
-                default:
+                    pickCount++;
+                    if (pickCount == 10)
+                        step++;
+                }
+            break;
+            
+            default:
+                if (frame > delay)
+                {
                     redPick();
-                    break;
-            }
-            pickCount++;
-            if (pickCount == 10)
-                step++;
+                    pickCount++;
+                    if (pickCount == 10)
+                        step++;
+                }
+                break;
         }
         frame++;
-
+        
         var font = new Font(FontFamily.GenericMonospace, 20f);
         var font2 = new Font(FontFamily.GenericMonospace, 15f);
         var font3 = new Font(FontFamily.GenericMonospace, 40f);
@@ -128,8 +142,6 @@ public class MatchView : BaseView
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
 
-            var timeSub = DateTime.Now - timer;
-            var crrTime = 30 - (int)timeSub.TotalSeconds;
             if (step == 0)
             {
                 g.DrawString(crrTime.ToString(), font3, Brushes.White,
@@ -174,6 +186,54 @@ public class MatchView : BaseView
                 bmp.Width * .91f, 
                 bmp.Height - hei + hei * .6f,
                 350f, 30f), format);
+            
+            if (waitingPlayer)
+            {
+                if (optA == null)
+                {
+                    optA = Bitmap.FromFile("Img/" + currentPick.OptionA.Photo);
+                    optA = optA.GetThumbnailImage(optA.Width / 2, optA.Height / 2, null, IntPtr.Zero) as Bitmap;
+
+                }
+                if (optB == null)
+                {
+                    optB = Bitmap.FromFile("Img/" + currentPick.OptionB.Photo);
+                    optB = optB.GetThumbnailImage(optB.Width / 2, optB.Height / 2, null, IntPtr.Zero) as Bitmap;
+                }
+
+                float optHei = bmp.Height - hei - 40;
+                float ra = optHei / optA.Height;
+                float rb = optHei / optB.Height;
+                float optWidA = ra * optA.Width;
+                float optWidB = rb * optB.Width;
+                float margin = (bmp.Width - optWidA - optWidB) / 3;
+                var optARect = new RectangleF(margin, 20, optHei, optWidA);
+                var optBRect = new RectangleF(2 * margin + optWidA, 20, optHei, optWidB);
+
+                g.DrawImage(optA,
+                    optARect,
+                    new RectangleF(0, 0, optA.Width, optA.Height),
+                    GraphicsUnit.Pixel);
+                g.DrawImage(optB, 
+                    optBRect,
+                    new RectangleF(0, 0, optB.Width, optB.Height),
+                    GraphicsUnit.Pixel);
+                
+                if (optARect.Contains(cursor))
+                {
+                    g.DrawRectangle(Pens.Yellow, Rectangle.Round(optARect));
+
+                    if (down)
+                        currentPick.MakeAPick(true);
+                }
+                else if (optBRect.Contains(cursor))
+                {
+                    g.DrawRectangle(Pens.Yellow, Rectangle.Round(optBRect));
+
+                    if (down)
+                        currentPick.MakeAPick(false);
+                }
+            }
         }
         
         void drawChamp(int i)
@@ -198,21 +258,41 @@ public class MatchView : BaseView
             }
         }
 
-        void bluePick()
+        void chooseOptions()
         {
             picks.MoveNext();
-            var pick = picks.Current;
-            this.champs[(int)pick.Role] = pick;
-            delay += 40 + Random.Shared.Next(80);
+            currentPick = picks.Current;
+            waitingPlayer = true;
+        }
+
+        void bluePick()
+        {
+            if (currentPick.Selected == null)
+                currentPick.MakeAPick(true);
+
+            var champ = currentPick.Selected;
+            this.champs[(int)champ.Role] = champ;
+
+            delay = frame + 40 + Random.Shared.Next(80);
             timer = DateTime.Now;
+
+            waitingPlayer = false;
+            optA = null;
+            optB = null;
+            currentPick = null;
         }
 
         void redPick()
         {
             picks.MoveNext();
             var pick = picks.Current;
-            this.champs[(int)pick.Role + 5] = pick;
-            delay += 40 + Random.Shared.Next(80);
+
+            pick.MakeAPick(true);
+            var champ = pick.Selected;
+
+            this.champs[(int)champ.Role + 5] = champ;
+
+            delay = frame + 40 + Random.Shared.Next(80);
             timer = DateTime.Now;
         }
     }
@@ -224,5 +304,13 @@ public class MatchView : BaseView
         Audio.Stop();
         await Audio.PicksBans();
         await Audio.Instalock();
+    }
+
+    PointF cursor;
+    bool down;
+    public override void MouseMove(PointF cursor, bool down)
+    {
+        this.cursor = cursor;
+        this.down = down;
     }
 }
