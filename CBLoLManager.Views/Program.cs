@@ -28,6 +28,7 @@ MarketPlayer market = null;
 MarketRoundSumary sumary = null;
 PosMarketPage posmarket = null;
 ShirtSponsorPage sponsorPage = null;
+DraftView draft = null;
 
 bool firstTimeInMarket = true;
 bool firstTimeInSponsorship = true;
@@ -83,9 +84,8 @@ teamSelectorPage.OnSelect += org =>
     };
     teamPage.NextGame += () =>
     {
-        crrPage = new DraftView(
-            Game.Current.Team, 
-            Game.Current.Others.First());
+        makeDraft();
+        crrPage = draft;
     };
     teamPage.Sponsorship += () =>
     {
@@ -144,6 +144,17 @@ sponsorPage.Exit += delegate
     teamPage.Reopen();
     crrPage = teamPage;
 };
+
+void makeDraft()
+{
+    draft = new DraftView(
+        Game.Current.Team, 
+        Game.Current.Others.First());
+    draft.Exit += delegate
+    {
+
+    };
+}
 
 // View Logic
 
