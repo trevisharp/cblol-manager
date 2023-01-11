@@ -108,143 +108,145 @@ public class DraftView : BaseView
         StringFormat format = new StringFormat();
         format.LineAlignment = StringAlignment.Center;
 
-        // Draft
-        if (step < 2)
+        if (step > 1)
         {
-            if (arena == null)
-            {
-                this.arena = Bitmap.FromFile("Animations/arena.gif") as Bitmap;
-                ImageAnimator.Animate(this.arena, delegate { });
-            }
+            Exit();
+            return;
+        }
+
+        if (arena == null)
+        {
+            this.arena = Bitmap.FromFile("Animations/arena.gif") as Bitmap;
+            ImageAnimator.Animate(this.arena, delegate { });
+        }
+        
+        if (gifFrame % 2 == 0)
+            ImageAnimator.UpdateFrames(this.arena);
+        gifFrame++;
+        g.DrawImage(this.arena, new Rectangle(0, 0, bmp.Width, bmp.Height));
+        g.DrawImage(draft,
+            new RectangleF(0, bmp.Height - hei, bmp.Width, hei),
+            new RectangleF(0, 0, draft.Width, draft.Height),
+            GraphicsUnit.Pixel);
+
+        format.Alignment = StringAlignment.Far;
+        g.DrawString(a?.Organization?.Name ?? "?", font, Brushes.White,
+            new RectangleF(bmp.Width * .26f, bmp.Height - hei + 10f, 350f, 30f), format);
+
+        drawChamp(0);
+        g.DrawString(a?.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * -.09f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
             
-            if (gifFrame % 2 == 0)
-                ImageAnimator.UpdateFrames(this.arena);
-            gifFrame++;
-            g.DrawImage(this.arena, new Rectangle(0, 0, bmp.Width, bmp.Height));
-            g.DrawImage(draft,
-                new RectangleF(0, bmp.Height - hei, bmp.Width, hei),
-                new RectangleF(0, 0, draft.Width, draft.Height),
+        drawChamp(1);
+        g.DrawString(a?.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .0f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+        
+        drawChamp(2);
+        g.DrawString(a?.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .09f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+        
+        drawChamp(3);
+        g.DrawString(a?.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .18f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+        
+        drawChamp(4);
+        g.DrawString(a?.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .27f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+
+        if (step == 0)
+        {
+            g.DrawString(crrTime.ToString(), font3, Brushes.White,
+                new RectangleF(bmp.Width * .42f, bmp.Height - hei * .9f + 10f, 200f, 200f), format);
+        }
+        else if (crrTime < 25)
+        {
+            step++;
+            Audio.Stop();
+        }
+
+        format.Alignment = StringAlignment.Near;
+        g.DrawString(b?.Organization?.Name ?? "?", font, Brushes.White,
+            new RectangleF(bmp.Width * .56f, bmp.Height - hei + 10f, 350f, 30f), format);
+
+        drawChamp(5);
+        g.DrawString(b?.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .55f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+            
+        drawChamp(6);
+        g.DrawString(b?.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .64f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+        
+        drawChamp(7);
+        g.DrawString(b?.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .73f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+        
+        drawChamp(8);
+        g.DrawString(b?.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .82f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+        
+        drawChamp(9);
+        g.DrawString(b?.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
+            bmp.Width * .91f, 
+            bmp.Height - hei + hei * .6f,
+            350f, 30f), format);
+        
+        if (waitingPlayer)
+        {
+            if (optA == null)
+            {
+                optA = Bitmap.FromFile("Img/" + currentPick.OptionA.Photo);
+                optA = optA.GetThumbnailImage(optA.Width / 2, optA.Height / 2, null, IntPtr.Zero) as Bitmap;
+
+            }
+            if (optB == null)
+            {
+                optB = Bitmap.FromFile("Img/" + currentPick.OptionB.Photo);
+                optB = optB.GetThumbnailImage(optB.Width / 2, optB.Height / 2, null, IntPtr.Zero) as Bitmap;
+            }
+
+            float optHei = bmp.Height - hei - 40;
+            float ra = optHei / optA.Height;
+            float rb = optHei / optB.Height;
+            float optWidA = ra * optA.Width;
+            float optWidB = rb * optB.Width;
+            float margin = (bmp.Width - optWidA - optWidB) / 3;
+            var optARect = new RectangleF(margin, 20, optHei, optWidA);
+            var optBRect = new RectangleF(2 * margin + optWidA, 20, optHei, optWidB);
+
+            g.DrawImage(optA,
+                optARect,
+                new RectangleF(0, 0, optA.Width, optA.Height),
                 GraphicsUnit.Pixel);
-
-            format.Alignment = StringAlignment.Far;
-            g.DrawString(a?.Organization?.Name ?? "?", font, Brushes.White,
-                new RectangleF(bmp.Width * .26f, bmp.Height - hei + 10f, 350f, 30f), format);
-
-            drawChamp(0);
-            g.DrawString(a?.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * -.09f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-                
-            drawChamp(1);
-            g.DrawString(a?.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .0f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
+            drawIcons(optARect, currentPick.OptionA);
             
-            drawChamp(2);
-            g.DrawString(a?.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .09f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
+            g.DrawImage(optB, 
+                optBRect,
+                new RectangleF(0, 0, optB.Width, optB.Height),
+                GraphicsUnit.Pixel);
+            drawIcons(optBRect, currentPick.OptionB);
             
-            drawChamp(3);
-            g.DrawString(a?.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .18f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-            
-            drawChamp(4);
-            g.DrawString(a?.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .27f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-
-            if (step == 0)
-            {
-                g.DrawString(crrTime.ToString(), font3, Brushes.White,
-                    new RectangleF(bmp.Width * .42f, bmp.Height - hei * .9f + 10f, 200f, 200f), format);
-            }
-            else if (crrTime < 25)
-            {
-                step++;
-                Audio.Stop();
-            }
-  
-            format.Alignment = StringAlignment.Near;
-            g.DrawString(b?.Organization?.Name ?? "?", font, Brushes.White,
-                new RectangleF(bmp.Width * .56f, bmp.Height - hei + 10f, 350f, 30f), format);
-
-            drawChamp(5);
-            g.DrawString(b?.TopLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .55f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-                
-            drawChamp(6);
-            g.DrawString(b?.Jungler?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .64f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-            
-            drawChamp(7);
-            g.DrawString(b?.MidLaner?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .73f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-            
-            drawChamp(8);
-            g.DrawString(b?.AdCarry?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .82f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-            
-            drawChamp(9);
-            g.DrawString(b?.Support?.Nickname ?? "?", font2, Brushes.White, new RectangleF(
-                bmp.Width * .91f, 
-                bmp.Height - hei + hei * .6f,
-                350f, 30f), format);
-            
-            if (waitingPlayer)
-            {
-                if (optA == null)
-                {
-                    optA = Bitmap.FromFile("Img/" + currentPick.OptionA.Photo);
-                    optA = optA.GetThumbnailImage(optA.Width / 2, optA.Height / 2, null, IntPtr.Zero) as Bitmap;
-
-                }
-                if (optB == null)
-                {
-                    optB = Bitmap.FromFile("Img/" + currentPick.OptionB.Photo);
-                    optB = optB.GetThumbnailImage(optB.Width / 2, optB.Height / 2, null, IntPtr.Zero) as Bitmap;
-                }
-
-                float optHei = bmp.Height - hei - 40;
-                float ra = optHei / optA.Height;
-                float rb = optHei / optB.Height;
-                float optWidA = ra * optA.Width;
-                float optWidB = rb * optB.Width;
-                float margin = (bmp.Width - optWidA - optWidB) / 3;
-                var optARect = new RectangleF(margin, 20, optHei, optWidA);
-                var optBRect = new RectangleF(2 * margin + optWidA, 20, optHei, optWidB);
-
-                g.DrawImage(optA,
-                    optARect,
-                    new RectangleF(0, 0, optA.Width, optA.Height),
-                    GraphicsUnit.Pixel);
-                drawIcons(optARect, currentPick.OptionA);
-                
-                g.DrawImage(optB, 
-                    optBRect,
-                    new RectangleF(0, 0, optB.Width, optB.Height),
-                    GraphicsUnit.Pixel);
-                drawIcons(optBRect, currentPick.OptionB);
-                
-                if (optARect.Contains(cursor))
-                    g.DrawRectangle(Pens.Yellow, Rectangle.Round(optARect));
-                else if (optBRect.Contains(cursor))
-                    g.DrawRectangle(Pens.Yellow, Rectangle.Round(optBRect));
-            }
+            if (optARect.Contains(cursor))
+                g.DrawRectangle(Pens.Yellow, Rectangle.Round(optARect));
+            else if (optBRect.Contains(cursor))
+                g.DrawRectangle(Pens.Yellow, Rectangle.Round(optBRect));
         }
         
         void drawChamp(int i)
@@ -422,4 +424,6 @@ public class DraftView : BaseView
         }
 
     }
+
+    public event Action Exit;
 }
