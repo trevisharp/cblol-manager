@@ -92,7 +92,8 @@ public class DraftSystem
             var player = poss[Random.Shared.Next(poss.Count)];
 
             var pickList = opts.Where(c => c.Role == player.Role)
-                .OrderBy(c => Random.Shared.Next());
+                .OrderBy(c => Random.Shared.Next())
+                .ToArray();
 
             var pick1 = pickList.FirstOrDefault();
             var pick2 = pickList.Skip(1).FirstOrDefault();

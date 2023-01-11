@@ -12,6 +12,7 @@ using GameRule;
 public class DraftView : BaseView
 {
     int frame = 0;
+    int gifFrame = 0;
     int step = 0;
     Team a = null;
     Team b = null;
@@ -24,6 +25,23 @@ public class DraftView : BaseView
 
     int bmphei = 0;
     int bmpwid = 0;
+
+    int delay = 40;
+    int pickCount = 0;
+    Pick currentPick = null;
+    Image optA = null;
+    Image optB = null;
+    bool waitingPlayer = false;
+    DateTime timer = DateTime.Now;
+
+    Image rangeIcon = null;
+    Image defenceIcon = null;
+    Image damageIcon = null;
+    Image mobilityIcon = null;
+    Image controlIcon = null;
+    Image supportIcon = null;
+    Image adIcon = null;
+    Image apIcon = null;
 
     public DraftView(Team A, Team B)
     {
@@ -46,13 +64,6 @@ public class DraftView : BaseView
         this.picks = this.sys.Simulate().GetEnumerator();
     }
 
-    int delay = 40;
-    int pickCount = 0;
-    Pick currentPick = null;
-    Image optA = null;
-    Image optB = null;
-    bool waitingPlayer = false;
-    DateTime timer = DateTime.Now;
     protected override void draw(Bitmap bmp, Graphics g)
     {   
         bmphei = bmp.Height;
@@ -106,7 +117,9 @@ public class DraftView : BaseView
                 ImageAnimator.Animate(this.arena, delegate { });
             }
             
-            ImageAnimator.UpdateFrames(this.arena);
+            if (gifFrame % 2 == 0)
+                ImageAnimator.UpdateFrames(this.arena);
+            gifFrame++;
             g.DrawImage(this.arena, new Rectangle(0, 0, bmp.Width, bmp.Height));
             g.DrawImage(draft,
                 new RectangleF(0, bmp.Height - hei, bmp.Width, hei),
@@ -219,10 +232,13 @@ public class DraftView : BaseView
                     optARect,
                     new RectangleF(0, 0, optA.Width, optA.Height),
                     GraphicsUnit.Pixel);
+                drawIcons(optARect, currentPick.OptionA);
+                
                 g.DrawImage(optB, 
                     optBRect,
                     new RectangleF(0, 0, optB.Width, optB.Height),
                     GraphicsUnit.Pixel);
+                drawIcons(optBRect, currentPick.OptionB);
                 
                 if (optARect.Contains(cursor))
                     g.DrawRectangle(Pens.Yellow, Rectangle.Round(optARect));
@@ -290,10 +306,73 @@ public class DraftView : BaseView
             delay = frame + 40 + Random.Shared.Next(80);
             timer = DateTime.Now;
         }
+    
+        void drawIcons(RectangleF rect, Champion pick)
+        {
+            float ibase = rect.Width / 13;
+            float ix = rect.X + ibase;
+            float iy = rect.Y + rect.Height - ibase;
+                
+            if (pick.AD)
+                draw(adIcon);
+            else draw(apIcon);
+            
+            for (int i = 0; i < pick.Range; i++)
+            {
+                ix += 3 * ibase;
+                draw(rangeIcon);
+            }
+            
+            for (int i = 0; i < pick.Damage; i++)
+            {
+                ix += 3 * ibase;
+                draw(damageIcon);
+            }
+            
+            for (int i = 0; i < pick.Defence; i++)
+            {
+                ix += 3 * ibase;
+                draw(defenceIcon);
+            }
+            
+            for (int i = 0; i < pick.Control; i++)
+            {
+                ix += 3 * ibase;
+                draw(controlIcon);
+            }
+            
+            for (int i = 0; i < pick.Mobility; i++)
+            {
+                ix += 3 * ibase;
+                draw(mobilityIcon);
+            }
+            
+            for (int i = 0; i < pick.Support; i++)
+            {
+                ix += 3 * ibase;
+                draw(supportIcon);
+            }
+                
+            void draw(Image img)
+            {
+                g.DrawImage(img, new RectangleF(ix, iy, 2 * ibase, 2 * ibase),
+                    new RectangleF(0, 0, img.Width, img.Height),
+                    GraphicsUnit.Pixel);
+            }
+        }
     }
 
     public override async void Load(Bitmap bmp, Graphics g)
     {
+        rangeIcon = Bitmap.FromFile("Img/ran.png");
+        defenceIcon = Bitmap.FromFile("Img/def.png");
+        damageIcon = Bitmap.FromFile("Img/dam.png");
+        mobilityIcon = Bitmap.FromFile("Img/mov.png");
+        controlIcon = Bitmap.FromFile("Img/cc.png");
+        supportIcon = Bitmap.FromFile("Img/sup.png");
+        adIcon = Bitmap.FromFile("Img/ad.png");
+        apIcon = Bitmap.FromFile("Img/ap.png");
+
         g.Clear(Color.Black);
         Audio.Clear();
         Audio.Stop();
