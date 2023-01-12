@@ -30,9 +30,11 @@ PosMarketPage posmarket = null;
 ShirtSponsorPage sponsorPage = null;
 DraftView draft = null;
 MatchView match = null;
+TorunamentView torunament = null;
 
 bool firstTimeInMarket = true;
 bool firstTimeInSponsorship = true;
+int playCount = 0;
 
 // Team Selector Page Logic
 teamSelectorPage = new TeamSelectorPage();
@@ -90,7 +92,7 @@ teamSelectorPage.OnSelect += org =>
     };
     teamPage.NextGame += () =>
     {
-        makeDraft();
+        openTornament();
     };
     teamPage.Sponsorship += () =>
     {
@@ -152,14 +154,27 @@ sponsorPage.Exit += delegate
 
 void openTornament()
 {
-
+    torunament = new TorunamentView(playCount < 2);
+    if (playCount > 1)
+        playCount = 0;
+    torunament.PlayNext += op =>
+    {
+        playCount++;
+        makeDraft(op);
+    };
+    torunament.Exit += delegate
+    {
+        teamPage.Reopen();
+        crrPage = teamPage;
+    };
+    crrPage = torunament;
 }
 
-void makeDraft()
+void makeDraft(Team oponent)
 {
     draft = new DraftView(
         Game.Current.Team, 
-        Game.Current.Others.First());
+        oponent);
     draft.Exit += draft =>
     {
         makeMatch(draft);
@@ -170,6 +185,10 @@ void makeDraft()
 void makeMatch(DraftResult draft)
 {
     match = new MatchView(draft);
+    match.Exit += delegate
+    {
+        openTornament();
+    };
     crrPage = match;
 }
 

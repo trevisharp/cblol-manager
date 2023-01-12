@@ -30,12 +30,16 @@ public class Tournament
         bool[] hasGame = new bool[Teams.Length];
         int crrTeam = 0;
         int crrOponent = 0;
+
         for (int i = 0; i < Teams.Length / 2; i++)
         {
             if (hasGame[crrTeam])
+            {
+                crrTeam = (crrTeam + 1) % Teams.Length;
                 continue;
+            }
             
-            crrOponent = crrTeam + Round;
+            crrOponent = (crrTeam + Round) % Teams.Length;
 
             hasGame[crrTeam] = true;
             hasGame[crrOponent] = true;
@@ -45,8 +49,14 @@ public class Tournament
 
             if (team == Game.Current.Team)
             {
-                mainOponent = oponent;   
-                crrTeam = crrOponent + 1;
+                mainOponent = oponent;
+                crrTeam = (crrOponent + 1) % Teams.Length;
+                continue;
+            }
+            else if (oponent == Game.Current.Team)
+            {
+                mainOponent = team;
+                crrTeam = (crrOponent + 1) % Teams.Length;
                 continue;
             }
             
@@ -54,8 +64,11 @@ public class Tournament
                 Wins[crrTeam]++;
             else Wins[crrOponent]++;
 
-            crrTeam = crrOponent + 1;
+            crrTeam = (crrOponent + 1) % Teams.Length;
         }
+
+        if (mainOponent == null)
+            throw new Exception("Não foi possível encontrar um oponente");
 
         return mainOponent;
     }

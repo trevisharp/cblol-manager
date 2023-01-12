@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 
 namespace CBLoLManager.Views;
@@ -15,6 +16,8 @@ public class MatchView : BaseView
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
-        throw new System.NotImplementedException();
+        Exit();
     }
+
+    public event Action Exit;
 }

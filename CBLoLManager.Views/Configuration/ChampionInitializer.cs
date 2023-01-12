@@ -158,7 +158,7 @@ public class ChampionInitializer : Initializer
             Name = "Ryze",
             Role = Position.MidLaner,
             AD = false,
-            Photo = "azir.jpg",
+            Photo = "ryze.jpg",
 
             Control = 0,
             Damage = 2,
@@ -371,7 +371,7 @@ public class ChampionInitializer : Initializer
         {
             Name = "Samira",
             Role = Position.AdCarry,
-            AD = false,
+            AD = true,
             Photo = "samira.jpg",
 
             Control = 0,
