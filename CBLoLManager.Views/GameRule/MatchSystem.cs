@@ -6,6 +6,29 @@ using Model;
 
 public class MatchSystem
 {
+    public bool Getwinner(Team a, Team b)
+    {
+        var avgA = TeamAverage(a);
+        var avgB = TeamAverage(b);
+        var aWinChance = winChance(avgA, avgB);
+
+        var value = 100 * Random.Shared.NextSingle();
+        return value < aWinChance;
+    }
+
+    private float TeamAverage(Team team)
+    {
+        var avgplayer = team.AveragePlayer();
+        var avg = (
+            avgplayer.LanePhase +
+            avgplayer.Mentality +
+            avgplayer.GameVision +
+            avgplayer.MechanicSkill +
+            avgplayer.Leadership +
+            avgplayer.TeamFigth) / 6f;
+        return avg;
+    }
+
     private float winChance(float a, float b)
     {
         if (a > b)

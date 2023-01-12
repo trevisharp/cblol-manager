@@ -110,7 +110,12 @@ public class DraftView : BaseView
 
         if (step > 1)
         {
-            Exit();
+            DraftResult result = new DraftResult();
+            result.TeamA = this.a;
+            result.TeamB = this.b;
+            result.TeamADraft.AddRange(this.champs.Take(5));
+            result.TeamBDraft.AddRange(this.champs.Skip(5));
+            Exit(result);
             return;
         }
 
@@ -425,5 +430,5 @@ public class DraftView : BaseView
 
     }
 
-    public event Action Exit;
+    public event Action<DraftResult> Exit;
 }

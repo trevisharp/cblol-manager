@@ -29,6 +29,7 @@ MarketRoundSumary sumary = null;
 PosMarketPage posmarket = null;
 ShirtSponsorPage sponsorPage = null;
 DraftView draft = null;
+MatchView match = null;
 
 bool firstTimeInMarket = true;
 bool firstTimeInSponsorship = true;
@@ -62,6 +63,11 @@ teamSelectorPage.OnSelect += org =>
         });
         moneys.RemoveAt(0);
     }
+    Game.Current.CurrentTorunament = new Tournament(
+        Game.Current.Others.Append(
+            Game.Current.Team
+        ).ToArray()
+    );
     Game.Current.FreeAgent.AddRange(Players.All);
 
     teamPage = new TeamPage(team);
@@ -85,7 +91,6 @@ teamSelectorPage.OnSelect += org =>
     teamPage.NextGame += () =>
     {
         makeDraft();
-        crrPage = draft;
     };
     teamPage.Sponsorship += () =>
     {
@@ -145,15 +150,27 @@ sponsorPage.Exit += delegate
     crrPage = teamPage;
 };
 
+void openTornament()
+{
+
+}
+
 void makeDraft()
 {
     draft = new DraftView(
         Game.Current.Team, 
         Game.Current.Others.First());
-    draft.Exit += delegate
+    draft.Exit += draft =>
     {
-
+        makeMatch(draft);
     };
+    crrPage = draft;
+}
+
+void makeMatch(DraftResult draft)
+{
+    match = new MatchView(draft);
+    crrPage = match;
 }
 
 // View Logic
@@ -164,7 +181,8 @@ ApplicationConfiguration.Initialize();
 
 Bitmap bmp = null;
 PointF cursor = PointF.Empty;
-bool down = false;
+Queue<bool> downQueue = new Queue<bool>();
+downQueue.Enqueue(false);
 
 var form = new Form();
 
@@ -181,7 +199,11 @@ tm.Interval = 20;
 tm.Tick += delegate
 {
     crrPage.Draw(bmp, g);
-    crrPage.MouseMove(cursor, down);
+    crrPage.MouseMove(cursor, 
+        downQueue.Count == 1 ? 
+        downQueue.Peek() :
+        downQueue.Dequeue()
+    );
     pb.Refresh();
 };
 
@@ -202,12 +224,12 @@ pb.MouseMove += (o, e) =>
 
 pb.MouseDown += (o, e) =>
 {
-    down = true;
+    downQueue.Enqueue(true);
 };
 
 pb.MouseUp += (o, e) =>
 {
-    down = false;
+    downQueue.Enqueue(false);
 };
 
 form.KeyDown += (o, e) =>
