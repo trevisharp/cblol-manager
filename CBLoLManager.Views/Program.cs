@@ -243,12 +243,14 @@ pb.MouseMove += (o, e) =>
 
 pb.MouseDown += (o, e) =>
 {
-    downQueue.Enqueue(true);
+    if (downQueue.Count < 4)
+        downQueue.Enqueue(true);
 };
 
 pb.MouseUp += (o, e) =>
 {
-    downQueue.Enqueue(false);
+    if (downQueue.Count < 4)
+        downQueue.Enqueue(false);
 };
 
 form.KeyDown += (o, e) =>
