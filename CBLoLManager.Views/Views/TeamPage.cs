@@ -78,11 +78,13 @@ public class TeamPage : BaseView
                 switch (s)
                 {
                     case "Salvar":
-                        
+                        Game.Save();
                         break;
 
                     case "Carregar":
-                        
+                        Game.Load();
+                        Reopen();
+                        this.team = Game.Current.Team;
                         break;
                     
                     case "Próxima Semana":
@@ -125,7 +127,7 @@ public class TeamPage : BaseView
         string nextEvent = string.Empty;
         
         if (weekEvent == WeekEvent.MarketWeek)
-            nextEvent = "Fase de Contratações";
+            nextEvent = "Janela de Transferência";
         else if (weekEvent == WeekEvent.GameEvent)
             nextEvent = "Jogo do CBLoL";
         else if (weekEvent == WeekEvent.Sponsorship)

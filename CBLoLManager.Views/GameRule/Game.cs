@@ -5,13 +5,14 @@ using System.Collections.Generic;
 namespace CBLoLManager.GameRule;
 
 using Model;
+using Util;
 
 [Serializable]
 public class Game
 {
     private static Game crr = new Game();
     public static Game Current => crr;
-    private Game() { }
+    public Game() { }
 
     public Team Team { get; set;}
     public List<Team> Others { get; set; } = new List<Team>();
@@ -82,12 +83,8 @@ public class Game
         => crr = new Game();
     
     public static void Save()
-    {
-
-    }
+        => Serializer.Save("save.cblol", crr);
 
     public static void Load()
-    {
-
-    }
+        => crr = Serializer.Load<Game>("save.cblol");
 }

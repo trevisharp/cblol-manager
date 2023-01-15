@@ -6,6 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CBLoLManager.Model;
 
+using Util;
+
 [Serializable]
 public abstract class DataCollection<T, E> : IEnumerable<E>
     where T : DataCollection<T, E>, new()
@@ -19,20 +21,9 @@ public abstract class DataCollection<T, E> : IEnumerable<E>
         get
         {
             if (current == null)
-                current = Load();
+                current = Serializer.Load<T>(path);
             return current;
         }
-    }
-    private static DataCollection<T, E> Load()
-    {
-        if (!File.Exists(path))
-            return new T();
-        
-        var file = File.Open(path, FileMode.OpenOrCreate);
-        BinaryFormatter formatter = new BinaryFormatter();
-        T coll = formatter.Deserialize(file) as T;
-        file.Close();
-        return coll;
     }
     static DataCollection()
     {
@@ -56,12 +47,7 @@ public abstract class DataCollection<T, E> : IEnumerable<E>
     protected List<E> elements = new List<E>();
 
     protected void Save()
-    {
-        var file = File.Open(path, FileMode.OpenOrCreate);
-        BinaryFormatter formatter = new BinaryFormatter();
-        formatter.Serialize(file, this);
-        file.Close();
-    }
+        => Serializer.Save(path, this);
 
     public IEnumerator<E> GetEnumerator()
         => elements.GetEnumerator();
