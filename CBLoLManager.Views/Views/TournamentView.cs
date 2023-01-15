@@ -16,16 +16,13 @@ public class TorunamentView : BaseView
     private Bitmap[] thumbs;
     private bool hasNext;
 
+    Bitmap bg = null;
+
     public TorunamentView(bool hasNext = true)
         => this.hasNext = hasNext;
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
-        if (Game.Current.CurrentTorunament.Round < 19)
-            drawTorunament(bmp, g);
-        else
-            drawPlayOffs(bmp, g);
-
         options.Draw(bmp, g);
         options.MouseMove(cursor, down);
     }
@@ -38,7 +35,7 @@ public class TorunamentView : BaseView
 
     public override void Load(Bitmap bmp, Graphics g)
     {
-        var tournament = Game.Current.CurrentTorunament;
+        var tournament = Game.Current.Tournament;
 
         g.Clear(Color.Black);
         if (hasNext)
@@ -69,15 +66,31 @@ public class TorunamentView : BaseView
             .Select(t => Bitmap.FromFile("Img/" + t.team.Organization.Photo)
                 .GetThumbnailImage(100, 100, null, IntPtr.Zero) as Bitmap)
             .ToArray();
+        
+        if (Game.Current.Tournament.Round < 19)
+        {
+            bg = Bitmap.FromFile("Img/class.png") as Bitmap;
+            g.DrawImage(bg, new Rectangle(0, 0, bmp.Width, bmp.Height),
+                new Rectangle(0, 0, bg.Width, bg.Height),
+                GraphicsUnit.Pixel);
+            drawTorunament(bmp, g);
+        }
+        else
+        {
+            bg = Bitmap.FromFile("Img/playoffs.png") as Bitmap;
+            drawPlayOffs(bmp, g);
+        }
     }
 
     void drawTorunament(Bitmap bmp, Graphics g)
     {
+        var torunament = Game.Current.Tournament;
+
         int wid = bmp.Width;
         int hei = bmp.Height;
 
-        float tableWid = wid / 2f - 40f;
-        float tableHei = hei - 90f;
+        float tableWid = wid * .9f;
+        float tableHei = hei * 2 / 3f - 60f;
         float rowHei = tableHei / 10f;
 
         var font = new Font(FontFamily.GenericMonospace, 16f);
@@ -85,18 +98,32 @@ public class TorunamentView : BaseView
         format.Alignment = StringAlignment.Center;
         format.LineAlignment = StringAlignment.Center;
 
-        float y = 20;
+        float y = 20 + .3f * hei;
         int t = 0;
         foreach (var team in teams)
         {
-            g.DrawRectangle(Pens.White, 20, y, tableWid, rowHei);
-            g.DrawImage(thumbs[t], 20, y, rowHei, rowHei);
-            g.DrawString(team.team.Organization.Name, font, Brushes.White, 
-                new RectangleF(20 + rowHei + 10, y, tableWid - 2 * rowHei, rowHei),
-                format);
+            RectangleF thumbRect = new RectangleF(
+                20 + .125f * wid, 
+                y + rowHei * .05f,
+                0.025f * wid, 
+                rowHei * .9f
+            );
+            g.FillRectangle(Brushes.Gray, thumbRect);
+            g.DrawImage(thumbs[t], thumbRect);
+
+            RectangleF textRect = new RectangleF(
+                thumbRect.X + thumbRect.Width + .04f * wid, 
+                y, tableWid * .20f, rowHei);
+            g.DrawString(team.team.Organization.Name, font,
+                Brushes.White, textRect, format);
+            
             g.DrawString(team.wins.ToString(), font, Brushes.White, 
-                new RectangleF(20 + tableWid - rowHei, y, rowHei, rowHei),
+                new RectangleF(textRect.X + textRect.Width + .06f * tableWid, y, rowHei, rowHei),
                 format);
+            g.DrawString((torunament.Round - team.wins).ToString(), font, Brushes.White, 
+                new RectangleF(textRect.X + textRect.Width + .175f * tableWid, y, rowHei, rowHei),
+                format);
+            
             t++;
             y += rowHei;
         }

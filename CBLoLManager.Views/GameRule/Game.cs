@@ -17,7 +17,7 @@ public class Game
     public Team Team { get; set;}
     public List<Team> Others { get; set; } = new List<Team>();
 
-    public Tournament CurrentTorunament { get; set; }
+    public Tournament Tournament { get; set; }
     
     public List<Player> FreeAgent { get; set; } = new List<Player>();
     public List<Player> EndContract { get; set; } = new List<Player>();

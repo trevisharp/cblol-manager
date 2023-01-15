@@ -65,7 +65,7 @@ teamSelectorPage.OnSelect += org =>
         });
         moneys.RemoveAt(0);
     }
-    Game.Current.CurrentTorunament = new Tournament(
+    Game.Current.Tournament = new Tournament(
         Game.Current.Others.Append(
             Game.Current.Team
         ).ToArray()
