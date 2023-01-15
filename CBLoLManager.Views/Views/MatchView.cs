@@ -16,7 +16,12 @@ public class MatchView : BaseView
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
-        Exit();
+        
+    }
+
+    public override void Load(Bitmap bmp, Graphics g)
+    {
+        g.Clear(Color.Black);
     }
 
     public event Action Exit;

@@ -6,9 +6,10 @@ Atualizações previstas para versão 1.0.0
 - [x] Melhorar resposta ao clique em telas de processamento pesado
 - [x] Tela de campeonato
 - [ ] Tela e Simulação de batalha
-- [ ] Conectar aplicação para ter um loop completo
+- [x] Conectar aplicação para ter um loop completo
 - [ ] Finalização do CBLoL
 - [ ] Inicio de um novo ciclo ao final do CBLoL
 - [ ] Menu
-- [ ] Sistema de Save/Load
+- [x] Sistema de Save/Load
 - [x] Tratar Bug dos Picks repetidos
+- [ ] Tratar Bug dos Picks em posições incorretas
