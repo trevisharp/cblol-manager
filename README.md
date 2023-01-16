@@ -1,4 +1,4 @@
-Atualizações previstas para versão 1.0.0
+versão 1.0.0
 
 - [x] Tela de time
 - [x] Seleção de Org
@@ -16,10 +16,11 @@ Atualizações previstas para versão 1.0.0
 - [x] Conectar aplicação para ter um loop completo
 - [ ] Finalização do CBLoL
 - [ ] Inicio de um novo ciclo ao final do CBLoL
-- [ ] Tela Inicial
+- [x] Tela Inicial
 - [x] Sistema de Save/Load
 - [x] Tratar Bug dos Picks repetidos
 - [ ] Tratar Bug dos Picks em posições incorretas
 - [ ] Tela de tutorial para Draft/Game
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Instalador do updater
+- [ ] Melhorar Save/Load
