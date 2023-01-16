@@ -69,7 +69,6 @@ public class TeamPage : BaseView
             g.Clear(Color.Black);
             options = new OptionsView(
                 "Salvar",
-                "Carregar",
                 "Próxima Semana"
             );
 
@@ -79,12 +78,6 @@ public class TeamPage : BaseView
                 {
                     case "Salvar":
                         Game.Save();
-                        break;
-
-                    case "Carregar":
-                        Game.Load();
-                        Reopen();
-                        this.team = Game.Current.Team;
                         break;
                     
                     case "Próxima Semana":

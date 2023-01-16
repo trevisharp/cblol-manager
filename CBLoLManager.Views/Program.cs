@@ -22,6 +22,7 @@ ProposeSystem sys = new ProposeSystem();
 
 BaseView crrPage = null;
 
+MainScreen main = new MainScreen();
 TeamSelectorPage teamSelectorPage = null;
 TeamPage teamPage = null;
 MarketPlayer market = null;
@@ -36,83 +37,15 @@ bool firstTimeInMarket = true;
 bool firstTimeInSponsorship = true;
 int playCount = 0;
 
-// Team Selector Page Logic
-teamSelectorPage = new TeamSelectorPage();
-crrPage = teamSelectorPage;
-teamSelectorPage.OnSelect += org =>
+crrPage = main;
+main.OnPlay += delegate
 {
-    Team team = new Team();
-    team.Organization = org;
-
-    Game.Current.Team = team;
-    team.Money = 200000;
-    List<float> moneys = new List<float>()
-    {
-        200000, 200000,
-        300000, 300000, 300000,
-        500000, 500000, 500000,
-        1000000
-    }
-    .OrderBy(x => Random.Shared.Next())
-    .ToList();
-    foreach (var x in Organizations.All
-        .Where(o => o.Name != org.Name))
-    {
-        Game.Current.Others.Add(new Team()
-        {
-            Organization = x,
-            Money = moneys[0]
-        });
-        moneys.RemoveAt(0);
-    }
-    Game.Current.Tournament = new Tournament(
-        Game.Current.Others.Append(
-            Game.Current.Team
-        ).ToArray()
-    );
-    Game.Current.FreeAgent.AddRange(Players.All);
-
-    teamPage = new TeamPage(team);
-    teamPage.OnOpenMarket += () =>
-    {
-        if (firstTimeInMarket)
-        {
-            firstTimeInMarket = false;
-            var tutorial = new MarketTutorial();
-            tutorial.Exit += delegate
-            {
-                crrPage = market;
-                g.Clear(Color.Black);
-            };
-            crrPage = tutorial;
-            return;
-        }
-        
-        crrPage = market;
-    };
-    teamPage.NextGame += () =>
-    {
-        openTornament();
-    };
-    teamPage.Sponsorship += () =>
-    {
-        if (firstTimeInSponsorship)
-        {
-            firstTimeInSponsorship = false;
-            var tutorial = new ShirtSponsorTutorialPage();
-            tutorial.Exit += delegate
-            {
-                crrPage = sponsorPage;
-                g.Clear(Color.Black);
-            };
-            crrPage = tutorial;
-            return;
-        }
-        
-        crrPage = sponsorPage;
-    };
-    
-    crrPage = teamPage;
+    selectTeam();
+};
+main.OnLoad += delegate
+{
+    Game.Load();
+    openTeamPage();
 };
 
 market = new MarketPlayer();
@@ -190,6 +123,93 @@ void makeMatch(DraftResult draft)
         openTornament();
     };
     crrPage = match;
+}
+
+void selectTeam()
+{
+    teamSelectorPage = new TeamSelectorPage();
+    teamSelectorPage.OnSelect += org =>
+    {
+        Team team = new Team();
+        team.Organization = org;
+
+        Game.Current.Team = team;
+        team.Money = 200000;
+        List<float> moneys = new List<float>()
+        {
+            200000, 200000,
+            300000, 300000, 300000,
+            500000, 500000, 500000,
+            1000000
+        }
+        .OrderBy(x => Random.Shared.Next())
+        .ToList();
+        foreach (var x in Organizations.All
+            .Where(o => o.Name != org.Name))
+        {
+            Game.Current.Others.Add(new Team()
+            {
+                Organization = x,
+                Money = moneys[0]
+            });
+            moneys.RemoveAt(0);
+        }
+        Game.Current.Tournament = new Tournament(
+            Game.Current.Others.Append(
+                Game.Current.Team
+            ).ToArray()
+        );
+        Game.Current.FreeAgent.AddRange(Players.All);
+
+        openTeamPage();
+
+    };
+    crrPage = teamSelectorPage;
+}
+
+void openTeamPage()
+{
+    teamPage = new TeamPage(Game.Current.Team);
+    teamPage.OnOpenMarket += () =>
+    {
+        if (firstTimeInMarket)
+        {
+            firstTimeInMarket = false;
+            var tutorial = new MarketTutorial();
+            tutorial.Exit += delegate
+            {
+                crrPage = market;
+                g.Clear(Color.Black);
+            };
+            crrPage = tutorial;
+            return;
+        }
+        
+        crrPage = market;
+    };
+    teamPage.NextGame += () =>
+    {
+        openTornament();
+    };
+    teamPage.Sponsorship += () =>
+    {
+        if (firstTimeInSponsorship)
+        {
+            firstTimeInSponsorship = false;
+            var tutorial = new ShirtSponsorTutorialPage();
+            tutorial.Exit += delegate
+            {
+                crrPage = sponsorPage;
+                g.Clear(Color.Black);
+            };
+            crrPage = tutorial;
+            return;
+        }
+        
+        crrPage = sponsorPage;
+    };
+    
+    crrPage = teamPage;
 }
 
 // View Logic
