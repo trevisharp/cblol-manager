@@ -18,6 +18,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "paiN Gamming",
             Photo = "pain.png",
+            Sigla = "PNG",
             MainColor = Color.Black,
             SecondColor = Color.Red,
             ThirdColor = Color.White
@@ -27,6 +28,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Loud",
             Photo = "loud.png",
+            Sigla = "LLL",
             MainColor = Color.Green,
             SecondColor = Color.White,
             ThirdColor = Color.Black
@@ -36,6 +38,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Red Canids Kalunga",
             Photo = "red.png",
+            Sigla = "RED",
             MainColor = Color.Red,
             SecondColor = Color.White,
             ThirdColor = Color.Black
@@ -45,6 +48,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Furia",
             Photo = "furia.png",
+            Sigla = "FUR",
             MainColor = Color.Black,
             SecondColor = Color.White,
             ThirdColor = Color.DarkBlue
@@ -54,6 +58,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Fluxo",
             Photo = "fluxo.png",
+            Sigla = "FX",
             MainColor = Color.Black,
             SecondColor = Color.White,
             ThirdColor = Color.Purple
@@ -63,6 +68,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "INTZ",
             Photo = "intz.png",
+            Sigla = "INT",
             MainColor = Color.White,
             SecondColor = Color.Black,
             ThirdColor = Color.Pink
@@ -72,6 +78,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Los Grandes",
             Photo = "los.png",
+            Sigla = "LOS",
             MainColor = Color.Orange,
             SecondColor = Color.Black,
             ThirdColor = Color.White
@@ -81,6 +88,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Vivo Keyd Stars",
             Photo = "keyd.png",
+            Sigla = "KEY",
             MainColor = Color.Purple,
             SecondColor = Color.Black,
             ThirdColor = Color.Yellow
@@ -90,6 +98,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Kabum",
             Photo = "kabum.png",
+            Sigla = "KBM",
             MainColor = Color.Orange,
             SecondColor = Color.Black,
             ThirdColor = Color.Blue
@@ -99,6 +108,7 @@ public class OrganizationInitializer : Initializer
         {
             Name = "Liberty",
             Photo = "liberty.png",
+            Sigla = "LBR",
             MainColor = Color.Blue,
             SecondColor = Color.DarkBlue,
             ThirdColor = Color.White

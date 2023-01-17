@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using CBLoLManager.Model;
 using CBLoLManager.Views;
 using CBLoLManager.GameRule;
+using CBLoLManager.RandomGen;
 using CBLoLManager.Configuration;
 
 // TODO: Move Game initializations to GameRule or Configuration Namespace
@@ -37,7 +38,17 @@ bool firstTimeInMarket = true;
 bool firstTimeInSponsorship = true;
 int playCount = 0;
 
+
 crrPage = main;
+
+#if true
+crrPage = new MatchView(
+    Organizations.All.Rand(
+        Players.All, Champions.All, 0, 1
+    )
+);
+#endif
+
 main.OnPlay += delegate
 {
     selectTeam();
