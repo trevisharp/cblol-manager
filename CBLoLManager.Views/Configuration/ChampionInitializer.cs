@@ -49,7 +49,7 @@ public class ChampionInitializer : Initializer
         champs.Add(new Champion()
         {
             Name = "Gnar",
-            Role = Position.MidLaner,
+            Role = Position.TopLaner,
             AD = true,
             Photo = "gnar.jpg",
 
