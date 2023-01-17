@@ -1,5 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\CBLoLManager.Model\CBLoLManager.Model.csproj" />
+    <ProjectReference Include="..\CBLoLManager.Util\CBLoLManager.Util.csproj" />
+    <ProjectReference Include="..\CBLoLManager.Configuration\CBLoLManager.Configuration.csproj" />
+    <ProjectReference Include="..\CBLoLManager.GameRule\CBLoLManager.GameRule.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>

@@ -3,8 +3,6 @@ using System.Linq;
 
 namespace CBLoLManager.Model;
 
-using GameRule;
-
 [Serializable]
 public class PlayOffs
 {

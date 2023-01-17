@@ -2,8 +2,6 @@ using System.Linq;
 
 namespace CBLoLManager.Util;
 
-using Model;
-
 public static class Formatter
 {
     public static string FormatMoney(float number)
@@ -39,15 +37,17 @@ public static class Formatter
         return result;
     }
 
-    public static string FormatPlayer(Player player)
+    public static string FormatPlayer(
+        string nickName,
+        string name
+    )
     {
         var result = string.Empty;
-
-        var parts = player.Name.Split(' ');
+        var parts = name.Split(' ');
 
         return string.Concat(
             parts.Skip(1)
-                .Prepend($"'{player.Nickname}'")
+                .Prepend($"'{nickName}'")
                 .Prepend(parts[0])
                 .Aggregate((n, s) => n + " " + s)
         );

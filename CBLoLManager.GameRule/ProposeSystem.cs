@@ -169,6 +169,7 @@ public class ProposeSystem
             
             var c = MakeContract(propose);
 
+            string formatedPlayer = Formatter.FormatPlayer(c.Player.Nickname, c.Player.Name);
             if (c.Accepted)
             {
                 c.Closed = true;
@@ -176,11 +177,11 @@ public class ProposeSystem
                 Game.Current.FreeAgent.Remove(c.Player);
                 Game.Current.SeeingProposes.Remove(c.Player);
                 Game.Current.EndContract.Remove(c.Player);
-                events.Add($"{team.Organization.Name} contratou {Formatter.FormatPlayer(c.Player)}.");
+                events.Add($"{team.Organization.Name} contratou {formatedPlayer}.");
             }
             else
             {
-                events.Add($"{team.Organization.Name} está em negociação com {Formatter.FormatPlayer(c.Player)}.");
+                events.Add($"{team.Organization.Name} está em negociação com {formatedPlayer}.");
             }
         }
 

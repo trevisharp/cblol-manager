@@ -1,6 +1,5 @@
 ### Versão 1.1.0
 
-- [ ] Separar projetos em dlls para facilitar download
 - [ ] Criação de um updater para donwload
 - [ ] Correção de bugs visuais na tela de draft
 - [ ] Tratar Bug dos Picks em posições incorretas
@@ -29,3 +28,4 @@
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Tela de Opções
 - [ ] Melhorar Tela de Login
+- [x] Separar projetos em dlls para facilitar download

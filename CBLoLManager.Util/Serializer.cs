@@ -9,7 +9,11 @@ public static class Serializer
     {
         var file = File.Open(path, FileMode.OpenOrCreate);
         BinaryFormatter formatter = new BinaryFormatter();
+
+        #pragma warning disable
         formatter.Serialize(file, obj);
+        #pragma warning restore
+
         file.Close();
     }
 
@@ -21,7 +25,11 @@ public static class Serializer
         
         var file = File.Open(path, FileMode.OpenOrCreate);
         BinaryFormatter formatter = new BinaryFormatter();
+
+        #pragma warning disable
         T obj = formatter.Deserialize(file) as T;
+        #pragma warning restore
+        
         file.Close();
 
         return obj;

@@ -28,7 +28,11 @@ public class Players : IEnumerable<Player>
         
         var file = File.Open("Data/players.dat", FileMode.OpenOrCreate);
         BinaryFormatter formatter = new BinaryFormatter();
+        
+        #pragma warning disable
         Players players = formatter.Deserialize(file) as Players;
+        #pragma warning restore
+
         file.Close();
         return players;
     }
@@ -42,7 +46,11 @@ public class Players : IEnumerable<Player>
     {
         var file = File.Open("Data/players.dat", FileMode.OpenOrCreate);
         BinaryFormatter formatter = new BinaryFormatter();
+
+        #pragma warning disable
         formatter.Serialize(file, this);
+        #pragma warning restore
+
         file.Close();
     }
 

@@ -243,7 +243,7 @@ public class MarketPlayer : BaseView
         this.down = down;
     }
 
-    public override async void Load(Bitmap bmp, Graphics g)
+    public override void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
     }
