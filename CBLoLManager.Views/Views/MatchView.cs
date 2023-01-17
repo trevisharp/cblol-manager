@@ -4,33 +4,36 @@ using System.Drawing;
 namespace CBLoLManager.Views;
 
 using Model;
+using GameRule;
 
 public class MatchView : BaseView
 {
+    GameSimulationSystem sys;
     DraftResult draft = null;
     Image game = null;
     Image[] champThumbs = new Image[10];
     Image teamAThumb = null;
     Image teamBThumb = null;
 
-    int aTowers = 0;
-    int bTowers = 0;
-    
-    float aGold = 2.5f;
-    float bGold = 2.5f;
-
-    int aKills = 0;
-    int bKills = 0;
-
     int time = 0;
 
     public MatchView(DraftResult draft)
     {
         this.draft = draft;
+        this.sys = new GameSimulationSystem(draft);
+
+        sys.NextStep();
+        sys.NextStep();
+        sys.NextStep();
     }
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
+        if (time != sys.Time)
+        {
+            time += (int)MathF.Ceiling((sys.Time - time) / 10f);
+        }
+
         int wid = bmp.Width;
         int hei = bmp.Height;
 
@@ -50,13 +53,13 @@ public class MatchView : BaseView
         g.DrawString(draft.TeamA.Organization.Sigla, font,
             Brushes.White, new RectangleF(0.22f * wid, 5, wid * 0.06f, hei * 0.025f),
             format);
-        g.DrawString(aTowers.ToString(), font,
+        g.DrawString(sys.TeamATowers.ToString(), font,
             Brushes.White, new RectangleF(0.33f * wid, 5, wid * 0.06f, hei * 0.05f),
             format);
-        g.DrawString($"{aGold}k", font,
+        g.DrawString($"{sys.TeamAGold:#0.0}k", font,
             Brushes.White, new RectangleF(0.395f * wid, 5, wid * 0.06f, hei * 0.05f),
             format);
-        g.DrawString(aKills.ToString(), font,
+        g.DrawString(sys.TeamAKills.ToString(), font,
             Brushes.White, new RectangleF(0.45f * wid, 5, wid * 0.06f, hei * 0.05f),
             format);
         
@@ -66,13 +69,13 @@ public class MatchView : BaseView
         g.DrawString(draft.TeamB.Organization.Sigla, font,
             Brushes.White, new RectangleF(0.73f * wid, 5, wid * 0.06f, hei * 0.025f),
             format);
-        g.DrawString(bTowers.ToString(), font,
+        g.DrawString(sys.TeamBTowers.ToString(), font,
             Brushes.White, new RectangleF(0.64f * wid, 5, wid * 0.06f, hei * 0.05f),
             format);
-        g.DrawString($"{bGold}k", font,
+        g.DrawString($"{sys.TeamBGold:#0.0}k", font,
             Brushes.White, new RectangleF(0.57f * wid, 5, wid * 0.06f, hei * 0.05f),
             format);
-        g.DrawString(bKills.ToString(), font,
+        g.DrawString(sys.TeamBKills.ToString(), font,
             Brushes.White, new RectangleF(0.49f * wid, 5, wid * 0.06f, hei * 0.05f),
             format);
 
