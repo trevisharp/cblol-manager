@@ -52,18 +52,63 @@ public class PlayerInitializer : Initializer
 
         #endregion
 
-        #region MidLaners (2)
+        #region MidLaners (8)
 
+        // +7
+        add("Kim Tae-hoon", "Lava", "lava.png", 
+            Position.MidLaner,
+            2, 3, 1, 1, -1, 1,
+            Nationality.KR,
+            14, 7, 1999
+        );
+
+        // +6
+        add("Thiago Sartori", "tinowns", "tinowns.png", 
+            Position.MidLaner,
+            2, 2, 0, 2, 1, -1,
+            Nationality.BR,
+            6, 5, 1997
+        );
+
+        add("Bruno Augusto Felberge Ferreira", "Hauz", "hauz.png", 
+            Position.MidLaner,
+            2, 2, 2, 0, -1, 1,
+            Nationality.BR,
+            29, 4, 2001
+        );
+
+        add("Daniel Xavier", "Grevthar", "grevthar.png", 
+            Position.MidLaner,
+            1, 2, 0, 1, 0, 2,
+            Nationality.BR,
+            29, 8, 1999
+        );
+
+        // +5
         add("Matheus Rossini Miranda", "dyNquedo", "dynkedo.png", 
             Position.MidLaner,
-            1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 0, 1,
             Nationality.BR,
             14, 10, 1997
         );
 
+        add("Bruno Farias", "Envy", "envy.png", 
+            Position.MidLaner,
+            2, 1, 0, 1, 1, 0,
+            Nationality.BR
+        );
+
+        add("Cha Hee-min", "Yuri", "yuri.png", 
+            Position.MidLaner,
+            3, 2, 1, 0, 0, -1,
+            Nationality.KR,
+            19, 12, 2000
+        );
+
+        // +4
         add("Adriano Perassoli", "Avenger", "avenger.png", 
             Position.MidLaner,
-            2, 2, 1, -1, 0, 1,
+            2, 2, 1, -1, 0, 0,
             Nationality.BR,
             14, 5, 2001
         );
