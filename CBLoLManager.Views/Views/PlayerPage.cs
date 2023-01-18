@@ -55,7 +55,7 @@ public class PlayerPage : BaseView
         g.DrawString(applyEffect($"{Player.Name}"), 
             font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 60f);
 
-        g.DrawString(applyEffect($"Data de Nascimento: {Player.BirthDate.ToShortDateString()}"), 
+        g.DrawString(applyEffect($"Data de Nascimento: {Player.BirthDate?.ToShortDateString() ?? "Desconhecida"}"), 
             font, Brushes.White, p.X + 2 * size / 3 - 60f, p.Y + 80f);
         
         g.DrawString(applyEffect($"Rota: {Player.Role}"), 

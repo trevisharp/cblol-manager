@@ -54,7 +54,7 @@ public class PlayerInitializer : Initializer
 
         #region MidLaners (2)
 
-        add("Matheus Rossini Miranda", "dyNquedo", "dynquedo.png", 
+        add("Matheus Rossini Miranda", "dyNquedo", "dynkedo.png", 
             Position.MidLaner,
             1, 1, 1, 1, 1, 1,
             Nationality.BR,
@@ -70,40 +70,144 @@ public class PlayerInitializer : Initializer
 
         #endregion
 
-        #region AdCarries (4)
+        #region AdCarries (14)
 
-        add("Ju Yeong-hoon", "Bvoy", "bvoy.png", 
-            Position.AdCarry,
-            2, 2, 2, 1, 0, 1,
-            Nationality.KR,
-            18, 12, 1997
-        );
-
+        // +7
         add("Felipe Gonçalves", "brTT", "brtt.png", 
             Position.AdCarry,
             1, 0, 1, 0, 3, 2,
             Nationality.BR,
             19, 2, 1991
         );
-
-        add("André Eidi Yanagimachi Pavezi", "esA", "esa.png", 
+        
+        // +6
+        add("Ju Yeong-hoon", "Bvoy", "bvoy.png", 
             Position.AdCarry,
-            1, 1, 1, 0, 0, 1,
-            Nationality.BR,
-            9, 3, 1994
+            3, 2, 2, 0, -1, 0,
+            Nationality.KR,
+            18, 12, 1997
+        );
+
+        add("Moon Geom-su", "Route", "route.png", 
+            Position.AdCarry,
+            3, 3, 2, -1, -1, 0,
+            Nationality.KR,
+            5, 1, 1999
         );
         
         add("Alexandre Lima dos Santos", "TitaN", "titan.png", 
             Position.AdCarry,
-            2, 2, 1, 0, 2, 0,
+            2, 2, 1, 0, 1, 0,
             Nationality.BR,
             8, 7, 2000
         );
 
+        // +5
+        add("Matheus Trigo Nobrega", "Trigo", "trigo.png", 
+            Position.AdCarry,
+            2, 2, 1, 0, 0, 0,
+            Nationality.BR,
+            24, 9, 1999
+        );
+
+        add("Pedro Gama", "Matsukaze", "matsukaze.png", 
+            Position.AdCarry,
+            1, 1, 1, 0, 1, 1,
+            Nationality.BR,
+            1, 2, 1997
+        );
+
+        add("Diego Amaral", "Brance", "brance.png", 
+            Position.AdCarry,
+            2, 2, 2, -1, 0, 0,
+            Nationality.BR,
+            25, 2, 2004
+        );
+        
+        // +4
+        add("Lucas Flores", "Netuno", "netuno.png", 
+            Position.AdCarry,
+            2, 2, 0, 0, 0, 0,
+            Nationality.BR
+        );
+
+        add("Igor Lima Homem", "DudsTheBoy", "dudstheboy.png", 
+            Position.AdCarry,
+            1, 2, 1, 0, 0, 0,
+            Nationality.BR,
+            30, 3, 1996
+        );
+
+        add("Micael Rodrigues", "micaO", "micao.png", 
+            Position.AdCarry,
+            2, 0, 1, -1, 1, 1,
+            Nationality.BR,
+            5, 9, 1996
+        );
+
+        // +3
+        add("Yudi Leonardo Miyashiro", "NinjaKiwi", "ninjakiwi.png", 
+            Position.AdCarry,
+            1, 2, 1, 0, 0, -1,
+            Nationality.BR,
+            21, 9, 2003
+        );
+
+        add("Julio Henrique", "Juliera", "juliera.png", 
+            Position.AdCarry,
+            2, 2, 1, -1, 0, -1,
+            Nationality.BR
+        );
+
+        add("André Eidi Yanagimachi Pavezi", "esA", "esa.png", 
+            Position.AdCarry,
+            1, 0, 1, 0, -1, 2,
+            Nationality.BR,
+            9, 3, 1994
+        );
+
+        add("Matheus Herdy", "Drop", "drop.png", 
+            Position.AdCarry,
+            1, 1, 1, 1, 0, -1,
+            Nationality.BR,
+            1, 9, 1999
+        );
+
         #endregion
 
-        #region Supports (4)
+        #region Supports (14)
 
+        // +7
+        add("Han Chang-hoon", "Luci", "luci.png", 
+            Position.Support,
+            2, 1, 1, 1, 2, 0,
+            Nationality.BR,
+            8, 7, 1997
+        );
+
+        // +6
+        add("Denilson Oliveira Gonçalves", "Ceos", "ceos.png", 
+            Position.Support,
+            1, 2, 1, 1, 0, 1,
+            Nationality.BR,
+            8, 8, 1998
+        );
+
+        add("Ygor Freitas", "RedBert", "redbert.png", 
+            Position.Support,
+            1, 1, 1, 1, 1, 1,
+            Nationality.BR,
+            26, 8, 1998
+        );
+
+        // +5
+        add("Gabriel Dzelme de Oliveira", "Jojo", "jojo.png", 
+            Position.Support,
+            1, 1, 1, 2, 0, 0,
+            Nationality.BR,
+            11, 11, 1998
+        );
+        
         add("Yan Sales Neves", "Damage", "damage.png", 
             Position.Support,
             1, 1, 1, 1, 0, 1,
@@ -111,6 +215,56 @@ public class PlayerInitializer : Initializer
             20, 6, 1997
         );
 
+        add("Gustavo Gomes", "Baiano", "baiano.png", 
+            Position.Support,
+            1, 0, 0, 1, 0, 3,
+            Nationality.BR,
+            9, 4, 1994
+        );
+
+        // +4
+        add("Choi Won-yeong", "Kuri", "kuri.png", 
+            Position.Support,
+            1, 2, 0, 2, -1, 0,
+            Nationality.KR,
+            8, 8, 2000
+        );
+
+        add("Gabriel Scuro", "Scuro", "scuro.png", 
+            Position.Support,
+            0, 1, 1, 1, 0, 1,
+            Nationality.BR
+        );
+
+        add("Alexandre Fernandes", "Cavalo", "cavalo.png", 
+            Position.Support,
+            1, 2, 0, 1, 0, 0,
+            Nationality.BR
+        );
+        
+        // +3
+        add("Gabriel Vieira Donner", "Bounty", "bounty.png", 
+            Position.Support,
+            1, 1, 0, 1, 0, 0,
+            Nationality.BR,
+            -1, -1, -1
+        );
+
+        add("Luan Cardoso", "Jockster", "jockster.png", 
+            Position.Support,
+            1, 0, 1, 1, 0, 0,
+            Nationality.BR,
+            18, 2, 1996
+        );
+
+        add("Willyan Bonpam", "Wos", "wos.png", 
+            Position.Support,
+            2, 0, 0, 1, 0, 0,
+            Nationality.BR,
+            14, 5, 1995
+        );
+
+        // +2
         add("Fábio Luis Bezerra Marques", "ProDelta", "prodelta.png", 
             Position.Support,
             1, 1, 1, 0, -1, 0,
@@ -118,18 +272,10 @@ public class PlayerInitializer : Initializer
             8, 5, 2001
         );
 
-        add("Han Chang-hoon", "Luci", "luci.png", 
+        add("Vinicius Argolo Viana", "zay", "zay.png", 
             Position.Support,
-            2, 1, 1, 0, 2, 0,
-            Nationality.BR,
-            8, 7, 1997
-        );
-        
-        add("Choi Won-yeong", "Kuri", "kuri.png", 
-            Position.Support,
-            1, 2, 0, 2, -1, -1,
-            Nationality.KR,
-            8, 8, 2000
+            1, 1, 0, 1, -1, 0,
+            Nationality.BR
         );
 
         #endregion
