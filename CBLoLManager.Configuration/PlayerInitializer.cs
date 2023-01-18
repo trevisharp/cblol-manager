@@ -52,7 +52,7 @@ public class PlayerInitializer : Initializer
 
         #endregion
 
-        #region MidLaners (8)
+        #region MidLaners (14)
 
         // +7
         add("Kim Tae-hoon", "Lava", "lava.png", 
@@ -87,14 +87,14 @@ public class PlayerInitializer : Initializer
         // +5
         add("Matheus Rossini Miranda", "dyNquedo", "dynkedo.png", 
             Position.MidLaner,
-            1, 1, 1, 1, 0, 1,
+            2, 1, 1, 1, 0, 0,
             Nationality.BR,
             14, 10, 1997
         );
 
         add("Bruno Farias", "Envy", "envy.png", 
             Position.MidLaner,
-            2, 1, 0, 1, 1, 0,
+            2, 1, 0, 1, 0, 1,
             Nationality.BR
         );
 
@@ -111,6 +111,48 @@ public class PlayerInitializer : Initializer
             2, 2, 1, -1, 0, 0,
             Nationality.BR,
             14, 5, 2001
+        );
+
+        add("Marcos Henrique Ferraz", "Krastyel", "krastyel.png", 
+            Position.MidLaner,
+            1, 0, 1, 1, 0, 1,
+            Nationality.BR,
+            17, 3, 1999
+        );
+
+        add("Bruno Miyaguchi", "Goku", ".png", 
+            Position.MidLaner,
+            1, 1, 1, 1, 0, 0,
+            Nationality.BR,
+            23, 8, 1996
+        );
+
+        add("Arthur Peixoto Machado", "Tutsz", "tutsz.png", 
+            Position.MidLaner,
+            1, 0, 2, 1, 0, 0,
+            Nationality.BR,
+            16, 12, 2002
+        );
+
+        // +3
+        add("Elvis Vergara", "Piloto", "piloto.png", 
+            Position.MidLaner,
+            1, 1, 1, 0, 0, 0,
+            Nationality.BR
+        );
+        
+        add("Júlio César Cruz", "NOsFerus", "nosferus.png", 
+            Position.MidLaner,
+            1, 1, 0, 0, 0, 1,
+            Nationality.BR,
+            14, 9, 1999
+        );
+
+        // +2
+        add("", "Qats", ".png", 
+            Position.MidLaner,
+            1, 1, 1, 1, -1, -1,
+            Nationality.BR
         );
 
         #endregion
