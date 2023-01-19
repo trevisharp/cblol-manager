@@ -34,7 +34,23 @@ public class PlayerInitializer : Initializer
 
         #endregion
 
-        #region Junglers (2)
+        #region Junglers (14)
+
+        // +7
+        add("Lee Byeong-hoon", "Shrimp", "shrimp.png", 
+            Position.Jungler,
+            2, 2, 1, 1, 0, 1,
+            Nationality.KR,
+            14, 10, 1996
+        );
+
+        // +6
+        add("Gabriel Vinicius Saes de Lemos", "Aegis", "aegis.png", 
+            Position.Jungler,
+            2, 2, 1, 0, 1, 1,
+            Nationality.BR,
+            9, 9, 1999
+        );
 
         add("Marcos Santos de Oliveira Junior", "CarioK", "cariok.png", 
             Position.Jungler,
@@ -43,11 +59,78 @@ public class PlayerInitializer : Initializer
             31, 1, 2000
         );
 
-        add("Gabriel Vinicius Saes de Lemos", "Aegis", "aegis.png", 
+        add("Gabriel Henud Cresci", "Revolta", "revolta.png", 
             Position.Jungler,
-            2, 2, 1, 0, 1, 1,
+            1, 2, 1, 1, 0, 2,
             Nationality.BR,
-            9, 9, 1999
+            27, 12, 1995
+        );
+
+        // +5
+        add("Park Jong-hoon", "Croc", "croc.png", 
+            Position.Jungler,
+            2, 2, 1, 1, -1, 0,
+            Nationality.KR
+        );
+
+        add("Filipe Brombilla de Barrios", "Ranger", "ranger.png", 
+            Position.Jungler,
+            1, 1, 2, 0, 1, 0,
+            Nationality.BR
+        );
+        
+        add("Gabriel Goot", "Goot", "goot.png", 
+            Position.Jungler,
+            2, 1, 1, 1, 0, 0,
+            Nationality.BR
+        );
+
+        // +4
+        add("Yan Petermann", "Yampi", "yampi.png", 
+            Position.Jungler,
+            1, 1, 1, 0, 0, 1,
+            Nationality.BR,
+            7, 11, 1998
+        );
+
+        add("Hugo Dias de Faria", "Hugato", "hugato.png", 
+            Position.Jungler,
+            1, 0, 1, 1, 1, 0,
+            Nationality.BR,
+            4, 9, 2003
+        );
+
+        add("Pedro Gonçalves", "Disamis", "disamis.png", 
+            Position.Jungler,
+            1, 1, 0, 1, 0, 1,
+            Nationality.BR
+        );
+
+        // +3
+        add("Lucas Miranda", "Accez", "accez.png", 
+            Position.Jungler,
+            1, 1, 1, 0, 0, 0,
+            Nationality.BR
+        );
+        
+        add("Artur Queiroz", "scary", "scary.png", 
+            Position.Jungler,
+            1, 1, 1, 1, -1, 0,
+            Nationality.BR
+        );
+        
+        add("Luís Gustavo Dirami Martins", "Sting", "sting.png", 
+            Position.Couch,
+            1, 1, 1, 1, 0, -1,
+            Nationality.BR,
+            19, 7, 2001
+        );
+
+        // +2 
+        add("Gustavo Hayashi", "enel1", "enel.png", 
+            Position.Jungler,
+            0, 1, 1, 0, 0, 0,
+            Nationality.BR
         );
 
         #endregion
@@ -149,9 +232,9 @@ public class PlayerInitializer : Initializer
         );
 
         // +2
-        add("", "Qats", ".png", 
+        add("Thiago Augusto", "Qats", "qats.png", 
             Position.MidLaner,
-            1, 1, 1, 1, -1, -1,
+            0, 1, 1, 0, 0, 0,
             Nationality.BR
         );
 
