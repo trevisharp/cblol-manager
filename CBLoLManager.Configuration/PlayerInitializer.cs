@@ -10,7 +10,7 @@ public class PlayerInitializer : Initializer
     {
         var players = Players.All;
 
-        #region TopLaners (3)
+        #region TopLaners (14)
 
         // +7
         add("Leonardo Souza", "Robo", "robo.png", 
@@ -43,76 +43,75 @@ public class PlayerInitializer : Initializer
         );
 
         // +5
-        add("", "Lonely", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("Han Gyu-joon", "Lonely", "lonely.png", 
+            Position.TopLaner,
+            1, 2, 0, 1, 0, 1,
+            Nationality.KR,
+            29, 8, 2000
         );
 
-        add("", "Guigo", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("Guilherme Ruiz", "Guigo", "guigo.png", 
+            Position.TopLaner,
+            0, 2, 2, 0, 0, 1,
+            Nationality.BR,
+            29, 1, 2002
         );
 
-        add("", "Tay", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("Rodrigo Panisa", "Tay", "tay.png", 
+            Position.TopLaner,
+            2, 1, 1, 0, 1, 0,
+            Nationality.BR,
+            22, 11, 1996
         );
 
         // +4
         add("Felipe Boal", "Boal", "boal.png", 
             Position.TopLaner,
-            0, 0, 0, 0, 0, 0,
+            2, 1, 1, 0, 0, 0,
             Nationality.BR,
             4, 12, 2002
         );
 
-        add("", "Zzk", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("Kwon Hee-won", "Zzk", "zzk.png", 
+            Position.TopLaner,
+            2, 2, 0, 0, 0, 0,
+            Nationality.KR,
+            18, 2, 2001
         );
 
-        add("", "Yang", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("Felipe Zhao", "Yang", "yang.png", 
+            Position.TopLaner,
+            1, 0, 1, 1, 0, 1,
+            Nationality.BR,
+            14, 4, 1996
         );
 
         // +3
         add("Norberto Motta", "Betão", "betao.png", 
             Position.TopLaner,
-            0, 0, 0, 0, 0, 0,
+            1, 1, 1, 0, 0, 0,
             Nationality.BR
         );
 
-        add("", "Kiari", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("Thiago Luiz", "Kiari", "kiari.png", 
+            Position.TopLaner,
+            1, 0, 0, 1, 0, 1,
+            Nationality.BR
         );
 
         // +2
-        add("", "Hidan", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("Leonardo Borré dos Santos", "Hidan", "hidan.png", 
+            Position.TopLaner,
+            0, 1, 1, 1, -1, 0,
+            Nationality.BR,
+            28, 3, 2002
         );
 
-        add("", "Tyrin", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
+        add("William Portugal", "Tyrin", "tyrin.png", 
+            Position.TopLaner,
+            1, 1, 0, 0, 0, 0,
+            Nationality.BR,
+            11, 12, 2001
         );
 
         #endregion
@@ -203,7 +202,7 @@ public class PlayerInitializer : Initializer
         );
         
         add("Luís Gustavo Dirami Martins", "Sting", "sting.png", 
-            Position.Couch,
+            Position.Jungler,
             1, 1, 1, 1, 0, -1,
             Nationality.BR,
             19, 7, 2001
@@ -286,7 +285,7 @@ public class PlayerInitializer : Initializer
             17, 3, 1999
         );
 
-        add("Bruno Miyaguchi", "Goku", ".png", 
+        add("Bruno Miyaguchi", "Goku", "goku.png", 
             Position.MidLaner,
             1, 1, 1, 1, 0, 0,
             Nationality.BR,
@@ -532,15 +531,6 @@ public class PlayerInitializer : Initializer
         );
 
         #endregion
-
-        add("", "", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
-        );
-
-
 
         void add(
             string name, string nickname, string photo, Position role,
