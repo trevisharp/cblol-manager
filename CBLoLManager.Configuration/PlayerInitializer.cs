@@ -12,6 +12,15 @@ public class PlayerInitializer : Initializer
 
         #region TopLaners (3)
 
+        // +7
+        add("Leonardo Souza", "Robo", "robo.png", 
+            Position.TopLaner,
+            3, 1, 1, 0, 1, 1,
+            Nationality.BR,
+            22, 4, 1998
+        );
+
+        // +6
         add("Choi Eui-seok", "Wizer", "wizer.png", 
             Position.TopLaner,
             3, 2, 1, 0, 0, 0,
@@ -19,17 +28,91 @@ public class PlayerInitializer : Initializer
             29, 11, 1998
         );
 
+        add("Shin Tae-min", "HiRit", "hirit.png", 
+            Position.TopLaner,
+            2, 2, 2, 0, 0, 0,
+            Nationality.KR,
+            24, 7, 1998
+        );
+
+        add("Francisco Natanael Braz do Espirito Santo Miranda", "fNb", "fnb.png", 
+            Position.TopLaner,
+            2, 1, 1, 0, 1, 1,
+            Nationality.BR,
+            3, 2, 2000
+        );
+
+        // +5
+        add("", "Lonely", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
+        );
+
+        add("", "Guigo", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
+        );
+
+        add("", "Tay", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
+        );
+
+        // +4
+        add("Felipe Boal", "Boal", "boal.png", 
+            Position.TopLaner,
+            0, 0, 0, 0, 0, 0,
+            Nationality.BR,
+            4, 12, 2002
+        );
+
+        add("", "Zzk", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
+        );
+
+        add("", "Yang", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
+        );
+
+        // +3
         add("Norberto Motta", "Betão", "betao.png", 
             Position.TopLaner,
-            2, 1, 1, 0, -1, 0,
+            0, 0, 0, 0, 0, 0,
             Nationality.BR
         );
 
-        add("Felipe Boal", "Boal", "boal.png", 
-            Position.TopLaner,
-            2, 1, 1, 0, 0, 0,
-            Nationality.BR,
-            4, 12, 2002
+        add("", "Kiari", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
+        );
+
+        // +2
+        add("", "Hidan", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
+        );
+
+        add("", "Tyrin", ".png", 
+            Position.Couch,
+            0, 0, 0, 0, 0, 0,
+            Nationality.UN,
+            -1, -1, -1
         );
 
         #endregion
@@ -449,13 +532,6 @@ public class PlayerInitializer : Initializer
         );
 
         #endregion
-
-        add("", "", ".png", 
-            Position.Couch,
-            0, 0, 0, 0, 0, 0,
-            Nationality.UN,
-            -1, -1, -1
-        );
 
         add("", "", ".png", 
             Position.Couch,
