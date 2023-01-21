@@ -1,10 +1,9 @@
 ### Versão 1.1.0
 
-- [ ] Criação de um updater para donwload
 - [ ] Correção de bugs visuais na tela de draft
 - [ ] Tratar Bug dos Picks em posições incorretas
+- [ ] Tratar Bugs de Janela de Transferência
 - [ ] Melhorar Save/Load
-- [ ] Instalador do updater
 
 ### Versão 1.0.0
 
@@ -27,5 +26,7 @@
 - [ ] Tela de tutorial para Draft/Game
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Tela de Opções
-- [ ] Melhorar Tela de Login
+- [x] Melhorar Tela de Login
 - [x] Separar projetos em dlls para facilitar download
+- [ ] Criação de um updater para donwload
+- [ ] Instalador do updater
