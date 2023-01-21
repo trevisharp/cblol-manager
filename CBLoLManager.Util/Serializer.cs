@@ -7,6 +7,9 @@ public static class Serializer
 {
     public static void Save(string path, object obj)
     {
+        if (!Directory.Exists("Data"))
+            Directory.CreateDirectory("Data");
+
         var file = File.Open(path, FileMode.OpenOrCreate);
         BinaryFormatter formatter = new BinaryFormatter();
 

@@ -20,7 +20,12 @@ public abstract class DataCollection<T, E> : IEnumerable<E>
     {
         get
         {
-            if (current == null)
+            if (!File.Exists(path))
+            {
+                current = new T();
+                current.Save();
+            }
+            else if (current == null)
                 current = Serializer.Load<T>(path);
             return current;
         }
