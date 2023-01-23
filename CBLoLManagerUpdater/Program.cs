@@ -11,7 +11,7 @@ PictureBox pb = new PictureBox();
 pb.Dock = DockStyle.Fill;
 form.Controls.Add(pb);
 
-form.Load += delegate
+form.Load += async delegate
 {
     var screen = Screen.FromControl(form);
     int wid = screen.Bounds.Width;
@@ -23,7 +23,7 @@ form.Load += delegate
     form.Top = (hei - formHei) / 2;
     form.Size = new Size(formWid, formHei);
 
-    form.TopMost = true;
+    // form.TopMost = true;
 
     bmp = new Bitmap(form.Width, form.Height);
     g = Graphics.FromImage(bmp);
@@ -36,6 +36,11 @@ form.Load += delegate
         GraphicsUnit.Pixel);
     
     pb.Refresh();
+
+    ReleaseDownloader downloader = new ReleaseDownloader();
+    var releases = await downloader.GetReleases();
+
+    var resources = await downloader.GetResources(releases[0]);
 };
 
 Application.Run(form);
