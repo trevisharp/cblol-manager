@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -41,12 +42,48 @@ public class ReleaseDownloader
         return resources;
     }
 
-    private async Task<Stream> DownloadResource(Resource resource)
+    public async Task DownloadResource(Resource resource, string path)
     {
-        string path = resource.BrowserDownloadUrl;
-        var response = await client.GetAsync(path);
+        var response = await client.GetAsync(resource.BrowserDownloadUrl);
         var content = response.Content;
         var stream = await content.ReadAsStreamAsync();
-        return stream;
+        
+        if (resource.Name.Contains(".zip"))
+        {
+            string folderName = string.Concat(
+                resource.Name
+                .Reverse()
+                .SkipWhile(c => c != '.')
+                .Skip(1)
+                .Reverse()
+            );
+            await Task.Run(() => openZip(stream, path + "/" + folderName));
+        }
+        else await Task.Run(() => saveFile(stream, path + "/" + resource.Name));
+    }
+
+    private void openZip(Stream stream, string path)
+    {
+        if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+
+        using(var zip = new ZipArchive(stream, ZipArchiveMode.Read))
+        {
+            foreach(var entry in zip.Entries)
+            {
+                entry.ExtractToFile(path + "/" + entry.Name);
+            }
+        }
+    }
+
+    private void saveFile(Stream stream, string path)
+    {
+        if (File.Exists(path))
+            File.Delete(path);
+        
+        FileStream file = File.Create(path);
+        stream.CopyTo(file);
+
+        file.Close();
     }
 }

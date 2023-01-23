@@ -1,7 +1,7 @@
 public class Patch
 {
-    public int Version { get; set; }
-    public List<string> Modifications { get; set; }
+    public int Version { get; set; } = 0;
+    public List<string> Modifications { get; set; } = new List<string>();
 
     public static Patch Open(string folder)
     {
@@ -14,7 +14,7 @@ public class Patch
             file = File.Open(folder + "/patch.info", FileMode.Open);
         
         if (file == null)
-            return null;
+            return new Patch();
 
         Patch patch = new Patch();
         StreamReader reader = new StreamReader(file);
@@ -23,6 +23,8 @@ public class Patch
         
         while (!reader.EndOfStream)
             patch.Modifications.Add(reader.ReadLine());
+
+        reader.Close();
         
         return patch;
     }
