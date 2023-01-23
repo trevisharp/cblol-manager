@@ -1,11 +1,11 @@
-### Versão 1.1.0
+### Versão 0.2.0 beta
 
 - [ ] Correção de bugs visuais na tela de draft
 - [ ] Tratar Bug dos Picks em posições incorretas
 - [ ] Tratar Bugs de Janela de Transferência
 - [ ] Melhorar Save/Load
 
-### Versão 1.0.0
+### Versão 0.1.0 beta
 
 - [x] Tela de time
 - [x] Seleção de Org
@@ -28,5 +28,5 @@
 - [ ] Tela de Opções
 - [x] Melhorar Tela de Login
 - [x] Separar projetos em dlls para facilitar download
-- [ ] Criação de um updater para donwload
-- [ ] Instalador do updater
+- [x] Criação de um updater para donwload
+- [x] Instalador do updater
