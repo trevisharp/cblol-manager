@@ -7,5 +7,5 @@ public enum Position
     MidLaner = 2,
     AdCarry = 3,
     Support = 4,
-    Couch
+    Couch = 5
 }
