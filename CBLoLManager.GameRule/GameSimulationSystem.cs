@@ -29,6 +29,7 @@ public class GameSimulationSystem
     public int TeamATowers { get; set; } = 0;
     public int TeamBTowers { get; set; } = 0;
 
+    Dictionary<Player, int> life = new Dictionary<Player, int>();
     Dictionary<Player, int> kills = new Dictionary<Player, int>();
     Dictionary<Player, int> deaths = new Dictionary<Player, int>();
     Dictionary<Player, int> assits = new Dictionary<Player, int>();
@@ -68,10 +69,16 @@ public class GameSimulationSystem
         foreach (var x in players)
             nextFlash.Add(x, 0);
         
-        nextTp.Add(draft.TeamA.TopLaner, 0);
-        nextTp.Add(draft.TeamA.MidLaner, 0);
-        nextTp.Add(draft.TeamB.TopLaner, 0);
-        nextTp.Add(draft.TeamB.MidLaner, 0);
+        foreach (var x in players)
+            nextTp.Add(x, int.MaxValue);
+        
+        foreach (var x in players)
+            life.Add(x, 100);
+        
+        nextTp[draft.TeamA.TopLaner] = 0;
+        nextTp[draft.TeamA.MidLaner] = 0;
+        nextTp[draft.TeamB.TopLaner] = 0;
+        nextTp[draft.TeamB.MidLaner] = 0;
     }
 
     public void NextStep()
@@ -139,24 +146,25 @@ public class GameSimulationSystem
         int diff = 0)
     {
         var members = teamA.Concat(teamB).Aggregate("", (s, p) => s + p.Nickname + ", ");
-        messages.Add(@$"Uma luta entre {members.Substring(members.Length - 2)} começou.");
+        messages.Add($"{members.Substring(members.Length - 2)} estão lutando:");
 
+        // Quanto mais participantes da luta, mais valerá a teamFigth e menos a MechanicSkill
         int count = teamA.Count() + teamB.Count();
-        float team = count / 10f;
+        float teamParam = count / 10f;
 
+        // As vantagens iniciais podem ser reduzidas pelo time com boa visão de jogo
         if (diff > 0)
         {
-            diff -= teamB.Max(x => x.GameVision) / 2;
-            if (diff < 0)
-                diff = 0;
+            diff -= teamB.Max(x => x.GameVision) / 2 - 
+                teamA.Max(x => x.GameVision) / 8;
         }
         else if (diff < 0)
         {
-            diff += teamA.Max(x => x.GameVision) / 2;
-            if (diff > 0)
-                diff = 0;
+            diff += teamA.Max(x => x.GameVision) / 2 -
+                teamB.Max(x => x.GameVision) / 8;
         }
 
+        
         double commit = diff
             + (1f - team) * teamA.Sum(x => x.MechanicSkill)
             + team * teamA.Sum(x => x.TeamFigth)
