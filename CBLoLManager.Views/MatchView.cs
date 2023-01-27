@@ -22,10 +22,6 @@ public class MatchView : BaseView
     {
         this.draft = draft;
         this.sys = new GameSimulationSystem(draft);
-
-        sys.NextStep();
-        sys.NextStep();
-        sys.NextStep();
     }
 
     protected override void draw(Bitmap bmp, Graphics g)
@@ -56,6 +52,14 @@ public class MatchView : BaseView
         var format3 = new StringFormat();
         format3.Alignment = StringAlignment.Far;
         format3.LineAlignment = StringAlignment.Center;
+
+        int m = 0;
+        foreach (var message in sys.messages)
+        {
+            g.DrawString(message, font, Brushes.White,
+                new PointF(0.5f * wid, (.2f + m * 0.05f) * hei));
+            m++;
+        }
         
         g.DrawImage(teamAThumb, new RectangleF(0.28f * wid, 5, wid * 0.035f, wid * 0.035f),
             new RectangleF(0, 0, 60, 60),
@@ -105,8 +109,8 @@ public class MatchView : BaseView
                     wid * 0.045f, wid * 0.005f));
             g.FillRectangle(Brushes.Green, 
                 new RectangleF(0, 
-                    (.14f * hei + 0.04f * wid + i * 0.095f * hei) * sys.GetLife(players[i]),
-                    wid * 0.045f, wid * 0.005f));
+                    .14f * hei + 0.04f * wid + i * 0.095f * hei,
+                    (wid * 0.045f) * sys.GetLife(players[i]), wid * 0.005f));
 
             g.DrawImage(champThumbs[i + 5],
                 new RectangleF(wid * 0.955f, .14f * hei + i * 0.095f * hei, wid * 0.045f, wid * 0.045f),
@@ -118,8 +122,8 @@ public class MatchView : BaseView
                     wid * 0.045f, wid * 0.005f));
             g.FillRectangle(Brushes.Green, 
                 new RectangleF(wid * 0.955f, 
-                    (.14f * hei + 0.04f * wid + i * 0.095f * hei) * sys.GetLife(players[i + 5]),
-                    wid * 0.045f, wid * 0.005f));
+                    .14f * hei + 0.04f * wid + i * 0.095f * hei,
+                    (wid * 0.045f) * sys.GetLife(players[i + 5]), wid * 0.005f));
         }
         
         for (int i = 0; i < 5; i++)
@@ -201,6 +205,18 @@ public class MatchView : BaseView
             players[j++] = x;
         foreach (var x in draft.TeamB.GetAll())
             players[j++] = x;
+    }
+
+    bool isdown = false;
+    public override void MouseMove(PointF cursor, bool down)
+    {
+        if (down && !isdown)
+        {
+            sys.NextStep();
+            isdown = true;
+        }
+        if (!down)
+            isdown = false;
     }
 
     public event Action Exit;

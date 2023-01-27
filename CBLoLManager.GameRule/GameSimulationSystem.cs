@@ -11,7 +11,7 @@ public class GameSimulationSystem
     private DraftResult draft;
     private GameEventSystem evSys;
 
-    private List<string> messages = new List<string>();
+    public List<string> messages = new List<string>(); // temp public
     private bool firstBlood = true;
     
     private int aMagicDamage = 0;
@@ -34,6 +34,7 @@ public class GameSimulationSystem
     public int TeamATowers { get; set; } = 0;
     public int TeamBTowers { get; set; } = 0;
 
+    Dictionary<Player, int> respawn = new Dictionary<Player, int>();
     Dictionary<Player, int> life = new Dictionary<Player, int>();
     Dictionary<Player, int> kills = new Dictionary<Player, int>();
     Dictionary<Player, int> deaths = new Dictionary<Player, int>();
@@ -79,6 +80,7 @@ public class GameSimulationSystem
             kills.Add(x, 0);
             assits.Add(x, 0);
             deaths.Add(x, 0);
+            respawn.Add(x, int.MaxValue);
         }
         
         nextTp[draft.TeamA.TopLaner] = 0;
@@ -106,23 +108,72 @@ public class GameSimulationSystem
 
         var timeStep = Random.Shared.Next(40, 80);
 
-        if (Time < 300)
+        if (Time < 400)
             lanePhase(timeStep);
-
+        else if (Time < 1000)
+            midPhase(timeStep);
+        else endPhase(timeStep);
 
         Time += timeStep;
+
+        var players = draft.TeamA.GetAll()
+            .Concat(draft.TeamB.GetAll());
+        foreach (var x in players)
+        {
+            if (Time > respawn[x])
+            {
+                respawn[x] = int.MaxValue;
+                life[x] = 100;
+            }
+        }
     }
 
     private void lanePhase(int timeStep)
     {
-        var duration = Time + timeStep > 300 ? 300 - Time : timeStep;
         var players = draft.TeamA.GetAll()
             .Concat(draft.TeamB.GetAll());
         
         foreach (var x in players)
-            gold[x] += 4f * calc(x.LanePhase) * duration / 60 / 1000;
+        {
+            var goldGen = x.LanePhase + 20 * Random.Shared.NextSingle() - 10;
+            gold[x] += 4f * goldGen * timeStep / 60 / 1000;
+
+            life[x] -= (int)((110 - x.LanePhase) * Random.Shared.NextSingle() / 2);
+            if (life[x] < 30)
+            {
+                messages.Add($"{x.Nickname} voltou para base.");
+                life[x] = 100;
+                gold[x] -= 0.5f * goldGen * timeStep / 60 / 1000;
+            }
+        }
         
         lanePhaseJgEvent();
+    }
+
+    private void midPhase(int timeStep)
+    {
+        var players = draft.TeamA.GetAll()
+            .Concat(draft.TeamB.GetAll());
+        
+        foreach (var x in players)
+        {
+            var goldGen = x.LanePhase / 2 + 5 * gold[x] + 30 * Random.Shared.NextSingle();
+            gold[x] += 4f * goldGen * timeStep / 60 / 1000;
+
+            life[x] -= (int)((110 - x.LanePhase) * Random.Shared.NextSingle() / 4);
+
+            if (life[x] < 80)
+                life[x] = 100;
+        }
+        
+        addFigth(
+            draft.TeamA.GetAll(), draft.TeamB.GetAll(), 0, 1
+        );
+    }
+
+    private void endPhase(int timeStep)
+    {
+
     }
 
     private void lanePhaseJgEvent()
@@ -130,32 +181,119 @@ public class GameSimulationSystem
         Position gankA = (Position)Random.Shared.Next(5);
         Position gankB = (Position)Random.Shared.Next(5);
 
-        
-
-    }
-
-    private void simulateGank(
-        Player jg, Player[] allies, Player[] enemies, 
-        ref float jgdiff, ref float lanediff, Champion jgChamp,
-        Champion[] alliesChamps, Champion[] enemiesChamps)
-    {
-        var gameVision = enemies.Average(x => x.GameVision);
-        if (Random.Shared.Next(100) < gameVision / 2)
+        if (gankA == gankB)
         {
-            messages.Add(
-                $"{jg.Nickname} tentou gankar a lane de {enemies[0].Nickname}, mas " +
-                "o lance foi antecipado e o lance acabou não ocorrendo"
-            );
-            jgdiff -= 0.1f;
-            lanediff += 0.1f;
-
-            return;
+            switch (gankA)
+            {
+                case Position.TopLaner:
+                    addFigth(new Player[] {
+                        draft.TeamA.TopLaner,
+                        draft.TeamA.Jungler
+                    }, new Player[] {
+                        draft.TeamB.TopLaner,
+                        draft.TeamB.Jungler
+                    }, 0, 0.75);
+                    break;
+                case Position.MidLaner:
+                    addFigth(new Player[] {
+                        draft.TeamA.MidLaner,
+                        draft.TeamA.Jungler
+                    }, new Player[] {
+                        draft.TeamB.MidLaner,
+                        draft.TeamB.Jungler
+                    }, 0, 0.75);
+                    break;
+                case Position.Support:
+                case Position.AdCarry:
+                    addFigth(new Player[] {
+                        draft.TeamA.AdCarry,
+                        draft.TeamA.Support,
+                        draft.TeamA.Jungler
+                    }, new Player[] {
+                        draft.TeamB.AdCarry,
+                        draft.TeamB.Support,
+                        draft.TeamB.Jungler
+                    }, 0, 0.75);
+                    break;
+                
+                default:
+                    // Sem Gank
+                    break;
+            }
         }
-        
-        addFigth(
-            allies.Append(jg),
-            enemies
-        );
+        else
+        {
+            switch (gankA)
+            {
+                case Position.TopLaner:
+                    addFigth(new Player[] {
+                        draft.TeamA.TopLaner,
+                        draft.TeamA.Jungler
+                    }, new Player[] {
+                        draft.TeamB.TopLaner
+                    }, 50, 0.5);
+                    break;
+                case Position.MidLaner:
+                    addFigth(new Player[] {
+                        draft.TeamA.MidLaner,
+                        draft.TeamA.Jungler
+                    }, new Player[] {
+                        draft.TeamB.MidLaner
+                    }, 50, 0.5);
+                    break;
+                case Position.Support:
+                case Position.AdCarry:
+                    addFigth(new Player[] {
+                        draft.TeamA.AdCarry,
+                        draft.TeamA.Support,
+                        draft.TeamA.Jungler
+                    }, new Player[] {
+                        draft.TeamB.AdCarry,
+                        draft.TeamB.Support
+                    }, 50, 0.5);
+                    break;
+                
+                default:
+                    // Sem Gank
+                    break;
+            }
+            
+            switch (gankB)
+            {
+                case Position.TopLaner:
+                    addFigth(new Player[] {
+                        draft.TeamB.TopLaner,
+                        draft.TeamB.Jungler
+                    }, new Player[] {
+                        draft.TeamA.TopLaner
+                    }, 50, 0.5);
+                    break;
+                case Position.MidLaner:
+                    addFigth(new Player[] {
+                        draft.TeamB.MidLaner,
+                        draft.TeamB.Jungler
+                    }, new Player[] {
+                        draft.TeamA.MidLaner
+                    }, 50, 0.5);
+                    break;
+                case Position.Support:
+                case Position.AdCarry:
+                    addFigth(new Player[] {
+                        draft.TeamB.AdCarry,
+                        draft.TeamB.Support,
+                        draft.TeamB.Jungler
+                    }, new Player[] {
+                        draft.TeamA.AdCarry,
+                        draft.TeamA.Support
+                    }, 50, 0.5);
+                    break;
+                
+                default:
+                    // Sem Gank
+                    break;
+            }
+        }
+
     }
 
     private void addFigth(
@@ -165,7 +303,7 @@ public class GameSimulationSystem
         double defVantage = 1.0)
     {
         var members = teamA.Concat(teamB).Aggregate("", (s, p) => s + p.Nickname + ", ");
-        messages.Add($"{members.Substring(members.Length - 2)} estão lutando:");
+        messages.Add($"{members.Substring(0, members.Length - 2)} estão lutando:");
 
         // Quanto mais participantes da luta, mais valerá a teamFigth e menos a MechanicSkill
         int count = teamA.Count() + teamB.Count();
@@ -188,36 +326,35 @@ public class GameSimulationSystem
             - teamB.Sum(x => gold[x]);
         
         // Resultado da batalha em caso de Commit Total
-        // Range (-400 - 400)
+        // Range (-2000 - 2000)
         double commit = 
             + Math.Max(Math.Min(diff, 50), -50) 
             + Math.Max(Math.Min(20 * goldDiff, 200), -200)
-            + (1f - teamParam) * teamA.Sum(x => x.MechanicSkill) / 5
-            + teamParam * teamA.Sum(x => x.TeamFigth) / 5
+            + (1f - teamParam) * teamA.Average(x => x.MechanicSkill)
+            + teamParam * teamA.Average(x => x.TeamFigth)
             + 10 * teamA.Count(x => nextFlash[x] < Time)
-            - (1f - teamParam) * teamB.Sum(x => x.MechanicSkill)
-            - teamParam * teamB.Sum(x => x.TeamFigth)
-            - 20 * teamB.Count(x => nextFlash[x] < Time);
-        
+            - (1f - teamParam) * teamB.Average(x => x.MechanicSkill)
+            - teamParam * teamB.Average(x => x.TeamFigth)
+            - 10 * teamB.Count(x => nextFlash[x] < Time);
         // Considerando vantagem defensiva
-        commit = 0.75 * defVantage;
+        commit *= 5 * defVantage;
         
         // Representa a percepção do time que está perdendo a luta do seu estado
         double intent = 0;
         if (commit > 0)
         {
             var teamControl = 0.25 + 0.25 * Random.Shared.NextSingle() +
-                teamB.MaxBy(x => x.Leadership).GameVision / 100.0 + 
-                teamB.MaxBy(x => x.Leadership).Leadership / 200.0 + 
-                teamB.Average(x => x.GameVision) / 100.0;
+                teamB.MaxBy(x => x.Leadership).GameVision / 100.0 / 5 + 
+                teamB.MaxBy(x => x.Leadership).Leadership / 100.0 / 10 + 
+                teamB.Average(x => x.GameVision) / 100.0 / 5;
             intent = .4 * commit + .6 * teamControl * commit;
         }
         else
         {
             var teamControl = 0.25 + 0.25 * Random.Shared.NextSingle() +
-                teamA.MaxBy(x => x.Leadership).GameVision / 100.0 + 
-                teamA.MaxBy(x => x.Leadership).Leadership / 200.0 + 
-                teamA.Average(x => x.GameVision) / 100.0;
+                teamA.MaxBy(x => x.Leadership).GameVision / 100.0 / 5 + 
+                teamA.MaxBy(x => x.Leadership).Leadership / 100.0 / 10 + 
+                teamA.Average(x => x.GameVision) / 100.0 / 5;
             intent = .4 * commit + .6 * teamControl * commit;
         }
 
@@ -270,8 +407,38 @@ public class GameSimulationSystem
                     ran -= gold[y];
                     if (ran < 0)
                     {
-                        addKill(x);
-                        break;
+                        addKill(y);
+                        messages.Add($"\t{x.Nickname} morreu para {y.Nickname}");
+                        ran = float.MaxValue;
+                    }
+                    else
+                    {
+                        addAssist(y);
+                    }
+                }
+            }
+        }
+
+        foreach (var x in winTeam)
+        {
+            if (life[x] < 1)
+            {
+                addDeath(x);
+
+                var rot = winTeam.Sum(x => gold[x]);
+                var ran = Random.Shared.NextSingle() * rot;
+                foreach (var y in loseTeam)
+                {
+                    ran -= gold[y];
+                    if (ran < 0)
+                    {
+                        addKill(y);
+                        messages.Add($"\t{x.Nickname} morreu para {y.Nickname}");
+                        ran = float.MaxValue;
+                    }
+                    else
+                    {
+                        addAssist(y);
                     }
                 }
             }
@@ -280,28 +447,19 @@ public class GameSimulationSystem
 
     private void addDeath(Player player)
     {
-        if (deaths.ContainsKey(player))
-            deaths.Add(player, 1);
-        else deaths[player]++;
+        deaths[player]++;
+        respawn[player] = Time + 4 + Time / 60;
     }
 
     private void addKill(Player player)
     {
-        if (kills.ContainsKey(player))
-            kills.Add(player, 1);
-        else kills[player]++;
+        kills[player]++;
+        gold[player] += 0.3f;
     }
 
     private void addAssist(Player player)
     {
-        if (assits.ContainsKey(player))
-            assits.Add(player, 1);
-        else assits[player]++;
-    }
-
-    private float calc(int value)
-    {
-        float force = value + 20 * Random.Shared.NextSingle() - 10;
-        return force;
+        assits[player]++;
+        gold[player] += 0.05f;
     }
 }
