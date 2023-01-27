@@ -41,7 +41,7 @@ int playCount = 0;
 
 crrPage = main;
 
-#if false
+#if true
 crrPage = new MatchView(
     Organizations.All.Rand(
         Players.All, Champions.All, 0, 1

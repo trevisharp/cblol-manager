@@ -12,6 +12,7 @@ public class MatchView : BaseView
     DraftResult draft = null;
     Image game = null;
     Image[] champThumbs = new Image[10];
+    Player[] players = new Player[10];
     Image teamAThumb = null;
     Image teamBThumb = null;
 
@@ -43,9 +44,18 @@ public class MatchView : BaseView
         
         Font font = new Font(FontFamily.GenericMonospace, 16f);
         Font font2 = new Font(FontFamily.GenericMonospace, 12f);
+
         var format = new StringFormat();
         format.Alignment = StringAlignment.Center;
         format.LineAlignment = StringAlignment.Center;
+
+        var format2 = new StringFormat();
+        format2.Alignment = StringAlignment.Near;
+        format2.LineAlignment = StringAlignment.Center;
+
+        var format3 = new StringFormat();
+        format3.Alignment = StringAlignment.Far;
+        format3.LineAlignment = StringAlignment.Center;
         
         g.DrawImage(teamAThumb, new RectangleF(0.28f * wid, 5, wid * 0.035f, wid * 0.035f),
             new RectangleF(0, 0, 60, 60),
@@ -82,18 +92,83 @@ public class MatchView : BaseView
         g.DrawString($"{time / 60:00}:{time % 60:00}", font2,
             Brushes.White, new RectangleF(0.47f * wid, hei * 0.05f, wid * 0.06f, hei * 0.05f),
             format);
-        
+
         for (int i = 0; i < 5; i++)
         {
             g.DrawImage(champThumbs[i], 
                 new RectangleF(0, .14f * hei + i * 0.095f * hei, wid * 0.045f, wid * 0.045f),
                 new RectangleF(0, 0, 60, 60),
                 GraphicsUnit.Pixel);
+            g.FillRectangle(Brushes.Black, 
+                new RectangleF(0, 
+                    .14f * hei + 0.04f * wid + i * 0.095f * hei,
+                    wid * 0.045f, wid * 0.005f));
+            g.FillRectangle(Brushes.Green, 
+                new RectangleF(0, 
+                    (.14f * hei + 0.04f * wid + i * 0.095f * hei) * sys.GetLife(players[i]),
+                    wid * 0.045f, wid * 0.005f));
 
             g.DrawImage(champThumbs[i + 5],
                 new RectangleF(wid * 0.955f, .14f * hei + i * 0.095f * hei, wid * 0.045f, wid * 0.045f),
                 new RectangleF(0, 0, 60, 60),
                 GraphicsUnit.Pixel);
+            g.FillRectangle(Brushes.Black, 
+                new RectangleF(wid * 0.955f,
+                    .14f * hei + 0.04f * wid + i * 0.095f * hei, 
+                    wid * 0.045f, wid * 0.005f));
+            g.FillRectangle(Brushes.Green, 
+                new RectangleF(wid * 0.955f, 
+                    (.14f * hei + 0.04f * wid + i * 0.095f * hei) * sys.GetLife(players[i + 5]),
+                    wid * 0.045f, wid * 0.005f));
+        }
+        
+        for (int i = 0; i < 5; i++)
+        {
+            g.DrawImage(champThumbs[i], 
+                new RectangleF(
+                    0.47f * wid,
+                    .8f * hei + i * 0.04f * hei, 
+                    wid * 0.02f, 
+                    wid * 0.02f
+                ), new RectangleF(0, 0, 60, 60),
+                GraphicsUnit.Pixel);
+            g.DrawString(sys.GetFrag(players[i]),
+                SystemFonts.CaptionFont, Brushes.White,
+                new RectangleF(
+                    0.36f * wid,
+                    .8f * hei + i * 0.04f * hei, 
+                    wid * 0.1f, 
+                    wid * 0.02f), format3);
+            g.DrawString($"{sys.GetGold(players[i]):0.00} k",
+                SystemFonts.CaptionFont, Brushes.White,
+                new RectangleF(
+                    0.245f * wid,
+                    .8f * hei + i * 0.04f * hei, 
+                    wid * 0.1f, 
+                    wid * 0.02f), format3);
+
+            g.DrawImage(champThumbs[i + 5],
+                new RectangleF(
+                    wid * 0.51f, 
+                    .8f * hei + i * 0.04f * hei, 
+                    wid * 0.02f, 
+                    wid * 0.02f
+                ), new RectangleF(0, 0, 60, 60),
+                GraphicsUnit.Pixel);
+            g.DrawString(sys.GetFrag(players[i + 5]),
+                SystemFonts.CaptionFont, Brushes.White,
+                new RectangleF(
+                    0.54f * wid,
+                    .8f * hei + i * 0.04f * hei, 
+                    wid * 0.1f, 
+                    wid * 0.02f), format2);
+            g.DrawString($"{sys.GetGold(players[i + 5]):0.00} k",
+                SystemFonts.CaptionFont, Brushes.White,
+                new RectangleF(
+                    0.66f * wid,
+                    .8f * hei + i * 0.04f * hei, 
+                    wid * 0.1f, 
+                    wid * 0.02f), format2);
         }
     }
 
@@ -120,6 +195,12 @@ public class MatchView : BaseView
         teamBThumb = Bitmap.FromFile(
             "Img/w" + draft.TeamB.Organization.Photo)
             .GetThumbnailImage(60, 60, null, IntPtr.Zero);
+
+        int j = 0;
+        foreach (var x in draft.TeamA.GetAll())
+            players[j++] = x;
+        foreach (var x in draft.TeamB.GetAll())
+            players[j++] = x;
     }
 
     public event Action Exit;
