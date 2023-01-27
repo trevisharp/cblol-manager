@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace CBLoLManager.Configuration;
 
@@ -9,6 +10,9 @@ public class PlayerInitializer : Initializer
     public override void Initialize()
     {
         var players = Players.All;
+
+        if (players.Count() > 0)
+            return;
 
         #region TopLaners (14)
 
