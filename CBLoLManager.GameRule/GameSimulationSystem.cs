@@ -173,7 +173,23 @@ public class GameSimulationSystem
 
     private void endPhase(int timeStep)
     {
+        var players = draft.TeamA.GetAll()
+            .Concat(draft.TeamB.GetAll());
+        
+        foreach (var x in players)
+        {
+            var goldGen = 10 * gold[x] + 40 * Random.Shared.NextSingle();
+            gold[x] += 4f * goldGen * timeStep / 60 / 1000;
 
+            life[x] -= (int)((110 - x.LanePhase) * Random.Shared.NextSingle() / 4);
+
+            if (life[x] < 80)
+                life[x] = 100;
+        }
+        
+        addFigth(
+            draft.TeamA.GetAll(), draft.TeamB.GetAll(), 0, 1
+        );
     }
 
     private void lanePhaseJgEvent()
