@@ -39,19 +39,34 @@ public static class RandExtension
 
     public static Champion Rand(
         this IEnumerable<Champion> champions,
+        Position role,
         int seed
     ) => champions
+        .Where(c => c.Role == role)
         .Skip(seed)
         .FirstOrDefault();
 
-    public static List<Champion> Rand(
+    public static IEnumerable<Champion> Rand(
         this IEnumerable<Champion> champions,
-        int seed,
-        int count
-    ) => champions
-        .Skip(seed)
-        .Take(count)
-        .ToList();
+        int seed
+    )
+    {
+        yield return champions
+            .Skip(seed)
+            .FirstOrDefault(c => c.Role == Position.TopLaner);
+        yield return champions
+            .Skip(seed)
+            .FirstOrDefault(c => c.Role == Position.Jungler);
+        yield return champions
+            .Skip(seed)
+            .FirstOrDefault(c => c.Role == Position.MidLaner);
+        yield return champions
+            .Skip(seed)
+            .FirstOrDefault(c => c.Role == Position.AdCarry);
+        yield return champions
+            .Skip(seed)
+            .FirstOrDefault(c => c.Role == Position.Support);
+    }
 
     public static DraftResult Rand(
         this IEnumerable<Organization> orgs,
@@ -66,8 +81,8 @@ public static class RandExtension
             TeamA = orgs.Rand(players, seed1),
             TeamB = orgs.Rand(players, seed2),
         };
-        result.TeamADraft.AddRange(champions.Rand(seed1, 5));
-        result.TeamBDraft.AddRange(champions.Rand(seed2 + 5, 5));
+        result.TeamADraft.AddRange(champions.Rand(seed1));
+        result.TeamBDraft.AddRange(champions.Rand(seed2));
 
         return result;
     }

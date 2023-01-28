@@ -60,7 +60,7 @@ public class MenuMessageInitializer : Initializer
 
         add("Rexpeita o Rato", 2);
         add("O lobo vai comer seu...", 2);
-        add("#NanaEterna", 2);
+        add("#PlayForNana", 2);
 
         #endregion
 

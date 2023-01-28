@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace CBLoLManager.Views;
 
@@ -15,8 +16,10 @@ public class MatchView : BaseView
     Player[] players = new Player[10];
     Image teamAThumb = null;
     Image teamBThumb = null;
+    Queue<string> messages = new Queue<string>();
 
     int time = 0;
+    int messageAnimation = 0;
 
     public MatchView(DraftResult draft)
     {
@@ -53,14 +56,6 @@ public class MatchView : BaseView
         format3.Alignment = StringAlignment.Far;
         format3.LineAlignment = StringAlignment.Center;
 
-        int m = 0;
-        foreach (var message in sys.messages)
-        {
-            g.DrawString(message, font, Brushes.White,
-                new PointF(0.5f * wid, (.2f + m * 0.05f) * hei));
-            m++;
-        }
-        
         g.DrawImage(teamAThumb, new RectangleF(0.28f * wid, 5, wid * 0.035f, wid * 0.035f),
             new RectangleF(0, 0, 60, 60),
             GraphicsUnit.Pixel);
@@ -96,6 +91,8 @@ public class MatchView : BaseView
         g.DrawString($"{time / 60:00}:{time % 60:00}", font2,
             Brushes.White, new RectangleF(0.47f * wid, hei * 0.05f, wid * 0.06f, hei * 0.05f),
             format);
+
+        messageAnimations(g, wid, hei, font, format);
 
         for (int i = 0; i < 5; i++)
         {
@@ -173,6 +170,50 @@ public class MatchView : BaseView
                     .8f * hei + i * 0.04f * hei, 
                     wid * 0.1f, 
                     wid * 0.02f), format2);
+        }
+    }
+
+    private void messageAnimations(Graphics g,
+        int wid, int hei, Font font, StringFormat format)
+    {
+        float m = 0f;
+        const int N = 8;
+        if (messageAnimation == 0 && messages.Count < N)
+        {
+            if (sys.MessageQueue.Count > 0)
+                messages.Enqueue(
+                    sys.MessageQueue.Dequeue()
+                );
+        }
+        else if (messageAnimation == 0 && messages.Count == N)
+            messageAnimation = 100;
+        else if (messageAnimation > 0)
+        {
+            messageAnimation -= 10;
+            m = -(1 - messageAnimation / 100f);
+            if (messageAnimation == 0)
+            {
+                messages.Dequeue();
+                messageAnimation = 0;
+                m = 0;
+            }
+        }
+
+        bool frist = true;
+        foreach (var message in messages)
+        {
+            Brush brush = Brushes.White;
+            if (messageAnimation > 0 && frist)
+            {
+                Color color = Color.FromArgb(
+                    255 * messageAnimation / 100 , 255, 255, 255
+                );
+                brush = new SolidBrush(color);
+            }
+            g.DrawString(message, font, brush,
+                new PointF(0.5f * wid, (.2f + m * 0.05f) * hei));
+            m++;
+            frist = false;
         }
     }
 

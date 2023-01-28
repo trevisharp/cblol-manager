@@ -11,7 +11,6 @@ public class GameSimulationSystem
     private DraftResult draft;
     private GameEventSystem evSys;
 
-    public List<string> messages = new List<string>(); // temp public
     private bool firstBlood = true;
     
     private int aMagicDamage = 0;
@@ -21,6 +20,7 @@ public class GameSimulationSystem
     private Player pA = null;
     private Player pB = null;
 
+    public Queue<string> MessageQueue { get; private set; } = new Queue<string>();
     public float TeamAGold
         => draft.TeamA.GetAll().Sum(x => gold[x]);
     public float TeamBGold
@@ -29,7 +29,6 @@ public class GameSimulationSystem
         => draft.TeamA.GetAll().Sum(x => kills[x]);
     public int TeamBKills
         => draft.TeamB.GetAll().Sum(x => kills[x]);
-    
     public int Time { get; set; } = 0;
     public int TeamATowers { get; set; } = 0;
     public int TeamBTowers { get; set; } = 0;
@@ -141,7 +140,7 @@ public class GameSimulationSystem
             life[x] -= (int)((110 - x.LanePhase) * Random.Shared.NextSingle() / 2);
             if (life[x] < 30)
             {
-                messages.Add($"{x.Nickname} voltou para base.");
+                MessageQueue.Enqueue($"{x.Nickname} voltou para base.");
                 life[x] = 100;
                 gold[x] -= 0.5f * goldGen * timeStep / 60 / 1000;
             }
@@ -319,7 +318,7 @@ public class GameSimulationSystem
         double defVantage = 1.0)
     {
         var members = teamA.Concat(teamB).Aggregate("", (s, p) => s + p.Nickname + ", ");
-        messages.Add($"{members.Substring(0, members.Length - 2)} estão lutando:");
+        MessageQueue.Enqueue($"{members.Substring(0, members.Length - 2)} estão lutando.");
 
         // Quanto mais participantes da luta, mais valerá a teamFigth e menos a MechanicSkill
         int count = teamA.Count() + teamB.Count();
@@ -424,7 +423,9 @@ public class GameSimulationSystem
                     if (ran < 0)
                     {
                         addKill(y);
-                        messages.Add($"\t{x.Nickname} morreu para {y.Nickname}");
+                        MessageQueue.Enqueue(
+                            MessageSystem.KillMessage(y, champs[y], x, champs[x])
+                        );
                         ran = float.MaxValue;
                     }
                     else
@@ -449,7 +450,9 @@ public class GameSimulationSystem
                     if (ran < 0)
                     {
                         addKill(y);
-                        messages.Add($"\t{x.Nickname} morreu para {y.Nickname}");
+                        MessageQueue.Enqueue(
+                            MessageSystem.KillMessage(y, champs[y], x, champs[x])
+                        );
                         ran = float.MaxValue;
                     }
                     else
