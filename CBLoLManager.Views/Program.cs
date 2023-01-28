@@ -1,3 +1,5 @@
+#define MATCHPAGETEST
+
 using System;
 using System.Linq;
 using System.Drawing;
@@ -38,10 +40,9 @@ bool firstTimeInMarket = true;
 bool firstTimeInSponsorship = true;
 int playCount = 0;
 
-
 crrPage = main;
 
-#if true
+#if MATCHPAGETEST
 crrPage = new MatchView(
     Organizations.All.Rand(
         Players.All, Champions.All, 0, 1

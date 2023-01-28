@@ -43,14 +43,14 @@ public class Team
         if (TopLaner != null)
             list.Add(TopLaner);
 
+        if (Jungler != null)
+            list.Add(Jungler);
+
         if (MidLaner != null)
             list.Add(MidLaner);
 
         if (AdCarry != null)
             list.Add(AdCarry);
-
-        if (Jungler != null)
-            list.Add(Jungler);
 
         if (Support != null)
             list.Add(Support);

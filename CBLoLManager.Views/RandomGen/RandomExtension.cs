@@ -52,20 +52,25 @@ public static class RandExtension
     )
     {
         yield return champions
+            .Where(c => c.Role == Position.TopLaner)
             .Skip(seed)
-            .FirstOrDefault(c => c.Role == Position.TopLaner);
+            .FirstOrDefault();
         yield return champions
+            .Where(c => c.Role == Position.Jungler)
             .Skip(seed)
-            .FirstOrDefault(c => c.Role == Position.Jungler);
+            .FirstOrDefault();
         yield return champions
+            .Where(c => c.Role == Position.MidLaner)
             .Skip(seed)
-            .FirstOrDefault(c => c.Role == Position.MidLaner);
+            .FirstOrDefault();
         yield return champions
+            .Where(c => c.Role == Position.AdCarry)
             .Skip(seed)
-            .FirstOrDefault(c => c.Role == Position.AdCarry);
+            .FirstOrDefault();
         yield return champions
+            .Where(c => c.Role == Position.Support)
             .Skip(seed)
-            .FirstOrDefault(c => c.Role == Position.Support);
+            .FirstOrDefault();
     }
 
     public static DraftResult Rand(
