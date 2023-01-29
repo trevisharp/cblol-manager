@@ -25,8 +25,8 @@ public static class TournamentExtension
 
         for (int i = 0; i < tournament.Teams.Length / 2; i++)
         {
-            var teamIndex = i;
-            var opoenentIndex = tournament.Teams.Length - 1 - i;
+            var teamIndex = indexes[i];
+            var opoenentIndex = indexes[tournament.Teams.Length - 1 - i];
             var team = tournament.Teams[teamIndex];
             var oponent = tournament.Teams[opoenentIndex];
 
