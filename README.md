@@ -26,6 +26,7 @@
 - [x] Tela de Pós-Partida
 - [ ] Testar e Melhorar Updater
 - [ ] Resolver Bug da destruição de Torres
+- [x] Corrigir Bug onde se joga contra si mesmo
 
 ### Versão 0.1.0 beta (publicada)
 

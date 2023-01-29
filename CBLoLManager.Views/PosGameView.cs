@@ -23,6 +23,7 @@ public class PosGameView : BaseView
     private Player mvp;
 
     private DateTime moment;
+    private bool mouseUp = false;
 
     public PosGameView(
         DraftResult draft,
@@ -236,8 +237,13 @@ public class PosGameView : BaseView
 
     public override void MouseMove(PointF cursor, bool down)
     {
-        if (Exit != null)
-            Exit();
+        if (!down)
+            mouseUp = true;
+        if (mouseUp && down)
+        {
+            if (Exit != null)
+                Exit();
+        }
     }
 
     public event Action Exit;

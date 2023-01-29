@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace CBLoLManager.GameRule;
 
@@ -12,48 +13,38 @@ public static class TournamentExtension
         MatchSystem sys = new MatchSystem();
         Team mainOponent = null;
 
-        bool[] hasGame = new bool[tournament.Teams.Length];
-        int crrTeam = 0;
-        int crrOponent = 0;
+        var indexes = Enumerable.Range(0, 10).ToList();
+        int r = tournament.Round - 1;
+        int lastIndex = indexes.Count - 1;
+        for (int i = 0; i < r; i++)
+        {
+            int last = indexes[lastIndex];
+            indexes.RemoveAt(lastIndex);
+            indexes.Insert(1, last);
+        }
 
         for (int i = 0; i < tournament.Teams.Length / 2; i++)
         {
-            if (hasGame[crrTeam])
-            {
-                crrTeam = (crrTeam + 1) % tournament.Teams.Length;
-                continue;
-            }
-            
-            crrOponent = (crrTeam + tournament.Round) % tournament.Teams.Length;
-
-            hasGame[crrTeam] = true;
-            hasGame[crrOponent] = true;
-
-            var team = tournament.Teams[crrTeam];
-            var oponent = tournament.Teams[crrOponent];
+            var teamIndex = i;
+            var opoenentIndex = tournament.Teams.Length - 1 - i;
+            var team = tournament.Teams[teamIndex];
+            var oponent = tournament.Teams[opoenentIndex];
 
             if (team == Game.Current.Team)
             {
                 mainOponent = oponent;
-                crrTeam = (crrOponent + 1) % tournament.Teams.Length;
                 continue;
             }
             else if (oponent == Game.Current.Team)
             {
                 mainOponent = team;
-                crrTeam = (crrOponent + 1) % tournament.Teams.Length;
                 continue;
             }
             
             if (sys.Getwinner(team, oponent))
-                tournament.Wins[crrTeam]++;
-            else tournament.Wins[crrOponent]++;
-
-            crrTeam = (crrOponent + 1) % tournament.Teams.Length;
+                tournament.Wins[teamIndex]++;
+            else tournament.Wins[opoenentIndex]++;
         }
-
-        if (mainOponent == null)
-            throw new Exception("Não foi possível encontrar um oponente");
 
         return mainOponent;
     }
