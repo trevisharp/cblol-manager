@@ -1,4 +1,4 @@
-// #define MATCHPAGETEST
+#define MATCHPAGETEST
 
 using System;
 using System.Linq;
@@ -43,11 +43,10 @@ int playCount = 0;
 crrPage = main;
 
 #if MATCHPAGETEST
-crrPage = new MatchView(
-    Organizations.All.Rand(
-        Players.All, Champions.All, 0, 1
-    )
+var randomDraft = Organizations.All.Rand(
+    Players.All, Champions.All, 0, 1
 );
+makeMatch(randomDraft);
 #endif
 
 main.OnPlay += delegate
@@ -130,9 +129,23 @@ void makeDraft(Team oponent)
 void makeMatch(DraftResult draft)
 {
     match = new MatchView(draft);
-    match.Exit += delegate
-    {
-        openTornament();
+    match.Exit += (d, w, s) =>
+    {  
+        if (s.AWin)
+        {
+            Game.Current?
+                .Tournament?
+                .AddWin(draft.TeamA);
+        }
+        else
+        {
+            Game.Current?
+                .Tournament?
+                .AddWin(draft.TeamB);
+        }
+
+        var posGame = new PosGameView(d, w, s);
+        crrPage = posGame;
     };
     crrPage = match;
 }

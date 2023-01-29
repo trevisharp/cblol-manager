@@ -32,6 +32,7 @@ public class GameSimulationSystem
     
     public IEnumerable<bool> TowersUpA => towersA;
     public IEnumerable<bool> TowersUpB => towersB;
+    public List<float> GoldDiff { get; private set; } = new List<float>();
 
     private int aMagicDamage = 0;
     private int aPhysicalDamage = 0;
@@ -158,6 +159,8 @@ public class GameSimulationSystem
 
         testRespawn();
         towerDestruction();
+
+        GoldDiff.Add(TeamAGold - TeamBGold);
     }
 
     private void testRespawn()

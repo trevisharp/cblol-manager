@@ -453,21 +453,7 @@ public class MatchView : BaseView
         if (down && ended)
         {
             if (Exit != null)
-            {
-                if (sys.AWin)
-                {
-                    Game.Current
-                        .Tournament
-                        .AddWin(draft.TeamA);
-                }
-                else
-                {
-                    Game.Current
-                        .Tournament
-                        .AddWin(draft.TeamB);
-                }
-                Exit();
-            }
+                Exit(draft, sys.AWin, sys);
             return;
         }
 
@@ -480,5 +466,5 @@ public class MatchView : BaseView
             isdown = false;
     }
 
-    public event Action Exit;
+    public event Action<DraftResult, bool, GameSimulationSystem> Exit;
 }
