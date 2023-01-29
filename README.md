@@ -1,20 +1,33 @@
+### Versão 0.4.0 beta
+
+- [ ] Melhorar a interface da escolha do uniforme
+- [ ] Tornar mercado mais competitivo
+- [ ] Abrir sempre os Jogadores com quem você tem propostas
+
+### Versão 0.3.0 beta
+
+- [ ] Implementar Playoffs
+- [ ] Finalização do CBLoL
+- [ ] Inicio de um novo ciclo ao final do CBLoL
+- [ ] Possibilidade de Finalizar Contratos
+- [ ] Impacto da Mentalidade na Simulação
+- [ ] Impacto do Draft na Simulação
+- [ ] Tela de Opções
+- [ ] Sistema de Escolhas durante a semana
+
 ### Versão 0.2.0 beta
 
 - [x] Melhorar Tela Inicial
 - [x] Tela e Simulação de batalha
 - [x] Tratar Bugs de Janela de Transferência
-- [ ] Inicio de um novo ciclo ao final do CBLoL
-- [ ] Finalização do CBLoL
+- [x] Correção do Bug envolvendo a imagem da Caitlyn
 - [ ] Tela de tutorial para Draft/Game
-- [ ] Sistema de Escolhas durante a semana
-- [ ] Tela de Opções
-- [ ] Impacto da Mentalidade na Simulação
-- [ ] Impacto do Draft na Simulação
 - [x] Tela de Vitória
-- [ ] Tela de Pós-Partida
+- [x] Tela de Pós-Partida
 - [ ] Testar e Melhorar Updater
+- [ ] Resolver Bug da destruição de Torres
 
-### Versão 0.1.0 beta
+### Versão 0.1.0 beta (publicada)
 
 - [x] Tela de time
 - [x] Seleção de Org

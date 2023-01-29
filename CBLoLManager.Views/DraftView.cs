@@ -110,6 +110,7 @@ public class DraftView : BaseView
 
         if (step == 100)
         {
+            Audio.Stop();
             DraftResult result = new DraftResult();
             result.TeamA = this.a;
             result.TeamB = this.b;
@@ -118,7 +119,7 @@ public class DraftView : BaseView
             Exit(result);
             return;
         }
-        if (step < 100)
+        if (step > 0 && step < 100)
             step++;
 
         if (arena == null)
@@ -174,11 +175,6 @@ public class DraftView : BaseView
         {
             g.DrawString(crrTime.ToString(), font3, Brushes.White,
                 new RectangleF(bmp.Width * .42f, bmp.Height - hei * .9f + 10f, 200f, 200f), format);
-        }
-        else if (crrTime < 25)
-        {
-            step++;
-            Audio.Stop();
         }
 
         format.Alignment = StringAlignment.Near;

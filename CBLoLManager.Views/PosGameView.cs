@@ -233,4 +233,12 @@ public class PosGameView : BaseView
             new RectangleF(wid / 2, 20, 2 * unity - 20, size - 40), format);
 
     }
+
+    public override void MouseMove(PointF cursor, bool down)
+    {
+        if (Exit != null)
+            Exit();
+    }
+
+    public event Action Exit;
 }

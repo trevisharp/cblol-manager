@@ -1,4 +1,4 @@
-#define MATCHPAGETEST
+// #define MATCHPAGETEST
 
 using System;
 using System.Linq;
@@ -145,6 +145,12 @@ void makeMatch(DraftResult draft)
         }
 
         var posGame = new PosGameView(d, w, s);
+
+        posGame.Exit += delegate
+        {
+            openTornament();
+        };
+
         crrPage = posGame;
     };
     crrPage = match;
