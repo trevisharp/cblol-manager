@@ -12,13 +12,36 @@ public class GameSimulationSystem
     private GameEventSystem evSys;
 
     private bool firstBlood = true;
+
+    private bool[] towersA = new bool[]
+    {
+        true, true, true, 
+        true, true, true, 
+        true, true, true,
+        true, true, true,
+        true, true, true
+    };
+    private bool[] towersB = new bool[]
+    {
+        true, true, true, 
+        true, true, true, 
+        true, true, true,
+        true, true, true,
+        true, true, true
+    };
     
+    public IEnumerable<bool> TowersUpA => towersA;
+    public IEnumerable<bool> TowersUpB => towersB;
+
     private int aMagicDamage = 0;
     private int aPhysicalDamage = 0;
     private int aDefense = 0;
 
     private Player pA = null;
     private Player pB = null;
+
+    private int towerPointA = 0;
+    private int towerPointB = 0;
 
     public Queue<string> MessageQueue { get; private set; } = new Queue<string>();
     public float TeamAGold
@@ -42,6 +65,7 @@ public class GameSimulationSystem
     Dictionary<Player, Champion> champs = new Dictionary<Player, Champion>();
     Dictionary<Player, int> nextFlash = new Dictionary<Player, int>();
     Dictionary<Player, int> nextTp = new Dictionary<Player, int>();
+    Dictionary<Player, int> nextGank = new Dictionary<Player, int>();
 
     public GameSimulationSystem(DraftResult draft)
     {
@@ -79,54 +103,74 @@ public class GameSimulationSystem
             kills.Add(x, 0);
             assits.Add(x, 0);
             deaths.Add(x, 0);
-            respawn.Add(x, int.MaxValue);
+            respawn.Add(x, int.MinValue);
         }
         
         nextTp[draft.TeamA.TopLaner] = 0;
         nextTp[draft.TeamA.MidLaner] = 0;
         nextTp[draft.TeamB.TopLaner] = 0;
         nextTp[draft.TeamB.MidLaner] = 0;
+
+        nextGank[draft.TeamA.Jungler] = 0;
+        nextGank[draft.TeamB.Jungler] = 0;
     }
 
     public string GetFrag(Player p)
         => $"{kills[p]}/{deaths[p]}/{assits[p]}";
     
     public float GetLife(Player p)
-        => life[p] / 100f;
+    {
+        if (respawn[p] > Time)
+            return 0f;
+        return life[p] / 100f;
+    }
     
     public float GetGold(Player p)
         => gold[p];
 
+    public bool IsAlive(Player p)
+        => respawn[p] == int.MinValue || respawn[p] < Time;
+
     public void NextStep()
     {
-        if (Time == 0)
+        if (Time < 90)
         {
-            Time = 90;
+            Time += 10;
             return;
         }
 
-        var timeStep = Random.Shared.Next(40, 80);
+        var timeStep = 10;
 
-        if (Time < 400)
+        if (Time < 500)
             lanePhase(timeStep);
-        else if (Time < 1000)
+        else if (Time < 1200)
             midPhase(timeStep);
         else endPhase(timeStep);
 
         Time += timeStep;
 
+        testRespawn();
+        towerDestruction();
+    }
+
+    private void testRespawn()
+    {
         var players = draft.TeamA.GetAll()
             .Concat(draft.TeamB.GetAll());
         foreach (var x in players)
         {
+            if (respawn[x] == int.MinValue)
+                continue;
+            
             if (Time > respawn[x])
             {
-                respawn[x] = int.MaxValue;
+                MessageQueue.Enqueue($"{x.Nickname} renasceu.");
+                respawn[x] = int.MinValue;
                 life[x] = 100;
             }
         }
     }
-
+    
     private void lanePhase(int timeStep)
     {
         var players = draft.TeamA.GetAll()
@@ -136,17 +180,13 @@ public class GameSimulationSystem
         {
             var goldGen = x.LanePhase + 20 * Random.Shared.NextSingle() - 10;
             gold[x] += 4f * goldGen * timeStep / 60 / 1000;
-
-            life[x] -= (int)((110 - x.LanePhase) * Random.Shared.NextSingle() / 2);
-            if (life[x] < 30)
-            {
-                MessageQueue.Enqueue($"{x.Nickname} voltou para base.");
-                life[x] = 100;
-                gold[x] -= 0.5f * goldGen * timeStep / 60 / 1000;
-            }
         }
         
-        lanePhaseJgEvent();
+
+        if (Random.Shared.Next(90) < timeStep)
+            lanePhaseJgEvent();
+        else if (Random.Shared.Next(60) < timeStep)
+            laneFigthEvent(timeStep);
     }
 
     private void midPhase(int timeStep)
@@ -164,10 +204,11 @@ public class GameSimulationSystem
             if (life[x] < 80)
                 life[x] = 100;
         }
-        
-        addFigth(
-            draft.TeamA.GetAll(), draft.TeamB.GetAll(), 0, 1
-        );
+
+        if (Random.Shared.Next(90) < timeStep)
+            laneFigthEvent(timeStep);
+        else if (Random.Shared.Next(120) < timeStep)
+            teamFigth(2f);
     }
 
     private void endPhase(int timeStep)
@@ -179,28 +220,155 @@ public class GameSimulationSystem
         {
             var goldGen = 10 * gold[x] + 40 * Random.Shared.NextSingle();
             gold[x] += 4f * goldGen * timeStep / 60 / 1000;
-
-            life[x] -= (int)((110 - x.LanePhase) * Random.Shared.NextSingle() / 4);
-
-            if (life[x] < 80)
-                life[x] = 100;
         }
-        
-        addFigth(
-            draft.TeamA.GetAll(), draft.TeamB.GetAll(), 0, 1
-        );
+
+        if (Random.Shared.Next(120) < timeStep)
+            teamFigth(5f);
+    }
+
+    private void teamFigth(float intensity)
+    {
+        var alive = draft.TeamA.GetAll()
+            .Concat(draft.TeamB.GetAll())
+            .Where(p => IsAlive(p));
+        if (alive.Count() < 10)
+            return;
+        MessageQueue.Enqueue("Uma Team Figth começou");
+        addFigth(draft.TeamA.GetAll(),
+            draft.TeamB.GetAll(), 0, intensity);
+    }
+
+    private void laneFigthEvent(int timeStep)
+    {
+        laneFigthEvent(draft.TeamA.TopLaner, draft.TeamB.TopLaner, timeStep);
+        laneFigthEvent(draft.TeamA.MidLaner, draft.TeamB.MidLaner, timeStep);
+        laneFigthEvent(
+        new Player[] 
+        {
+            draft.TeamA.AdCarry,
+            draft.TeamA.Support,
+        },
+        new Player[] 
+        {
+            draft.TeamB.AdCarry,
+            draft.TeamB.Support,
+        }, timeStep);
+    }
+
+    private void towerDestruction()
+    {
+        towerPointA += 5;
+        towerPointB += 5;
+
+        if (TeamAGold > TeamBGold)
+        {
+            var diff = TeamAGold - TeamBGold;
+            towerPointA += (int)(10 * diff);
+        }
+        else if (TeamBGold > TeamAGold)
+        {
+            var diff = TeamBGold - TeamAGold;
+            towerPointB += (int)(10 * diff);
+        }
+
+        if (towerPointA > 400)
+        {
+            TeamATowers++;
+            towerPointA = 0;
+            MessageQueue.Enqueue($"{draft.TeamA.Organization.Name} derrubou uma torre");
+
+            int index = Random.Shared.Next(3);
+            while (index < 12 && !towersB[index])
+                index += 3;
+            
+            while (!towersB[index])
+                index++;
+
+            towersB[index] = false;
+
+            if (index == 14)
+                finalizeGame(true);
+        }
+
+        if (towerPointB > 400)
+        {
+            TeamBTowers++;
+            towerPointB = 0;
+            MessageQueue.Enqueue($"{draft.TeamB.Organization.Name} derrubou uma torre");
+
+            int index = Random.Shared.Next(3);
+            while (index < 12 && !towersA[index])
+                index += 3;
+                
+            while (!towersA[index])
+                index++;
+
+            towersA[index] = false;
+
+            if (index == 14)
+                finalizeGame(false);
+        }
+    }
+
+    private void finalizeGame(bool teamAWin)
+    {
+        if (teamAWin)
+        {
+            MessageQueue.Enqueue($"{draft.TeamA.Organization.Name} venceu");
+        }
+        else
+        {
+            MessageQueue.Enqueue($"{draft.TeamB.Organization.Name} venceu");
+        }
+    }
+
+    private void laneFigthEvent(
+        Player p, Player q, int timeStep
+    ) 
+    => laneFigthEvent(new Player[] { p }, new Player[] { q }, timeStep);
+
+    private void laneFigthEvent(
+        IEnumerable<Player> pa,
+        IEnumerable<Player> pb,
+        int timeStep)
+    {
+        addFigth(pa, pb, 0);
+
+        foreach (var x in pa.Concat(pb))
+        {
+            if (respawn[x] > Time)
+                continue;
+            if (life[x] < 25 + 10 * Random.Shared.NextSingle())
+            {
+                var goldGen = x.LanePhase + 20 * Random.Shared.NextSingle() - 10;
+
+                MessageQueue.Enqueue($"{x.Nickname} voltou para base.");
+                life[x] = 100;
+                gold[x] -= 0.5f * goldGen * timeStep / 60 / 1000;
+            }
+        }
     }
 
     private void lanePhaseJgEvent()
     {
         Position gankA = (Position)Random.Shared.Next(5);
         Position gankB = (Position)Random.Shared.Next(5);
+        if (nextGank[draft.TeamA.Jungler] > Time)
+            gankA = Position.Jungler;
+        if (nextGank[draft.TeamB.Jungler] > Time)
+            gankB = Position.Jungler;
+        
+        if (gankA != Position.Jungler)
+            nextGank[draft.TeamA.Jungler] = Time + 40 + Random.Shared.Next(20);
+        if (gankB != Position.Jungler)
+            nextGank[draft.TeamB.Jungler] = Time + 40 + Random.Shared.Next(20);
 
         if (gankA == gankB)
         {
             switch (gankA)
             {
                 case Position.TopLaner:
+                    MessageQueue.Enqueue("Ambos os junglers gankaram o Top");
                     addFigth(new Player[] {
                         draft.TeamA.TopLaner,
                         draft.TeamA.Jungler
@@ -210,6 +378,7 @@ public class GameSimulationSystem
                     }, 0, 0.75);
                     break;
                 case Position.MidLaner:
+                    MessageQueue.Enqueue("Ambos os junglers gankaram o Mid");
                     addFigth(new Player[] {
                         draft.TeamA.MidLaner,
                         draft.TeamA.Jungler
@@ -220,6 +389,7 @@ public class GameSimulationSystem
                     break;
                 case Position.Support:
                 case Position.AdCarry:
+                    MessageQueue.Enqueue("Ambos os junglers gankaram o Bot");
                     addFigth(new Player[] {
                         draft.TeamA.AdCarry,
                         draft.TeamA.Support,
@@ -241,6 +411,8 @@ public class GameSimulationSystem
             switch (gankA)
             {
                 case Position.TopLaner:
+                    MessageQueue.Enqueue(draft.TeamA.Jungler.Nickname +
+                        " iniciou um gank no Top");
                     addFigth(new Player[] {
                         draft.TeamA.TopLaner,
                         draft.TeamA.Jungler
@@ -249,6 +421,8 @@ public class GameSimulationSystem
                     }, 50, 0.5);
                     break;
                 case Position.MidLaner:
+                    MessageQueue.Enqueue(draft.TeamA.Jungler.Nickname +
+                        " iniciou um gank no Mid");
                     addFigth(new Player[] {
                         draft.TeamA.MidLaner,
                         draft.TeamA.Jungler
@@ -258,6 +432,8 @@ public class GameSimulationSystem
                     break;
                 case Position.Support:
                 case Position.AdCarry:
+                    MessageQueue.Enqueue(draft.TeamA.Jungler.Nickname +
+                        " iniciou um gank no Bot");
                     addFigth(new Player[] {
                         draft.TeamA.AdCarry,
                         draft.TeamA.Support,
@@ -276,6 +452,8 @@ public class GameSimulationSystem
             switch (gankB)
             {
                 case Position.TopLaner:
+                    MessageQueue.Enqueue(draft.TeamB.Jungler.Nickname +
+                        " iniciou um gank no Top");
                     addFigth(new Player[] {
                         draft.TeamB.TopLaner,
                         draft.TeamB.Jungler
@@ -284,6 +462,8 @@ public class GameSimulationSystem
                     }, 50, 0.5);
                     break;
                 case Position.MidLaner:
+                    MessageQueue.Enqueue(draft.TeamB.Jungler.Nickname +
+                        " iniciou um gank no Mid");
                     addFigth(new Player[] {
                         draft.TeamB.MidLaner,
                         draft.TeamB.Jungler
@@ -293,6 +473,8 @@ public class GameSimulationSystem
                     break;
                 case Position.Support:
                 case Position.AdCarry:
+                    MessageQueue.Enqueue(draft.TeamB.Jungler.Nickname +
+                        " iniciou um gank no Bot");
                     addFigth(new Player[] {
                         draft.TeamB.AdCarry,
                         draft.TeamB.Support,
@@ -315,11 +497,9 @@ public class GameSimulationSystem
         IEnumerable<Player> teamA,
         IEnumerable<Player> teamB,
         int diff = 0,
-        double defVantage = 1.0)
+        double defVantage = 1.0,
+        int restartCount = 0)
     {
-        var members = teamA.Concat(teamB).Aggregate("", (s, p) => s + p.Nickname + ", ");
-        MessageQueue.Enqueue($"{members.Substring(0, members.Length - 2)} estão lutando.");
-
         // Quanto mais participantes da luta, mais valerá a teamFigth e menos a MechanicSkill
         int count = teamA.Count() + teamB.Count();
         float teamParam = count / 10f;
@@ -383,7 +563,7 @@ public class GameSimulationSystem
 
         while (result > 0)
         {
-            result -= 5;
+            result -= 3;
             var rot = loseTeam.Sum(x => life[x]);
             var ran = Random.Shared.NextSingle() * rot;
             foreach (var x in loseTeam)
@@ -462,6 +642,11 @@ public class GameSimulationSystem
                 }
             }
         }
+    
+        var aliveA = teamA.Where(x => IsAlive(x));
+        var aliveB = teamB.Where(x => IsAlive(x));
+        if (aliveA.Count() > 2 && aliveB.Count() > 2 && restartCount < 5)
+            addFigth(aliveA, aliveB, 0, defVantage, restartCount + 1);
     }
 
     private void addDeath(Player player)
@@ -474,6 +659,12 @@ public class GameSimulationSystem
     {
         kills[player]++;
         gold[player] += 0.3f;
+        if (firstBlood)
+        {
+            MessageQueue.Enqueue("First Blood");
+            firstBlood = false;
+            gold[player] += 0.2f;
+        }
     }
 
     private void addAssist(Player player)

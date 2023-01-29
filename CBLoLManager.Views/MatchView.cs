@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
 
@@ -18,17 +19,33 @@ public class MatchView : BaseView
     Image teamBThumb = null;
     Queue<string> messages = new Queue<string>();
 
+    Image blueTower;
+    Image redTower;
+    Image blueInibitor;
+    Image redInibitor;
+    Image blueNexus;
+    Image redNexus;
+
     int time = 0;
     int messageAnimation = 0;
+    DateTime updateControl;
 
     public MatchView(DraftResult draft)
     {
         this.draft = draft;
         this.sys = new GameSimulationSystem(draft);
+        updateControl = DateTime.Now;
     }
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
+        var controlTime = DateTime.Now - updateControl;
+        if (controlTime.TotalSeconds > 0.25)
+        {
+            updateControl = DateTime.Now;
+            sys.NextStep();
+        }
+        
         if (time != sys.Time)
         {
             time += (int)MathF.Ceiling((sys.Time - time) / 10f);
@@ -93,6 +110,7 @@ public class MatchView : BaseView
             format);
 
         messageAnimations(g, wid, hei, font, format);
+        drawTowers(g, wid, hei);
 
         for (int i = 0; i < 5; i++)
         {
@@ -217,6 +235,47 @@ public class MatchView : BaseView
         }
     }
 
+    private void drawTowers(Graphics g, int wid, int hei)
+    {
+        var towers = sys.TowersUpA.ToArray();
+
+        if (towers[0])
+            g.DrawImage(blueTower, 
+                new PointF(0.09f * wid, 0.18f * hei));
+
+        if (towers[1])
+            g.DrawImage(blueTower, 
+                new PointF(0.22f * wid, 0.40f * hei));
+
+        if (towers[2])
+            g.DrawImage(blueTower, 
+                new PointF(0.32f * wid, 0.65f * hei));
+        
+        if (towers[3])
+            g.DrawImage(blueTower, 
+                new PointF(0.09f * wid, 0.35f * hei));
+
+        if (towers[4])
+            g.DrawImage(blueTower, 
+                new PointF(0.19f * wid, 0.46f * hei));
+
+        if (towers[5])
+            g.DrawImage(blueTower, 
+                new PointF(0.25f * wid, 0.65f * hei));
+        
+        if (towers[6])
+            g.DrawImage(blueTower, 
+                new PointF(0.09f * wid, 0.50f * hei));
+
+        if (towers[7])
+            g.DrawImage(blueTower, 
+                new PointF(0.16f * wid, 0.52f * hei));
+
+        if (towers[8])
+            g.DrawImage(blueTower, 
+                new PointF(0.18f * wid, 0.65f * hei));
+    }
+
     public override void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
@@ -246,6 +305,23 @@ public class MatchView : BaseView
             players[j++] = x;
         foreach (var x in draft.TeamB.GetAll())
             players[j++] = x;
+        
+        blueTower = Bitmap.FromFile("Img/bluetower.png");
+        redTower = Bitmap.FromFile("Img/redtower.png");
+        blueInibitor = Bitmap.FromFile("Img/blueinibitor.png");
+        redInibitor = Bitmap.FromFile("Img/redinibitor.png");
+        blueNexus = Bitmap.FromFile("Img/bluenexus.png");
+        redNexus = Bitmap.FromFile("Img/rednexus.png");
+
+        blueTower = reduce(blueTower);
+        redTower = reduce(redTower);
+        blueInibitor = reduce(blueInibitor);
+        redInibitor = reduce(redInibitor);
+        blueNexus = reduce(blueNexus);
+        redNexus = reduce(redNexus);
+
+        Image reduce(Image img)
+            => img.GetThumbnailImage(img.Width / 10, img.Height / 10, null, IntPtr.Zero);
     }
 
     bool isdown = false;
