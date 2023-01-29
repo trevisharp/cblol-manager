@@ -239,6 +239,18 @@ public class MatchView : BaseView
     {
         var towers = sys.TowersUpA.ToArray();
 
+        if (towers[9])
+            g.DrawImage(blueInibitor, 
+                new PointF(0.09f * wid, 0.52f * hei));
+
+        if (towers[10])
+            g.DrawImage(blueInibitor, 
+                new PointF(0.15f * wid, 0.54f * hei));
+
+        if (towers[11])
+            g.DrawImage(blueInibitor, 
+                new PointF(0.17f * wid, 0.66f * hei));
+
         if (towers[0])
             g.DrawImage(blueTower, 
                 new PointF(0.09f * wid, 0.18f * hei));
@@ -274,6 +286,18 @@ public class MatchView : BaseView
         if (towers[8])
             g.DrawImage(blueTower, 
                 new PointF(0.18f * wid, 0.65f * hei));
+
+        if (towers[14])
+            g.DrawImage(blueNexus, 
+                new PointF(0.09f * wid, 0.65f * hei));
+
+        if (towers[12])
+            g.DrawImage(blueTower, 
+                new PointF(0.10f * wid, 0.63f * hei));
+
+        if (towers[13])
+            g.DrawImage(blueTower, 
+                new PointF(0.11f * wid, 0.64f * hei));
     }
 
     public override void Load(Bitmap bmp, Graphics g)
