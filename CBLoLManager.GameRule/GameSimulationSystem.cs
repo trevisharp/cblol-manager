@@ -43,6 +43,13 @@ public class GameSimulationSystem
     private int towerPointA = 0;
     private int towerPointB = 0;
 
+    private int aceCountA = 0;
+    private int aceCountB = 0;
+
+    public bool GameEnded { get; private set; } = false;
+    public bool AWin { get; private set; } = false;
+    public bool BWin { get; private set; } =false;
+
     public Queue<string> MessageQueue { get; private set; } = new Queue<string>();
     public float TeamAGold
         => draft.TeamA.GetAll().Sum(x => gold[x]);
@@ -236,6 +243,40 @@ public class GameSimulationSystem
         MessageQueue.Enqueue("Uma Team Figth começou");
         addFigth(draft.TeamA.GetAll(),
             draft.TeamB.GetAll(), 0, intensity);
+        
+        bool teamBAce = true;
+        foreach (var x in draft.TeamA.GetAll())
+        {
+            if (IsAlive(x))
+            {
+                teamBAce = false;
+                break;
+            }
+        }
+        
+        bool teamAAce = true;
+        foreach (var x in draft.TeamB.GetAll())
+        {
+            if (IsAlive(x))
+            {
+                teamAAce = false;
+                break;
+            }
+        }
+
+        if (teamAAce)
+        {
+            aceCountA++;
+            towerPointA += 600 * aceCountA;
+            MessageQueue.Enqueue($"{draft.TeamA.Organization.Name} fez um ACE");
+        }
+
+        if (teamBAce)
+        {
+            aceCountB++;
+            towerPointB += 600 * aceCountB;
+            MessageQueue.Enqueue($"{draft.TeamB.Organization.Name} fez um ACE");
+        }
     }
 
     private void laneFigthEvent(int timeStep)
@@ -271,42 +312,45 @@ public class GameSimulationSystem
             towerPointB += (int)(10 * diff);
         }
 
-        if (towerPointA > 400)
+        while (towerPointA > 400)
         {
             TeamATowers++;
-            towerPointA = 0;
+            towerPointA -= 400;
             MessageQueue.Enqueue($"{draft.TeamA.Organization.Name} derrubou uma torre");
 
             int index = Random.Shared.Next(3);
             while (index < 12 && !towersB[index])
                 index += 3;
             
-            while (!towersB[index])
+            while (!towersB[index] && index < 15)
                 index++;
 
-            towersB[index] = false;
+            if (index < 15)    
+                towersB[index] = false;
 
-            if (index == 14)
+            if (index >= 14)
                 finalizeGame(true);
         }
 
-        if (towerPointB > 400)
+        while (towerPointB > 400)
         {
             TeamBTowers++;
-            towerPointB = 0;
+            towerPointB -= 400;
             MessageQueue.Enqueue($"{draft.TeamB.Organization.Name} derrubou uma torre");
 
             int index = Random.Shared.Next(3);
             while (index < 12 && !towersA[index])
                 index += 3;
                 
-            while (!towersA[index])
+            while (!towersA[index] && index < 15)
                 index++;
 
-            towersA[index] = false;
+            if (index < 15)    
+                towersA[index] = false;
 
-            if (index == 14)
+            if (index >= 14)
                 finalizeGame(false);
+
         }
     }
 
@@ -315,10 +359,14 @@ public class GameSimulationSystem
         if (teamAWin)
         {
             MessageQueue.Enqueue($"{draft.TeamA.Organization.Name} venceu");
+            GameEnded = true;
+            AWin = true;
         }
         else
         {
             MessageQueue.Enqueue($"{draft.TeamB.Organization.Name} venceu");
+            GameEnded = true;
+            BWin = true;
         }
     }
 
@@ -563,7 +611,7 @@ public class GameSimulationSystem
 
         while (result > 0)
         {
-            result -= 3;
+            result -= 2;
             var rot = loseTeam.Sum(x => life[x]);
             var ran = Random.Shared.NextSingle() * rot;
             foreach (var x in loseTeam)

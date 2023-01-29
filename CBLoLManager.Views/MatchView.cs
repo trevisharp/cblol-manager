@@ -18,6 +18,7 @@ public class MatchView : BaseView
     Image teamAThumb = null;
     Image teamBThumb = null;
     Queue<string> messages = new Queue<string>();
+    bool paused = false;
 
     Image blueTower;
     Image redTower;
@@ -39,11 +40,21 @@ public class MatchView : BaseView
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
+        if (paused)
+        {
+            g.FillRectangle(Brushes.White, 
+                new Rectangle(50, 50, 50, 200));
+            g.FillRectangle(Brushes.White, 
+                new Rectangle(125, 50, 50, 200));
+            return;
+        }
+
         var controlTime = DateTime.Now - updateControl;
         if (controlTime.TotalSeconds > 0.25)
         {
             updateControl = DateTime.Now;
-            sys.NextStep();
+            if (!sys.GameEnded)
+                sys.NextStep();
         }
         
         if (time != sys.Time)
@@ -195,7 +206,7 @@ public class MatchView : BaseView
         int wid, int hei, Font font, StringFormat format)
     {
         float m = 0f;
-        const int N = 8;
+        const int N = 11;
         if (messageAnimation == 0 && messages.Count < N)
         {
             if (sys.MessageQueue.Count > 0)
@@ -207,7 +218,7 @@ public class MatchView : BaseView
             messageAnimation = 100;
         else if (messageAnimation > 0)
         {
-            messageAnimation -= 10;
+            messageAnimation -= 25;
             m = -(1 - messageAnimation / 100f);
             if (messageAnimation == 0)
             {
@@ -229,7 +240,7 @@ public class MatchView : BaseView
                 brush = new SolidBrush(color);
             }
             g.DrawString(message, font, brush,
-                new PointF(0.5f * wid, (.2f + m * 0.05f) * hei));
+                new PointF(0.5f * wid, (.15f + m * 0.05f) * hei));
             m++;
             frist = false;
         }
@@ -240,64 +251,126 @@ public class MatchView : BaseView
         var towers = sys.TowersUpA.ToArray();
 
         if (towers[9])
-            g.DrawImage(blueInibitor, 
+            g.DrawImage(blueInibitor,
                 new PointF(0.09f * wid, 0.52f * hei));
 
         if (towers[10])
-            g.DrawImage(blueInibitor, 
+            g.DrawImage(blueInibitor,
                 new PointF(0.15f * wid, 0.54f * hei));
 
         if (towers[11])
-            g.DrawImage(blueInibitor, 
+            g.DrawImage(blueInibitor,
                 new PointF(0.17f * wid, 0.66f * hei));
 
         if (towers[0])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.09f * wid, 0.18f * hei));
 
         if (towers[1])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.22f * wid, 0.40f * hei));
 
         if (towers[2])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.32f * wid, 0.65f * hei));
         
         if (towers[3])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.09f * wid, 0.35f * hei));
 
         if (towers[4])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.19f * wid, 0.46f * hei));
 
         if (towers[5])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.25f * wid, 0.65f * hei));
         
         if (towers[6])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.09f * wid, 0.50f * hei));
 
         if (towers[7])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.16f * wid, 0.52f * hei));
 
         if (towers[8])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.18f * wid, 0.65f * hei));
 
         if (towers[14])
-            g.DrawImage(blueNexus, 
+            g.DrawImage(blueNexus,
                 new PointF(0.09f * wid, 0.65f * hei));
 
         if (towers[12])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.10f * wid, 0.63f * hei));
 
         if (towers[13])
-            g.DrawImage(blueTower, 
+            g.DrawImage(blueTower,
                 new PointF(0.11f * wid, 0.64f * hei));
+
+        towers = sys.TowersUpB.ToArray();
+
+        if (towers[9])
+            g.DrawImage(redInibitor,
+                new PointF(0.31f * wid, 0.12f * hei));
+
+        if (towers[10])
+            g.DrawImage(redInibitor, 
+                new PointF(0.33f * wid, 0.23f * hei));
+
+        if (towers[11])
+            g.DrawImage(redInibitor,
+                new PointF(0.395f * wid, 0.27f * hei));
+
+        if (towers[0])
+            g.DrawImage(redTower,
+                new PointF(0.16f * wid, 0.1f * hei));
+
+        if (towers[1])
+            g.DrawImage(redTower,
+                new PointF(0.26f * wid, 0.32f * hei));
+
+        if (towers[2])
+            g.DrawImage(redTower,
+                new PointF(0.4f * wid, 0.55f * hei));
+        
+        if (towers[3])
+            g.DrawImage(redTower,
+                new PointF(0.24f * wid, 0.1f * hei));
+
+        if (towers[4])
+            g.DrawImage(redTower,
+                new PointF(0.30f * wid, 0.26f * hei));
+
+        if (towers[5])
+            g.DrawImage(redTower,
+                new PointF(0.39f * wid, 0.37f * hei));
+        
+        if (towers[6])
+            g.DrawImage(redTower,
+                new PointF(0.30f * wid, 0.1f * hei));
+
+        if (towers[7])
+            g.DrawImage(redTower, 
+                new PointF(0.32f * wid, 0.23f * hei));
+
+        if (towers[8])
+            g.DrawImage(redTower,
+                new PointF(0.395f * wid, 0.28f * hei));
+
+        if (towers[14])
+            g.DrawImage(redNexus,
+                new PointF(0.38f * wid, 0.13f * hei));
+
+        if (towers[12])
+            g.DrawImage(redTower,
+                new PointF(0.38f * wid, 0.16f * hei));
+
+        if (towers[13])
+            g.DrawImage(redTower,
+                new PointF(0.36f * wid, 0.14f * hei));
     }
 
     public override void Load(Bitmap bmp, Graphics g)
@@ -353,7 +426,7 @@ public class MatchView : BaseView
     {
         if (down && !isdown)
         {
-            sys.NextStep();
+            paused = !paused;
             isdown = true;
         }
         if (!down)
