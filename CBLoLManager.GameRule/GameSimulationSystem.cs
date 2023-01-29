@@ -327,16 +327,20 @@ public class GameSimulationSystem
             while (index < 12 && !towersB[index])
                 index += 3;
             
-            if (index >= 12)
-                index = 12;
+            if (index < 12)
+            {
+                towersB[index] = false;
+                break;
+            }
             
-            while (!towersB[index] && index < 15)
+            index = 12;
+            while (index < 15 && !towersB[index])
                 index++;
 
-            if (index < 15)    
+            if (index < 15)
                 towersB[index] = false;
-
-            if (index >= 14)
+            
+            if (!towersB[14])
                 finalizeGame(true);
         }
 
@@ -350,18 +354,21 @@ public class GameSimulationSystem
             while (index < 12 && !towersA[index])
                 index += 3;
             
-            if (index >= 12)
-                index = 12;
-                
-            while (!towersA[index] && index < 15)
+            if (index < 12)
+            {
+                towersA[index] = false;
+                break;
+            }
+            
+            index = 12;
+            while (index < 15 && !towersA[index])
                 index++;
 
-            if (index < 15)    
+            if (index < 15)
                 towersA[index] = false;
-
-            if (index >= 14)
-                finalizeGame(false);
-
+            
+            if (!towersA[14])
+                finalizeGame(true);
         }
     }
 

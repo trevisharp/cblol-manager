@@ -14,6 +14,7 @@
 - [ ] Impacto do Draft na Simulação
 - [ ] Tela de Opções
 - [ ] Sistema de Escolhas durante a semana
+- [ ] Tela de tutorial para Draft/Game
 
 ### Versão 0.2.0 beta
 
@@ -21,11 +22,10 @@
 - [x] Tela e Simulação de batalha
 - [x] Tratar Bugs de Janela de Transferência
 - [x] Correção do Bug envolvendo a imagem da Caitlyn
-- [ ] Tela de tutorial para Draft/Game
 - [x] Tela de Vitória
 - [x] Tela de Pós-Partida
 - [ ] Testar e Melhorar Updater
-- [ ] Resolver Bug da destruição de Torres
+- [x] Resolver Bug da destruição de Torres
 - [x] Corrigir Bug onde se joga contra si mesmo
 
 ### Versão 0.1.0 beta (publicada)
