@@ -388,7 +388,8 @@ public class GameSimulationSystem
         IEnumerable<Player> pb,
         int timeStep)
     {
-        addFigth(pa, pb, 0);
+        var diff = 2 * (pa.Sum(x => x.LanePhase) - pb.Sum(x => x.LanePhase));
+        addFigth(pa, pb, diff);
 
         foreach (var x in pa.Concat(pb))
         {
