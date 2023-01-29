@@ -12,7 +12,6 @@ public class PosMarketPage : BaseView
 {
     Bitmap show = null;
     Bitmap show2 = null;
-    int frame = 0;
     bool started = false;
     public PosMarketPage()
     {

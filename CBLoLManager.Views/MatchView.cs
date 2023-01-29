@@ -19,6 +19,7 @@ public class MatchView : BaseView
     Image teamBThumb = null;
     Queue<string> messages = new Queue<string>();
     bool paused = false;
+    bool ended = false;
 
     Image blueTower;
     Image redTower;
@@ -26,6 +27,9 @@ public class MatchView : BaseView
     Image redInibitor;
     Image blueNexus;
     Image redNexus;
+
+    Image win;
+    Image lose;
 
     int time = 0;
     int messageAnimation = 0;
@@ -40,6 +44,26 @@ public class MatchView : BaseView
 
     protected override void draw(Bitmap bmp, Graphics g)
     {
+        if (ended)
+            return;
+
+        if (sys.GameEnded)
+        {
+            var winWid = win.Width * bmp.Height / win.Height;
+            if (sys.AWin)
+            {
+                g.DrawImage(win, new Rectangle(
+                    (bmp.Width - winWid) / 2, 0, winWid, bmp.Height));
+            }
+            else
+            {
+                g.DrawImage(lose, new Rectangle(
+                    (bmp.Width - winWid) / 2, 0, winWid, bmp.Height));
+            }
+            ended = true;
+            return;
+        }
+        
         if (paused)
         {
             g.FillRectangle(Brushes.White, 
@@ -53,8 +77,7 @@ public class MatchView : BaseView
         if (controlTime.TotalSeconds > 0.25)
         {
             updateControl = DateTime.Now;
-            if (!sys.GameEnded)
-                sys.NextStep();
+            sys.NextStep();
         }
         
         if (time != sys.Time)
@@ -419,11 +442,35 @@ public class MatchView : BaseView
 
         Image reduce(Image img)
             => img.GetThumbnailImage(img.Width / 10, img.Height / 10, null, IntPtr.Zero);
+
+        win = Bitmap.FromFile("Img/win.png");
+        lose = Bitmap.FromFile("Img/lose.png");
     }
 
     bool isdown = false;
     public override void MouseMove(PointF cursor, bool down)
     {
+        if (down && ended)
+        {
+            if (Exit != null)
+            {
+                if (sys.AWin)
+                {
+                    Game.Current
+                        .Tournament
+                        .AddWin(draft.TeamA);
+                }
+                else
+                {
+                    Game.Current
+                        .Tournament
+                        .AddWin(draft.TeamB);
+                }
+                Exit();
+            }
+            return;
+        }
+
         if (down && !isdown)
         {
             paused = !paused;

@@ -18,4 +18,16 @@ public class Tournament
         
         this.Wins = new int[teams.Length];
     }
+
+    public void AddWin(Team team)
+    {
+        for (int i = 0; i < Teams.Length; i++)
+        {
+            if (Teams[i] == team)
+            {
+                Wins[i]++;
+                return;
+            }
+        }
+    }
 }

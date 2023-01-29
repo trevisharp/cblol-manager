@@ -244,34 +244,36 @@ public class GameSimulationSystem
         addFigth(draft.TeamA.GetAll(),
             draft.TeamB.GetAll(), 0, intensity);
         
-        bool teamBAce = true;
+        int teamBAce = 4;
         foreach (var x in draft.TeamA.GetAll())
         {
             if (IsAlive(x))
             {
-                teamBAce = false;
-                break;
+                teamBAce--;
+                if (teamBAce == 0)
+                    break;
             }
         }
         
-        bool teamAAce = true;
+        int teamAAce = 4;
         foreach (var x in draft.TeamB.GetAll())
         {
             if (IsAlive(x))
             {
-                teamAAce = false;
-                break;
+                teamAAce--;
+                if (teamAAce == 0)
+                    break;
             }
         }
 
-        if (teamAAce)
+        if (teamAAce == 0)
         {
             aceCountA++;
             towerPointA += 600 * aceCountA;
             MessageQueue.Enqueue($"{draft.TeamA.Organization.Name} fez um ACE");
         }
 
-        if (teamBAce)
+        if (teamBAce == 0)
         {
             aceCountB++;
             towerPointB += 600 * aceCountB;
@@ -322,6 +324,9 @@ public class GameSimulationSystem
             while (index < 12 && !towersB[index])
                 index += 3;
             
+            if (index >= 12)
+                index = 12;
+            
             while (!towersB[index] && index < 15)
                 index++;
 
@@ -341,6 +346,9 @@ public class GameSimulationSystem
             int index = Random.Shared.Next(3);
             while (index < 12 && !towersA[index])
                 index += 3;
+            
+            if (index >= 12)
+                index = 12;
                 
             while (!towersA[index] && index < 15)
                 index++;

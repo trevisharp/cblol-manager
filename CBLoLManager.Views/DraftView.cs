@@ -108,7 +108,7 @@ public class DraftView : BaseView
         StringFormat format = new StringFormat();
         format.LineAlignment = StringAlignment.Center;
 
-        if (step > 1)
+        if (step == 100)
         {
             DraftResult result = new DraftResult();
             result.TeamA = this.a;
@@ -118,6 +118,8 @@ public class DraftView : BaseView
             Exit(result);
             return;
         }
+        if (step < 100)
+            step++;
 
         if (arena == null)
         {
