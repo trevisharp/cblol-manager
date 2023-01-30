@@ -368,7 +368,7 @@ public class GameSimulationSystem
                 towersA[index] = false;
             
             if (!towersA[14])
-                finalizeGame(true);
+                finalizeGame(false);
         }
     }
 

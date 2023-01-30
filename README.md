@@ -15,6 +15,7 @@
 - [ ] Tela de Opções
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Tela de tutorial para Draft/Game
+- [x] Corrigir Bug onde o jogador sempre vence
 
 ### Versão 0.2.0 beta
 
@@ -24,7 +25,7 @@
 - [x] Correção do Bug envolvendo a imagem da Caitlyn
 - [x] Tela de Vitória
 - [x] Tela de Pós-Partida
-- [ ] Testar e Melhorar Updater
+- [x] Testar e Melhorar Updater
 - [x] Resolver Bug da destruição de Torres
 - [x] Corrigir Bug onde se joga contra si mesmo
 
