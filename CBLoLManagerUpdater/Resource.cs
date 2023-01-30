@@ -6,4 +6,6 @@ public class Resource
     
     [JsonPropertyName("browser_download_url")]
     public string BrowserDownloadUrl { get; set; }
+
+    public int Size { get; set; }
 }

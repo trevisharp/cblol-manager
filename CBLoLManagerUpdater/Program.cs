@@ -1,10 +1,19 @@
+using System;
+using System.Drawing;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Security.Principal;
+
+AppDomain.CurrentDomain
+    .SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
 
 UpdateSystem sys = null;
 
 ApplicationConfiguration.Initialize();
 
 var form = new Form();
+form.Icon = new Icon("icon.ico");
 form.FormBorderStyle = FormBorderStyle.None;
 
 Bitmap bmp = null;
@@ -83,13 +92,13 @@ void tick()
     if (!sys.Started)
     {
         g.DrawString($"Buscando atualizações...",
-            new Font(FontFamily.GenericMonospace, 20f),
+            new Font(FontFamily.GenericMonospace, 16f),
             Brushes.White, infoRect, format);
     }
     else if (sys.FindingFilesProgress < 100)
     {
         g.DrawString(sys.FilesToDownload.ToString(),
-            new Font(FontFamily.GenericMonospace, 20f),
+            new Font(FontFamily.GenericMonospace, 16f),
             Brushes.White, infoRect, format);
         g.FillRectangle(Brushes.LightGreen, 
             new Rectangle(progRect.Location, new Size(
@@ -97,21 +106,21 @@ void tick()
                 progRect.Height
             )));
     }
-    else if (sys.FilesDownloadProgress < 100)
+    else if (sys.DownloadProgress < 100)
     {
-        g.DrawString($"{sys.FilesDownloaded} de {sys.FilesToDownload}",
-            new Font(FontFamily.GenericMonospace, 20f),
+        g.DrawString($"{sys.BytesDownloaded / 1024f / 1024f:#0.0 MB} de {sys.BytesToDownload / 1024f / 1024f:#0.0 MB}",
+            new Font(FontFamily.GenericMonospace, 16f),
             Brushes.White, infoRect, format);
         g.FillRectangle(Brushes.LightGreen, 
             new Rectangle(progRect.Location, new Size(
-                progRect.Width * sys.FilesDownloadProgress / 100,
+                progRect.Width * sys.DownloadProgress / 100,
                 progRect.Height
             )));
     }
     else
     {
         g.DrawString($"Atualizado! Abrindo...",
-            new Font(FontFamily.GenericMonospace, 20f),
+            new Font(FontFamily.GenericMonospace, 16f),
             Brushes.White, infoRect, format);
     }
 }

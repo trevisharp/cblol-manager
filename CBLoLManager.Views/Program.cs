@@ -256,6 +256,7 @@ downQueue.Enqueue(false);
 
 var form = new Form();
 
+form.Icon = new Icon("icon.ico");
 form.WindowState = FormWindowState.Maximized;
 form.FormBorderStyle = FormBorderStyle.None;
 

@@ -1,3 +1,9 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
 public class UpdateSystem
 {
     private UpdateSystem() { }
@@ -7,17 +13,20 @@ public class UpdateSystem
     private Patch crr = null;
     private List<Resource> toDownload { get; set; }
 
+    private volatile int bytesToDownload;
+    public int BytesToDownload => bytesToDownload;
+
     private volatile int filesToDownload;
     public int FilesToDownload => filesToDownload;
 
     private volatile int findingFilesProgress;
     public int FindingFilesProgress => findingFilesProgress;
 
-    private volatile int filesDownloaded;
-    public int FilesDownloaded => filesDownloaded;
+    private volatile int bytesDownloaded;
+    public int BytesDownloaded => bytesDownloaded;
 
-    private volatile int filesDownloadProgress;
-    public int FilesDownloadProgress => filesDownloadProgress;
+    private volatile int bytesDownloadProgress;
+    public int DownloadProgress => bytesDownloadProgress;
 
     public bool Completed { get; private set; } = false;
     public bool Started { get; private set; } = false;
@@ -33,7 +42,8 @@ public class UpdateSystem
         }
         catch
         {
-            throw new Exception($"O sistema não teve permissão de criar/ler a pasta {instalationPath}.");
+            throw new Exception($"O sistema não teve permissão de criar/ler a pasta {instalationPath}.\n"
+                + "Tente executar a aplicação como administrador.");
         }
     }
 
@@ -47,7 +57,8 @@ public class UpdateSystem
         }
         catch
         {
-            throw new Exception("O sistema não pode criar/ler o arquivo de informações de patch.");
+            throw new Exception("O sistema não pode criar/ler o arquivo de informações de patch."
+                + "Tente executar a aplicação como administrador.");
         }
     }
 
@@ -68,7 +79,7 @@ public class UpdateSystem
         if (releases.Count == 0)
         {
             findingFilesProgress = 
-            filesDownloadProgress = 100;
+            bytesDownloadProgress = 100;
             Completed = true;
             return;
         }
@@ -78,6 +89,7 @@ public class UpdateSystem
         {
             if (!release.Name.Contains("cblolmanager"))
                 continue;
+            
             var resources = await downloader.GetResources(release);
             foreach (var resource in resources)
             {
@@ -85,6 +97,7 @@ public class UpdateSystem
                     continue;
                 
                 filesToDownload++;
+                bytesToDownload += resource.Size;
                 toDownload.Add(resource);
             }
             progress++;
@@ -97,8 +110,8 @@ public class UpdateSystem
         foreach (var file in toDownload)
         {
             await downloader.DownloadResource(file, instalationPath);
-            filesDownloaded++;
-            filesDownloadProgress = filesDownloaded / filesToDownload;
+            bytesDownloaded += file.Size;
+            bytesDownloadProgress = (int)(100 * (float)bytesDownloaded / bytesToDownload);
         }
         Completed = true;
     }

@@ -1,7 +1,11 @@
-using System.IO.Compression;
+using System;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
+using System.IO.Compression;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 public class ReleaseDownloader
 {
@@ -71,7 +75,14 @@ public class ReleaseDownloader
         {
             foreach(var entry in zip.Entries)
             {
-                entry.ExtractToFile(path + "/" + entry.Name);
+                var entryPath = path + "/" + entry.Name;
+
+                if (entryPath.Contains("/base/"))
+                    entryPath = entryPath.Replace("/base/", "/");
+                
+                if (File.Exists(entryPath))
+                    File.Delete(entryPath);
+                entry.ExtractToFile(entryPath);
             }
         }
     }

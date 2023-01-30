@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CBLoL Manager"
-#define MyAppVersion "1.0"
+#define MyAppVersion "0.2"
 #define MyAppPublisher "Trevisharp"
 #define MyAppURL "https://github.com/trevisharp/cblol-manager"
 #define MyAppExeName "CBLoLManagerUpdater.exe"
@@ -10,7 +10,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{0DB0DB8B-02DD-4FC6-B93A-79B1F7D650ED}
+AppId={{D2EB6EB1-BCCE-4082-97A6-CC9728535FFC}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -22,8 +22,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputBaseFilename=mysetup
-SetupIconFile=C:\Users\Usuário\Desktop\cblol-manager\logos\icon.ico
+OutputBaseFilename=script
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -59,12 +58,8 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Usuário\Desktop\cblol-manager\CBLoLManagerUpdater\bin\release\net6.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Usuário\Desktop\cblol-manager\CBLoLManagerUpdater\bin\release\net6.0-windows\CBLoLManagerUpdater.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Usuário\Desktop\cblol-manager\CBLoLManagerUpdater\bin\release\net6.0-windows\CBLoLManagerUpdater.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Usuário\Desktop\cblol-manager\CBLoLManagerUpdater\bin\release\net6.0-windows\CBLoLManagerUpdater.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Usuário\Desktop\cblol-manager\CBLoLManagerUpdater\bin\release\net6.0-windows\CBLoLManagerUpdater.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Usuário\Desktop\cblol-manager\CBLoLManagerUpdater\logo1.png"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Usuário\Desktop\updater\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Usuário\Desktop\updater\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
