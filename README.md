@@ -7,9 +7,12 @@
 ### Versão 0.3.0 beta
 
 - [ ] Implementar Playoffs
-- [ ] Finalização do CBLoL
+- [ ] Finalização do CBLoL/Premiações
 - [ ] Inicio de um novo ciclo ao final do CBLoL
+- [ ] Sala de Troféu
 - [ ] Possibilidade de Finalizar Contratos
+- [ ] Verificar Mentalidade incorreta em alguns jogadores
+- [ ] Rebalanciar Jogadores
 - [ ] Impacto da Mentalidade na Simulação
 - [ ] Impacto do Draft na Simulação
 - [ ] Tela de Opções
