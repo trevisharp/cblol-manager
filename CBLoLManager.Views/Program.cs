@@ -169,9 +169,9 @@ void selectTeam()
         List<float> moneys = new List<float>()
         {
             200000, 200000,
-            300000, 300000, 300000,
             500000, 500000, 500000,
-            1000000
+            2000000, 2000000,
+            5000000, 5000000
         }
         .OrderBy(x => Random.Shared.Next())
         .ToList();

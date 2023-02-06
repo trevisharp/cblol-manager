@@ -100,14 +100,12 @@ public class ProposeSystem
         }
 
         var player = players
-            .Skip(Random.Shared.Next(players.Count() / 2))
+            .Skip(Random.Shared.Next(players.Count() / 3))
             .FirstOrDefault();
         
-        var budget = team.Money
-            / 3 // 2 splits + 1 future
-            / 5 // 5 players
-            / 6
-            * (4 + 2 * Random.Shared.NextSingle()) / 5; // random weigth [0.8 - 1.2]
+        var budget = team.Money / 100 //~(2 splits + 1 future) * (5 players) * (6 months)
+            * (3 + 4 * Random.Shared.NextSingle()) / 5; // random weigth [0.6 - 1.4]
+        budget = sigmoid(budget, 40000, 10000, -2);
 
         Propose propose = new Propose();
 
@@ -265,5 +263,10 @@ public class ProposeSystem
                     Game.Current.EndContract.Remove(contract.Player);
                 }
             }
+    }
+
+    private float sigmoid(float x, float K, float a, float b)
+    {
+        return K / (1f + MathF.Exp(-(x / a + b)));
     }
 }
