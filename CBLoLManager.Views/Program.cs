@@ -165,13 +165,14 @@ void selectTeam()
         team.Organization = org;
 
         Game.Current.Team = team;
-        team.Money = 200000;
+        team.Money = 300000;
         List<float> moneys = new List<float>()
         {
-            200000, 200000,
-            500000, 500000, 500000,
-            2000000, 2000000,
-            5000000, 5000000
+            300000, 
+            500000, 500000,
+            900000, 900000, 
+            1500000, 1500000,
+            2300000, 2300000
         }
         .OrderBy(x => Random.Shared.Next())
         .ToList();

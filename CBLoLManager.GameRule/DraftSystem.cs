@@ -101,6 +101,7 @@ public class DraftSystem
             toPick.Remove(player);
 
             Pick pick = new Pick();
+            
             pick.OptionA = pick1;
             pick.OptionB = pick2;
 

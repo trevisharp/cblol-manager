@@ -1,7 +1,6 @@
 ### Versão 0.4.0 beta
 
 - [ ] Melhorar a interface da escolha do uniforme
-- [ ] Tornar mercado mais competitivo
 - [ ] Abrir sempre os Jogadores com quem você tem propostas
 
 ### Versão 0.3.0 beta
@@ -11,10 +10,11 @@
 - [ ] Inicio de um novo ciclo ao final do CBLoL
 - [ ] Sala de Troféu
 - [ ] Possibilidade de Finalizar Contratos
-- [ ] Verificar Mentalidade incorreta em alguns jogadores
-- [ ] Rebalanciar Jogadores
+- [x] Verificar Mentalidade incorreta em alguns jogadores
+- [x] Tornar mercado mais competitivo
+- [x] Rebalanciar Jogadores
 - [ ] Impacto da Mentalidade na Simulação
-- [ ] Impacto do Draft na Simulação
+- [x] Impacto do Draft na Simulação
 - [ ] Tela de Opções
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Tela de tutorial para Draft/Game

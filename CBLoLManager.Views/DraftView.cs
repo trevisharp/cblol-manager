@@ -19,6 +19,7 @@ public class DraftView : BaseView
     Bitmap draft = null;
     Bitmap arena = null;
     DraftSystem sys = null;
+    DrafAvaliationSystem aval = new DrafAvaliationSystem();
     Champion[] champs = null;
     IEnumerator<Pick> picks = null;
     Image[] champsThumbs = null;
@@ -34,6 +35,9 @@ public class DraftView : BaseView
     bool waitingPlayer = false;
     DateTime timer = DateTime.Now;
 
+    float crrDiff = 0.5f;
+    float noiseDiff = 0;
+
     Image rangeIcon = null;
     Image defenceIcon = null;
     Image damageIcon = null;
@@ -42,6 +46,9 @@ public class DraftView : BaseView
     Image supportIcon = null;
     Image adIcon = null;
     Image apIcon = null;
+
+    Image blueIcon = null;
+    Image redIcon = null;
 
     public DraftView(Team A, Team B)
     {
@@ -114,6 +121,7 @@ public class DraftView : BaseView
             DraftResult result = new DraftResult();
             result.TeamA = this.a;
             result.TeamB = this.b;
+            result.DraftDiff = crrDiff;
             result.TeamADraft.AddRange(this.champs.Take(5));
             result.TeamBDraft.AddRange(this.champs.Skip(5));
             Exit(result);
@@ -252,6 +260,25 @@ public class DraftView : BaseView
                 g.DrawRectangle(Pens.Yellow, Rectangle.Round(optBRect));
         }
         
+        var diff = aval.BlueAdvantage;
+        crrDiff += (diff - crrDiff) / 4;
+        noiseDiff = Random.Shared.NextSingle() / 100;
+        var crr = crrDiff + noiseDiff;
+
+        int barWid = bmp.Width - 20;
+        g.FillRectangle(Brushes.Blue, new RectangleF(
+            10, 10, barWid * crr, 40
+        ));
+        g.FillRectangle(Brushes.Red, new RectangleF(
+            barWid * crr, 10, barWid * (1 - crr), 40
+        ));
+        g.DrawImage(blueIcon, new RectangleF(
+            barWid * crr - 45, 5, 50, 50
+        ));
+        g.DrawImage(redIcon, new RectangleF(
+            barWid * crr, 5, 50, 50
+        ));
+
         void drawChamp(int i)
         {
             if (champs[i] != null)
@@ -296,6 +323,8 @@ public class DraftView : BaseView
             optA = null;
             optB = null;
             currentPick = null;
+
+            aval.AddBluePick(champ);
         }
 
         void redPick()
@@ -310,6 +339,8 @@ public class DraftView : BaseView
 
             delay = frame + 40 + Random.Shared.Next(80);
             timer = DateTime.Now;
+
+            aval.AddRedPick(champ);
         }
     
         void drawIcons(RectangleF rect, Champion pick)
@@ -377,6 +408,9 @@ public class DraftView : BaseView
         supportIcon = Bitmap.FromFile("Img/sup.png");
         adIcon = Bitmap.FromFile("Img/ad.png");
         apIcon = Bitmap.FromFile("Img/ap.png");
+
+        blueIcon = Bitmap.FromFile($"Img/{a.Organization.Photo}");
+        redIcon = Bitmap.FromFile($"Img/{b.Organization.Photo}");
 
         g.Clear(Color.Black);
         Audio.Clear();
