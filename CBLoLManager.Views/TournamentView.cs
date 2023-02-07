@@ -70,7 +70,8 @@ public class TorunamentView : BaseView
         if (Game.Current.Tournament.Round < 19)
         {
             bg = Bitmap.FromFile("Img/class.png") as Bitmap;
-            g.DrawImage(bg, new Rectangle(0, 0, bmp.Width, bmp.Height),
+            g.DrawImage(bg, 
+                new Rectangle(0, 0, bmp.Width, bmp.Height),
                 new Rectangle(0, 0, bg.Width, bg.Height),
                 GraphicsUnit.Pixel);
             drawTorunament(bmp, g);
@@ -78,6 +79,10 @@ public class TorunamentView : BaseView
         else
         {
             bg = Bitmap.FromFile("Img/playoffs.png") as Bitmap;
+            g.DrawImage(bg, 
+                new Rectangle(0, 0, bmp.Width, bmp.Height),
+                new Rectangle(0, 0, bg.Width, bg.Height),
+                GraphicsUnit.Pixel);
             drawPlayOffs(bmp, g);
         }
     }
@@ -131,9 +136,69 @@ public class TorunamentView : BaseView
 
     void drawPlayOffs(Bitmap bmp, Graphics g)
     {
+        var tournament = Game.Current.Tournament;
+        bool inPlayOffs = tournament.StartPlayOffs();
+        var play = tournament.PlayOffs;
 
+        int wid = bmp.Width;
+        int hei = bmp.Height;
+
+        var font = new Font(FontFamily.GenericMonospace, 10f);
+        StringFormat format = new StringFormat();
+        format.Alignment = StringAlignment.Center;
+        format.LineAlignment = StringAlignment.Center;
+
+        if (!inPlayOffs)
+        {
+            options = new OptionsView(
+                "Ir para próxima temporada"
+            );
+            options.OnOptionClick += s =>
+            {
+                if (s == "Ir para próxima temporada")
+                    Game.Current.EndSeason();
+            };
+            return;
+        }
+
+        options = new OptionsView(
+            "Iniciar MD5"
+        );
+        options.OnOptionClick += s =>
+        {
+            if (s == "Iniciar MD5")
+            {
+                var oponent = tournament.SimulatePlayOffRound();
+                PlayMatch(oponent);
+            }
+        };
+
+        g.DrawString(play.LoserBracketA?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.13f * wid, 0.78f * hei, 200, 40), format);
+
+        g.DrawString(play.LoserBracketB?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.13f * wid, 0.84f * hei, 200, 40), format);
+
+        g.DrawString(play.LoserBracketSecondPhaseA?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.28f * wid, 0.78f * hei, 200, 40), format);
+
+        g.DrawString(play.LoserBracketSecondPhaseB?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.28f * wid, 0.84f * hei, 200, 40), format);
+
+        g.DrawString(play.WinnerBracketA?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.28f * wid, 0.39f * hei, 200, 40), format);
+
+        g.DrawString(play.WinnerBracketB?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.28f * wid, 0.45f * hei, 200, 40), format);
+
+        g.DrawString(play.WinnerBracketC?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.28f * wid, 0.52f * hei, 200, 40), format);
+
+        g.DrawString(play.WinnerBracketD?.Organization?.Name, font, Brushes.White, 
+            new RectangleF(0.28f * wid, 0.58f * hei, 200, 40), format);
     }
 
     public event Action<Team> PlayNext;
+    public event Action<Team> PlayMatch;
     public event Action Exit;
 }

@@ -18,6 +18,11 @@ public class Game
     public List<Team> Others { get; set; } = new List<Team>();
 
     public Tournament Tournament { get; set; }
+
+    public void EndSeason()
+    {
+        Week = 25;
+    }
     
     public List<Player> FreeAgent { get; set; } = new List<Player>();
     public List<Player> EndContract { get; set; } = new List<Player>();
@@ -71,6 +76,10 @@ public class Game
             else if (week == 1)
             {
                 return WeekEvent.MarketWeek;
+            }
+            else if (week < 24)
+            {
+                return WeekEvent.GameEvent;
             }
             else
             {

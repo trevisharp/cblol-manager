@@ -1,35 +1,32 @@
 using System;
-using System.Linq;
 
 namespace CBLoLManager.Model;
 
 [Serializable]
 public class PlayOffs
 {
-    public Team[] Teams { get; private set; }
+    public Team WinnerBracketA { get; set; }
+    public Team WinnerBracketB { get; set; }
+    public Team WinnerBracketC { get; set; }
+    public Team WinnerBracketD { get; set; }
 
-    public int WinnerBracketA { get; private set; }
-    public int WinnerBracketB { get; private set; }
-    public int WinnerBracketC { get; private set; }
-    public int WinnerBracketD { get; private set; }
+    public Team WinnerBracketFinalA { get; set; }
+    public Team WinnerBracketFinalB { get; set; }
 
-    public int WinnerBracketFinalA { get; private set; }
-    public int WinnerBracketFinalB { get; private set; }
+    public Team LoserBracketA { get; set; }
+    public Team LoserBracketB { get; set; }
 
-    public int LoserBracketA { get; private set; }
-    public int LoserBracketB { get; private set; }
+    public Team LoserBracketSecondPhaseA { get; set; }
+    public Team LoserBracketSecondPhaseB { get; set; }
 
-    public int LoserBracketSecondPhaseA { get; private set; }
-    public int LoserBracketSecondPhaseB { get; private set; }
+    public Team LoserBracketThirdPhaseA { get; set; }
+    public Team LoserBracketThirdPhaseB { get; set; }
 
-    public int LoserBracketThirdPhaseA { get; private set; }
-    public int LoserBracketThirdPhaseB { get; private set; }
+    public Team LoserBracketFinalA { get; set; }
+    public Team LoserBracketFinalB { get; set; }
 
-    public int LoserBracketFinalA { get; private set; }
-    public int LoserBracketFinalB { get; private set; }
-
-    public int FinalA { get; private set; }
-    public int FinalB { get; private set; }
+    public Team FinalA { get; set; }
+    public Team FinalB { get; set; }
     
-    public int Champion { get; private set; }
+    public Team Champion { get; set; }
 }

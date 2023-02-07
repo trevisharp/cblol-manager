@@ -624,7 +624,7 @@ public class GameSimulationSystem
         // reduzindo os danos de acordo com a intenção defensiva
         double result = intent / 2 + (commit - intent);
         result = Math.Abs(result);
-        result += 80 * (draft.DraftDiff - 0.5f);
+        result += 200 * (draft.DraftDiff - 0.5f);
 
         var winTeam = commit > 0 ? teamA : teamB;
         var loseTeam = commit > 0 ? teamB : teamA;

@@ -6,7 +6,7 @@ using Model;
 
 public class MatchSystem
 {
-    public bool Getwinner(Team a, Team b)
+    public bool GetWinner(Team a, Team b)
     {
         var avgA = TeamAverage(a);
         var avgB = TeamAverage(b);

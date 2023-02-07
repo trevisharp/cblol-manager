@@ -9,6 +9,7 @@ public class Tournament
     public int Round { get; set; } = 0;
     public Team[] Teams { get; private set; }
     public int[] Wins { get; private set; }
+    public PlayOffs PlayOffs { get; set; }
 
     public Tournament(Team[] teams)
     {

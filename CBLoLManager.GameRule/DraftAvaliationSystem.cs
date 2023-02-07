@@ -107,16 +107,16 @@ public class DrafAvaliationSystem
 
         // Gank Empowered
         if (bjgad.HasValue && btopad.HasValue && bjgad != btopad)
-            bluePower += 15;
+            bluePower += 30;
             
         if (bjgad.HasValue && bmidad.HasValue && bjgad != bmidad)
-            bluePower += 15;
+            bluePower += 30;
             
         if (rjgad.HasValue && rtopad.HasValue && rjgad != rtopad)
-            redPower += 15;
+            redPower += 30;
             
         if (rjgad.HasValue && rtopad.HasValue && rjgad != rtopad)
-            redPower += 15;
+            redPower += 30;
 
         //  Power of Damage
         int worstRDam = rAdDamage < rApDamage ? rAdDamage : rApDamage;
@@ -138,19 +138,19 @@ public class DrafAvaliationSystem
         // Out Range
         int dRange = bRange - rRange;
         if (dRange > 0)
-            bluePower += 7 * (dRange * dRange - dRange);
-        else redPower += 7 * (dRange * dRange + dRange);
+            bluePower += 20 * (dRange * dRange - dRange) / 2;
+        else redPower += 20 * (dRange * dRange + dRange) / 2;
 
         // Mobility Effect
         var bMob = bMobility > 3 ? 3 : bMobility;
         var rMob = rMobility > 3 ? 3 : rMobility;
-        bluePower += 3 * (bMob * bMob + bMob);
-        redPower += 3 * (rMob * rMob + rMob);
+        bluePower += 10 * (bMob * bMob + bMob);
+        redPower += 10 * (rMob * rMob + rMob);
 
         // Control Effect
-        int bConForce = 6 + bCcs - rTanks - rSupport;
+        int bConForce = 15 + bCcs - rTanks - rSupport;
         bluePower += bConForce * bControl;
-        int rConForce = 6 + rCcs - bTanks - bSupport;
+        int rConForce = 15 + rCcs - bTanks - bSupport;
         redPower += rConForce * rControl;
 
         float diff = bluePower - redPower;
