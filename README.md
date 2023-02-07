@@ -5,7 +5,7 @@
 
 ### Versão 0.3.0 beta
 
-- [ ] Implementar Playoffs
+- [x] Implementar Playoffs
 - [ ] Finalização do CBLoL/Premiações
 - [ ] Inicio de um novo ciclo ao final do CBLoL
 - [ ] Sala de Troféu
