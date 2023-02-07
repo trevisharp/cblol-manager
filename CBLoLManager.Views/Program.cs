@@ -101,6 +101,10 @@ void openTornament()
     torunament = new TorunamentView(playCount < 2);
     if (playCount > 1)
         playCount = 0;
+    torunament.PlayMatch += op =>
+    {
+        makeMD5(op);
+    };
     torunament.PlayNext += op =>
     {
         playCount++;
@@ -112,6 +116,60 @@ void openTornament()
         crrPage = teamPage;
     };
     crrPage = torunament;
+}
+
+void makeMD5(Team oponent, int scoreA = 0, int scoreB = 0)
+{
+    MD5View md5 = new MD5View();
+
+    md5.TeamA = Game.Current.Team;
+    md5.TeamB = oponent;
+    md5.ScoreA = scoreA;
+    md5.ScoreB = scoreB;
+
+    md5.MakeGame += x =>
+    {
+        makeMD5Draft(oponent, scoreA, scoreB);
+    };
+    md5.Exit += () =>
+    {
+        teamPage.Reopen();
+        crrPage = teamPage;
+    };
+
+    crrPage = md5;
+}
+
+void makeMD5Draft(Team oponent, int scoreA, int scoreB)
+{
+    draft = new DraftView(
+        Game.Current.Team, 
+        oponent);
+    draft.Exit += draft =>
+    {
+        makeMD5Match(draft, scoreA, scoreB);
+    };
+    crrPage = draft;
+}
+
+void makeMD5Match(DraftResult draft, int scoreA, int scoreB)
+{
+    match = new MatchView(draft);
+    match.Exit += (d, w, s) =>
+    {  
+        if (s.AWin) scoreA++;
+        else scoreB++;
+
+        var posGame = new PosGameView(d, w, s);
+
+        posGame.Exit += delegate
+        {
+            makeMD5(draft.TeamB, scoreA, scoreB);
+        };
+
+        crrPage = posGame;
+    };
+    crrPage = match;
 }
 
 void makeDraft(Team oponent)

@@ -7,6 +7,55 @@ using Model;
 
 public static class TournamentExtension
 {
+    public static void SetWinner(this Tournament tournament, Team winner, Team looser)
+    {
+        var playoff = tournament.PlayOffs;
+        var team = Game.Current.Team;
+
+        if (playoff.FinalA != null && playoff.FinalB != null) // Week 5
+        {
+            playoff.Champion = winner;
+        }
+        else if (playoff.LoserBracketFinalA != null && playoff.LoserBracketFinalB != null) // Week 4
+        {
+            playoff.FinalB = winner;
+        }
+        else if (playoff.LoserBracketThirdPhaseA != null && playoff.LoserBracketThirdPhaseB != null) // Week 3
+        {
+            playoff.LoserBracketFinalB = winner;
+        }
+        else if (playoff.WinnerBracketFinalA != null && playoff.WinnerBracketFinalB != null && 
+                playoff.LoserBracketSecondPhaseA != null && playoff.LoserBracketSecondPhaseB != null) // Week 2
+        {
+            if (winner == playoff.WinnerBracketFinalA || winner == playoff.WinnerBracketFinalB)
+            {
+                playoff.FinalA = winner;
+                playoff.LoserBracketFinalA = looser;
+            }
+            else
+            {
+                playoff.LoserBracketThirdPhaseB = winner;
+            }
+        }
+        else // Week1
+        {
+            if (winner == playoff.WinnerBracketA || winner == playoff.WinnerBracketB)
+            {
+                playoff.WinnerBracketFinalA = winner;
+                playoff.LoserBracketThirdPhaseA = looser;
+            }
+            else if (winner == playoff.WinnerBracketC || winner == playoff.WinnerBracketD)
+            {
+                playoff.WinnerBracketB = winner;
+                playoff.LoserBracketSecondPhaseA = looser;
+            }
+            else
+            {
+                playoff.LoserBracketSecondPhaseB = winner;
+            }
+        }
+    }
+
     public static bool StartPlayOffs(this Tournament tournament)
     {   
         var teams = tournament.Teams
@@ -115,7 +164,7 @@ public static class TournamentExtension
                 var winner = result.Value.Item1;
                 var looser = result.Value.Item2;
 
-                playoff.WinnerBracketB = winner;
+                playoff.WinnerBracketFinalB = winner;
                 playoff.LoserBracketSecondPhaseA = looser;
             }
 
