@@ -19,6 +19,9 @@
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Tela de tutorial para Draft/Game
 - [x] Corrigir Bug onde o jogador sempre vence
+- [x] Corrigir Bug do tempo negativo para o pick
+- [x] Corrigir Bug sequência sem elementos na tela pos-jogo
+- [x] Nerfar o DraftDiff
 
 ### Versão 0.2.0 beta
 

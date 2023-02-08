@@ -139,7 +139,7 @@ public class PosGameView : BaseView
             x += dx;
             state = newState;
         }
-        var last = sys.GoldDiff.Take((int)(count * prop)).Last();
+        var last = sys.GoldDiff.Take((int)(count * prop)).LastOrDefault();
         var lasty = graphY + (max - last) * vpp;
         pts.Add(new PointF(x, lasty));
         pts.Add(new PointF(x, graphY + mid));

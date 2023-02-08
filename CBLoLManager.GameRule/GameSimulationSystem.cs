@@ -623,8 +623,10 @@ public class GameSimulationSystem
         // Resultado da luta considera a percepção do time defensor
         // reduzindo os danos de acordo com a intenção defensiva
         double result = intent / 2 + (commit - intent);
-        result += 160 * (draft.DraftDiff - 0.5f);
         result = Math.Abs(result);
+        if (commit > 0)
+            result += 100 * (draft.DraftDiff - 0.5f);
+        else result -= 100 * (draft.DraftDiff - 0.5f);
 
         var winTeam = commit > 0 ? teamA : teamB;
         var loseTeam = commit > 0 ? teamB : teamA;

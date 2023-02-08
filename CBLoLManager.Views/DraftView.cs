@@ -27,7 +27,7 @@ public class DraftView : BaseView
     int bmphei = 0;
     int bmpwid = 0;
 
-    int delay = 40;
+    int delay = 2 + Random.Shared.Next(26);
     int pickCount = 0;
     Pick currentPick = null;
     Image optA = null;
@@ -98,7 +98,7 @@ public class DraftView : BaseView
             break;
             
             default:
-                if (frame > delay)
+                if (crrTime < delay)
                 {
                     redPick();
                     pickCount++;
@@ -316,7 +316,7 @@ public class DraftView : BaseView
             var champ = currentPick.Selected;
             this.champs[(int)champ.Role] = champ;
 
-            delay = frame + 40 + Random.Shared.Next(80);
+            delay = 2 + Random.Shared.Next(26);
             timer = DateTime.Now;
 
             waitingPlayer = false;
@@ -337,7 +337,7 @@ public class DraftView : BaseView
 
             this.champs[(int)champ.Role + 5] = champ;
 
-            delay = frame + 40 + Random.Shared.Next(80);
+            delay = 2 + Random.Shared.Next(26);
             timer = DateTime.Now;
 
             aval.AddRedPick(champ);
