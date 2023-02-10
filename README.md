@@ -1,4 +1,4 @@
-### Versão 0.4.0 beta
+### Versão 0.5.0 beta
 
 - [ ] Melhorar a interface da escolha do uniforme
 - [ ] Abrir sempre os Jogadores com quem você tem propostas
@@ -6,26 +6,33 @@
 - [ ] Bans e sistema de Pool
 - [ ] Torneios Internacionais
 
+### Versão 0.4.0 beta
+
+- [ ] Impacto da Mentalidade na Simulação
+- [ ] Tela de tutorial para Draft/Game
+- [ ] Finalização do CBLoL/Premiações
+- [ ] Sala de Troféu
+
 ### Versão 0.3.0 beta
 
 - [x] Implementar Playoffs
-- [ ] Finalização do CBLoL/Premiações
-- [ ] Inicio de um novo ciclo ao final do CBLoL
-- [ ] Sala de Troféu
-- [ ] Possibilidade de Finalizar Contratos
 - [x] Verificar Mentalidade incorreta em alguns jogadores
 - [x] Tornar mercado mais competitivo
 - [x] Rebalanciar Jogadores
-- [ ] Impacto da Mentalidade na Simulação
 - [x] Impacto do Draft na Simulação
-- [ ] Sistema de Escolhas durante a semana
-- [ ] Tela de tutorial para Draft/Game
 - [x] Corrigir Bug onde o jogador sempre vence
 - [x] Corrigir Bug do tempo negativo para o pick
 - [x] Corrigir Bug sequência sem elementos na tela pos-jogo
 - [x] Nerfar o DraftDiff
+- [ ] Sistema de Escolhas durante a semana
+- [ ] Rebalanceamento dos Campeões
+- [ ] Inicio de um novo ciclo ao final do CBLoL
+- [ ] Possibilidade de Finalizar Contratos
+- [ ] Tela de Resultados Administrativos
+- [ ] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
+- [ ] Melhoramento do Updater para sua versão final
 
-### Versão 0.2.0 beta
+### Versão 0.2.0 beta (publicada)
 
 - [x] Melhorar Tela Inicial
 - [x] Tela e Simulação de batalha
