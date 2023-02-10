@@ -2,6 +2,9 @@
 
 - [ ] Melhorar a interface da escolha do uniforme
 - [ ] Abrir sempre os Jogadores com quem você tem propostas
+- [ ] Tela de Opções
+- [ ] Bans e sistema de Pool
+- [ ] Torneios Internacionais
 
 ### Versão 0.3.0 beta
 
@@ -15,7 +18,6 @@
 - [x] Rebalanciar Jogadores
 - [ ] Impacto da Mentalidade na Simulação
 - [x] Impacto do Draft na Simulação
-- [ ] Tela de Opções
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Tela de tutorial para Draft/Game
 - [x] Corrigir Bug onde o jogador sempre vence

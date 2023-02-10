@@ -4,5 +4,8 @@ public enum WeekEvent
 {
     GameEvent,
     MarketWeek,
-    Sponsorship
+    Sponsorship,
+    ContractWeek,
+    AdministrativeWeek,
+    None
 }

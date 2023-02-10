@@ -21,7 +21,8 @@ public class Game
 
     public void EndSeason()
     {
-        Week = 25;
+        Week += 26 - ((Week - 1) % 26);
+        Week -= 2; // Go To Administrative Week
     }
     
     public List<Player> FreeAgent { get; set; } = new List<Player>();
@@ -67,24 +68,22 @@ public class Game
     {
         get
         {
-            int week = (Week - 1) % 24;
+            int week = (Week - 1) % 26;
 
             if (week == 0)
-            {
                 return WeekEvent.Sponsorship;
-            }
             else if (week == 1)
-            {
                 return WeekEvent.MarketWeek;
-            }
-            else if (week < 24)
-            {
+            else if ((week > 1 && week < 12) || (week > 12 && week < 18))
                 return WeekEvent.GameEvent;
-            }
+            else if (week == 12)
+                return WeekEvent.None;
+            else if (week == 24)
+                return WeekEvent.AdministrativeWeek;
+            else if (week == 25)
+                return WeekEvent.ContractWeek;
             else
-            {
-                return WeekEvent.GameEvent;
-            }
+                return WeekEvent.None;
         }
     }
 

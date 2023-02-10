@@ -189,7 +189,7 @@ public class PosGameView : BaseView
                 int a = int.Parse(frag[2]);
                 float kda = (k + a) / (float)(d + 1);
                 float gold = sys.GetGold(p);
-                float param = kda / gold;
+                float param = kda + gold;
                 return new {
                     player = p,
                     param = param

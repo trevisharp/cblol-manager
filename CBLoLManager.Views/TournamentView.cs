@@ -67,7 +67,7 @@ public class TorunamentView : BaseView
                 .GetThumbnailImage(100, 100, null, IntPtr.Zero) as Bitmap)
             .ToArray();
         
-        if (Game.Current.Tournament.Round < 19)
+        if (Game.Current.Tournament.Round < 18)
         {
             bg = Bitmap.FromFile("Img/class.png") as Bitmap;
             g.DrawImage(bg, 
@@ -148,54 +148,106 @@ public class TorunamentView : BaseView
         format.Alignment = StringAlignment.Center;
         format.LineAlignment = StringAlignment.Center;
 
-        if (!inPlayOffs)
+        if (play.Champion == null)
         {
             options = new OptionsView(
-                "Ir para próxima temporada"
+                "Iniciar jogos MD5"
             );
             options.OnOptionClick += s =>
             {
-                if (s == "Ir para próxima temporada")
-                    Game.Current.EndSeason();
+                if (s == "Iniciar jogos MD5")
+                {
+                    var oponent = tournament.SimulatePlayOffRound();
+                    if (oponent == null)
+                    {
+                        while (tournament.PlayOffs.Champion == null)
+                            tournament.SimulatePlayOffRound();
+                        
+                        drawPlayOffs(bmp, g);
+                    }
+                    else PlayMatch(oponent);
+                }
             };
-            return;
+        }
+        else
+        {
+            options = new OptionsView(
+                "Sair"
+            );
+            options.OnOptionClick += s =>
+            {
+                if (s == "Sair")
+                {
+                    Game.Current.EndSeason();
+                    Exit();
+                }
+            };
         }
 
-        options = new OptionsView(
-            "Iniciar MD5"
-        );
-        options.OnOptionClick += s =>
-        {
-            if (s == "Iniciar MD5")
-            {
-                var oponent = tournament.SimulatePlayOffRound();
-                PlayMatch(oponent);
-            }
-        };
 
-        g.DrawString(play.LoserBracketA?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.LoserBracketA?.Organization?.Name, font, 
+            play.LoserBracketSecondPhaseB == play.LoserBracketA ? Brushes.Green : Brushes.White, 
             new RectangleF(0.13f * wid, 0.78f * hei, 200, 40), format);
 
-        g.DrawString(play.LoserBracketB?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.LoserBracketB?.Organization?.Name, font,
+            play.LoserBracketSecondPhaseB == play.LoserBracketB ? Brushes.Green : Brushes.White, 
             new RectangleF(0.13f * wid, 0.84f * hei, 200, 40), format);
 
-        g.DrawString(play.LoserBracketSecondPhaseA?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.LoserBracketSecondPhaseA?.Organization?.Name, font,
+            play.LoserBracketThirdPhaseB == play.LoserBracketSecondPhaseA ? Brushes.Green : Brushes.White, 
             new RectangleF(0.28f * wid, 0.78f * hei, 200, 40), format);
 
-        g.DrawString(play.LoserBracketSecondPhaseB?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.LoserBracketSecondPhaseB?.Organization?.Name, font,
+            play.LoserBracketThirdPhaseB == play.LoserBracketSecondPhaseB ? Brushes.Green : Brushes.White, 
             new RectangleF(0.28f * wid, 0.84f * hei, 200, 40), format);
 
-        g.DrawString(play.WinnerBracketA?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.WinnerBracketA?.Organization?.Name, font,
+            play.WinnerBracketFinalA == play.WinnerBracketA ? Brushes.Green : Brushes.White, 
             new RectangleF(0.28f * wid, 0.39f * hei, 200, 40), format);
 
-        g.DrawString(play.WinnerBracketB?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.WinnerBracketB?.Organization?.Name, font, 
+            play.WinnerBracketFinalA == play.WinnerBracketB ? Brushes.Green : Brushes.White,
             new RectangleF(0.28f * wid, 0.45f * hei, 200, 40), format);
 
-        g.DrawString(play.WinnerBracketC?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.WinnerBracketC?.Organization?.Name, font, 
+            play.WinnerBracketFinalB == play.WinnerBracketC ? Brushes.Green : Brushes.White,
             new RectangleF(0.28f * wid, 0.52f * hei, 200, 40), format);
 
-        g.DrawString(play.WinnerBracketD?.Organization?.Name, font, Brushes.White, 
+        g.DrawString(play.WinnerBracketD?.Organization?.Name, font,
+            play.WinnerBracketFinalB == play.WinnerBracketD ? Brushes.Green : Brushes.White,
             new RectangleF(0.28f * wid, 0.58f * hei, 200, 40), format);
+
+        g.DrawString(play.WinnerBracketFinalA?.Organization?.Name, font, 
+            play.FinalA == play.WinnerBracketFinalA ? Brushes.Green : Brushes.White, 
+            new RectangleF(0.58f * wid, 0.46f * hei, 200, 40), format);
+
+        g.DrawString(play.WinnerBracketFinalB?.Organization?.Name, font, 
+            play.FinalA == play.WinnerBracketFinalB ? Brushes.Green : Brushes.White,
+            new RectangleF(0.58f * wid, 0.52f * hei, 200, 40), format);
+
+        g.DrawString(play.LoserBracketThirdPhaseA?.Organization?.Name, font, 
+            play.LoserBracketFinalB == play.LoserBracketThirdPhaseA ? Brushes.Green : Brushes.White, 
+            new RectangleF(0.43f * wid, 0.78f * hei, 200, 40), format);
+
+        g.DrawString(play.LoserBracketThirdPhaseB?.Organization?.Name, font, 
+            play.LoserBracketFinalB == play.LoserBracketThirdPhaseB ? Brushes.Green : Brushes.White, 
+            new RectangleF(0.43f * wid, 0.84f * hei, 200, 40), format);         
+
+        g.DrawString(play.LoserBracketFinalA?.Organization?.Name, font, 
+            play.FinalB == play.LoserBracketFinalA ? Brushes.Green : Brushes.White, 
+            new RectangleF(0.58f * wid, 0.67f * hei, 200, 40), format);
+
+        g.DrawString(play.LoserBracketFinalB?.Organization?.Name, font,
+            play.FinalB == play.LoserBracketFinalB ? Brushes.Green : Brushes.White, 
+            new RectangleF(0.58f * wid, 0.73f * hei, 200, 40), format);
+
+        g.DrawString(play.FinalA?.Organization?.Name, font, 
+            play.Champion == play.FinalA ? Brushes.Green : Brushes.White, 
+            new RectangleF(0.77f * wid, 0.56f * hei, 200, 40), format);
+
+        g.DrawString(play.FinalB?.Organization?.Name, font, 
+            play.Champion == play.FinalB ? Brushes.Green : Brushes.White, 
+            new RectangleF(0.77f * wid, 0.62f * hei, 200, 40), format);
     }
 
     public event Action<Team> PlayNext;

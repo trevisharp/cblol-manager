@@ -89,6 +89,8 @@ public class TeamPage : BaseView
                             NextGame();
                         else if (weekEvent == WeekEvent.Sponsorship)
                             Sponsorship();
+                        else if (weekEvent == WeekEvent.None)
+                            g.Clear(Color.Black);
                         
                         Game.Current.Week++;
                         
@@ -108,6 +110,8 @@ public class TeamPage : BaseView
         g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}", font, 
             Game.Current.Team.Money < 0 ? Brushes.Red : Brushes.White,
             new RectangleF(5f, 3 * unity + 10f, 3 * unity, unity), format);
+        g.DrawString($"Semana {Game.Current.Week}", font, Brushes.White,
+            new RectangleF(5f, 3 * unity + 30f, 3 * unity, unity), format);
 
         var shirt = Game.Current.Team.Shirt;
         if (shirt != null)
@@ -125,6 +129,12 @@ public class TeamPage : BaseView
             nextEvent = "Jogo do CBLoL";
         else if (weekEvent == WeekEvent.Sponsorship)
             nextEvent = "Negociação com os Patrocinadores";
+        else if (weekEvent == WeekEvent.None)
+            nextEvent = "Nenhum evento";
+        else if (weekEvent == WeekEvent.AdministrativeWeek)
+            nextEvent = "Semana Administrativa";
+        else if (weekEvent == WeekEvent.ContractWeek)
+            nextEvent = "Semana dos Contratos e Acordos";
         
         g.DrawString($"Evento da Próxima semana: {nextEvent}", 
             font, Brushes.White,

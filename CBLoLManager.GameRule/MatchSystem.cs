@@ -39,7 +39,7 @@ public class MatchSystem
     private float winHigherChance(float a, float b)
     {
         float diff = a - b;
-        float prob = 101 - 100 / (1 + MathF.Pow(1.25f, a));
+        float prob = 101 - 100 / (1 + MathF.Pow(1.25f, diff));
         return prob > 100 ? 100 : prob;
     }
 }

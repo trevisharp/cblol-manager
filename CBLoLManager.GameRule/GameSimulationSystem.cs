@@ -592,14 +592,14 @@ public class GameSimulationSystem
         double commit = 
             + Math.Max(Math.Min(diff, 50), -50) 
             + Math.Max(Math.Min(20 * goldDiff, 200), -200)
-            + (1f - teamParam) * teamA.Average(x => x.MechanicSkill)
-            + teamParam * teamA.Average(x => x.TeamFigth)
+            + 2 * (1f - teamParam) * teamA.Average(x => x.MechanicSkill)
+            + 2 * teamParam * teamA.Average(x => x.TeamFigth)
             + 10 * teamA.Count(x => nextFlash[x] < Time)
-            - (1f - teamParam) * teamB.Average(x => x.MechanicSkill)
-            - teamParam * teamB.Average(x => x.TeamFigth)
+            - 2 * (1f - teamParam) * teamB.Average(x => x.MechanicSkill)
+            - 2 * teamParam * teamB.Average(x => x.TeamFigth)
             - 10 * teamB.Count(x => nextFlash[x] < Time);
         // Considerando vantagem defensiva
-        commit *= 5 * defVantage;
+        commit *= 4 * defVantage;
         
         // Representa a percepção do time que está perdendo a luta do seu estado
         double intent = 0;
@@ -623,10 +623,8 @@ public class GameSimulationSystem
         // Resultado da luta considera a percepção do time defensor
         // reduzindo os danos de acordo com a intenção defensiva
         double result = intent / 2 + (commit - intent);
+        result += 80 * (draft.DraftDiff - 0.5f);
         result = Math.Abs(result);
-        if (commit > 0)
-            result += 100 * (draft.DraftDiff - 0.5f);
-        else result -= 100 * (draft.DraftDiff - 0.5f);
 
         var winTeam = commit > 0 ? teamA : teamB;
         var loseTeam = commit > 0 ? teamB : teamA;
