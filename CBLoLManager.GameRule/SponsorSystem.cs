@@ -56,7 +56,7 @@ public class SponsorshipSystem
                 sponsorship.Sponsor = sponsor;
                 sponsorship.Start = Game.Current.Week;
                 sponsorship.Value = value;
-                sponsorship.Duration = 24 * duration;
+                sponsorship.Duration = 26 * duration - 1;
 
                 return sponsorship;
             }).ToArray();

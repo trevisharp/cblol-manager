@@ -308,6 +308,16 @@ void openTeamPage()
         
         crrPage = sponsorPage;
     };
+    teamPage.AdministrativeWeek += () =>
+    {
+        var adminisrative = new AdministrativeView();
+        adminisrative.Exit += delegate
+        {
+            crrPage = teamPage;
+            teamPage.Reopen();
+        };
+        crrPage = adminisrative;
+    };
     
     crrPage = teamPage;
 }

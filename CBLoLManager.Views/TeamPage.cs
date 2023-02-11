@@ -89,6 +89,8 @@ public class TeamPage : BaseView
                             NextGame();
                         else if (weekEvent == WeekEvent.Sponsorship)
                             Sponsorship();
+                        else if (weekEvent == WeekEvent.AdministrativeWeek)
+                            AdministrativeWeek();
                         else if (weekEvent == WeekEvent.None)
                             g.Clear(Color.Black);
                         
@@ -169,6 +171,7 @@ public class TeamPage : BaseView
     }
 
     public event Action OnOpenMarket;
+    public event Action AdministrativeWeek;
     public event Action NextGame;
     public event Action Sponsorship;
 }

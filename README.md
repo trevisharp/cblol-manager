@@ -1,6 +1,5 @@
 ### Versão 0.5.0 beta
 
-- [ ] Melhorar a interface da escolha do uniforme
 - [ ] Abrir sempre os Jogadores com quem você tem propostas
 - [ ] Tela de Opções
 - [ ] Bans e sistema de Pool
@@ -24,6 +23,7 @@
 - [x] Corrigir Bug do tempo negativo para o pick
 - [x] Corrigir Bug sequência sem elementos na tela pos-jogo
 - [x] Nerfar o DraftDiff
+- [x] Melhorar a interface da escolha do uniforme
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Rebalanceamento dos Campeões
 - [ ] Inicio de um novo ciclo ao final do CBLoL

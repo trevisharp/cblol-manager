@@ -47,6 +47,9 @@ public class ShirtSponsorPage : BaseView
     
     ButtonView end;
 
+    bool canChangeMain = true;
+    bool canChangeSecondary = true;
+
     protected override void draw(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
@@ -70,8 +73,8 @@ public class ShirtSponsorPage : BaseView
         drawOpt(optSleeveColor, "Cor da Manga");
         drawOpt(optHem, "Estilo Principal");
         drawOpt(optHemColor, "Cor Principal");
-        drawOpt(optMainSponsor, "Patrocínio Principal");
-        drawOpt(optSecondSponsor, "Patrocínio Secundário");
+        drawOpt(optMainSponsor, "Patrocínio Principal", 0);
+        drawOpt(optSecondSponsor, "Patrocínio Secundário", 1);
 
         g.FillPolygon(new SolidBrush(getColor(this.shirt.Color)), shirtpts);
         
@@ -140,15 +143,39 @@ public class ShirtSponsorPage : BaseView
 
         end.Draw(bmp, g);
 
-        void drawOpt(RectangleF opt, string text = "")
+        void drawOpt(RectangleF opt, string text = "", int sponsor = -1)
         {
-            g.FillPolygon(Brushes.BlueViolet, new PointF[]
+            if (sponsor == -1)
             {
-                opt.Location,
-                new PointF(opt.Right, (opt.Top + opt.Bottom) / 2),
-                new PointF(opt.Left, opt.Bottom),
-            });
-            g.DrawString(text, font, Brushes.White, new RectangleF(opt.X + 60, opt.Y, 120, 60), format);
+                g.FillPolygon(Brushes.BlueViolet, new PointF[]
+                {
+                    opt.Location,
+                    new PointF(opt.Right, (opt.Top + opt.Bottom) / 2),
+                    new PointF(opt.Left, opt.Bottom),
+                });
+                g.DrawString(text, font, Brushes.White, new RectangleF(opt.X + 60, opt.Y, 120, 60), format);
+            }
+            else if (sponsor == 0)
+            {
+                if (canChangeMain)
+                {
+                    drawOpt(opt, text);
+                    return;
+                }
+                
+                g.DrawString("Contrato não finalizado", font, Brushes.Blue, new RectangleF(opt.X + 60, opt.Y, 120, 60), format);
+            }
+            else if (sponsor == 1)
+            {
+                if (canChangeSecondary)
+                {
+                    drawOpt(opt, text);
+                    return;
+                }
+                
+                g.DrawString("Contrato não finalizado", font, Brushes.Blue, new RectangleF(opt.X + 60, opt.Y, 120, 60), format);
+
+            }
         }
 
         Color getColor(int color)
@@ -198,10 +225,10 @@ public class ShirtSponsorPage : BaseView
         if (optColor.Contains(cursor))
             this.shirt.Color = (this.shirt.Color + 1) % 3;
 
-        if (optMainSponsor.Contains(cursor))
+        if (optMainSponsor.Contains(cursor) && canChangeMain)
             main = mainSponsorships[(++ms % mainSponsorships.Length)];
 
-        if (optSecondSponsor.Contains(cursor))
+        if (optSecondSponsor.Contains(cursor) && canChangeSecondary)
             second = secondSponsorships[(++ss % secondSponsorships.Length)];
     }
 
@@ -210,6 +237,10 @@ public class ShirtSponsorPage : BaseView
         team = Game.Current.Team;
         org = Bitmap.FromFile("Img/" + team.Organization.Photo);
         iorg = Bitmap.FromFile("Img/i" + team.Organization.Photo);
+
+        shirt.HemStyle = 1;
+        shirt.SleeveStyle = 1;
+        shirt.CollarStyle = 1;
 
         var wid = (float)bmp.Width;
         var hei = bmp.Height * 0.8f;
@@ -329,8 +360,21 @@ public class ShirtSponsorPage : BaseView
         };
 
         SponsorshipSystem sys = new SponsorshipSystem();
-        mainSponsorships = sys.GetMain(team);
-        secondSponsorships = sys.GetSecond(team);
+
+        var main = Game.Current.Team.MainSponsorship;
+        canChangeMain = main == null || main.Start + main.Duration < Game.Current.Week;
+
+        var second = Game.Current.Team.SecondSponsorship;
+        canChangeSecondary = second == null || main.Start + main.Duration < Game.Current.Week;
+
+        mainSponsorships = canChangeMain ? sys.GetMain(team) : new Sponsorship[]
+        {
+            Game.Current.Team.MainSponsorship
+        };
+        secondSponsorships = canChangeSecondary ? sys.GetSecond(team) : new Sponsorship[]
+        {
+            Game.Current.Team.SecondSponsorship
+        };
 
         mainThumbs = mainSponsorships
             .Select(s => Bitmap.FromFile("Img/" + s.Sponsor.Photo))
@@ -354,16 +398,27 @@ public class ShirtSponsorPage : BaseView
             ymargin + size * .05f, 
             size * .1f, size * .1f);
 
-        optOrg = new RectangleF(xmargin + size + 40, ymargin + 40, 60, 60);
-        optCollar = new RectangleF(xmargin + size + 40, ymargin + 140, 60, 60);
-        optCollarColor = new RectangleF(xmargin + size + 40, ymargin + 240, 60, 60);
-        optColor = new RectangleF(xmargin + size + 40, ymargin + 340, 60, 60);
-        optSleeve  = new RectangleF(xmargin + size + 40, ymargin + 440, 60, 60);
-        optSleeveColor = new RectangleF(xmargin + size + 40, ymargin + 540, 60, 60);
-        optHem = new RectangleF(xmargin + size + 40, ymargin + 640, 60, 60);
-        optHemColor = new RectangleF(xmargin + size + 40, ymargin + 740, 60, 60);
-        optMainSponsor = new RectangleF(xmargin + size + 40, ymargin + 840, 60, 60);
-        optSecondSponsor = new RectangleF(xmargin + size + 40, ymargin + 940, 60, 60);
+        var btSize = 2 * hei / 29;
+        var y = ymargin + 40;
+        optSecondSponsor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optMainSponsor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optOrg = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optCollarColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optCollar = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optSleeveColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optSleeve  = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optHemColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optHem = new RectangleF(xmargin + size + 40, y, btSize, btSize);
 
         end = new ButtonView();
         end.Rect = new RectangleF(5, bmp.Height - 80, 200, 60);
@@ -379,10 +434,16 @@ public class ShirtSponsorPage : BaseView
             shirt.Photo = shirtBmp;
 
             team.Shirt = this.shirt;
-            team.MainSponsorship = mainSponsorships[ms % mainSponsorships.Length];
-            team.SecondSponsorship = secondSponsorships[ss % secondSponsorships.Length];
-            team.Money += team.MainSponsorship.Value;
-            team.Money += team.SecondSponsorship.Value;
+            if (canChangeMain)
+            {
+                team.MainSponsorship = mainSponsorships[ms % mainSponsorships.Length];
+                team.Money += team.MainSponsorship.Value;
+            }
+            if (canChangeSecondary)
+            {
+                team.SecondSponsorship = secondSponsorships[ss % secondSponsorships.Length];
+                team.Money += team.SecondSponsorship.Value;
+            }
             Exit();
         };
     }
