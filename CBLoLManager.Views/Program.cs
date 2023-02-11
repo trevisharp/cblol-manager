@@ -157,8 +157,16 @@ void makeMD5Match(DraftResult draft, int scoreA, int scoreB)
     match = new MatchView(draft);
     match.Exit += (d, w, s) =>
     {  
-        if (s.AWin) scoreA++;
-        else scoreB++;
+        if (s.AWin)
+        {
+            PopularitySystem.OnWin(draft.TeamA);
+            scoreA++;
+        }
+        else 
+        {
+            PopularitySystem.OnWin(draft.TeamB);
+            scoreB++;
+        }
 
         var posGame = new PosGameView(d, w, s);
 
@@ -194,12 +202,14 @@ void makeMatch(DraftResult draft)
             Game.Current?
                 .Tournament?
                 .AddWin(draft.TeamA);
+            PopularitySystem.OnWin(draft.TeamA);
         }
         else
         {
             Game.Current?
                 .Tournament?
                 .AddWin(draft.TeamB);
+            PopularitySystem.OnWin(draft.TeamB);
         }
 
         var posGame = new PosGameView(d, w, s);

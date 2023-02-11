@@ -184,7 +184,6 @@ public class TorunamentView : BaseView
             };
         }
 
-
         g.DrawString(play.LoserBracketA?.Organization?.Name, font, 
             play.LoserBracketSecondPhaseB == play.LoserBracketA ? Brushes.Green : Brushes.White, 
             new RectangleF(0.13f * wid, 0.78f * hei, 200, 40), format);
