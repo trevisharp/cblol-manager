@@ -112,7 +112,7 @@ public class TeamPage : BaseView
         g.DrawString($"Recursos: {Formatter.FormatMoney(Game.Current.Team.Money)}", font, 
             Game.Current.Team.Money < 0 ? Brushes.Red : Brushes.White,
             new RectangleF(5f, 3 * unity + 10f, 3 * unity, unity), format);
-        g.DrawString($"Semana {Game.Current.Week}", font, Brushes.White,
+        g.DrawString($"Semana {Game.Current.Week + 1}", font, Brushes.White,
             new RectangleF(5f, 3 * unity + 30f, 3 * unity, unity), format);
 
         var shirt = Game.Current.Team.Shirt;

@@ -195,7 +195,7 @@ public class MarketPlayer : BaseView
         if (contractCrr != null)
         {
             wage.Value = contractCrr.Wage;
-            time.Value = contractCrr.End - Game.Current.Week / 24;
+            time.Value = contractCrr.End - Game.Current.Week / 26;
             rescissionFee.Value = contractCrr.RescissionFee;
             
             contract.Draw(bmp, g);

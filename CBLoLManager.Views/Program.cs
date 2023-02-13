@@ -229,40 +229,9 @@ void selectTeam()
     teamSelectorPage = new TeamSelectorPage();
     teamSelectorPage.OnSelect += org =>
     {
-        Team team = new Team();
-        team.Organization = org;
-
-        Game.Current.Team = team;
-        team.Money = 300000;
-        List<float> moneys = new List<float>()
-        {
-            300000, 
-            500000, 500000,
-            900000, 900000, 
-            1500000, 1500000,
-            2300000, 2300000
-        }
-        .OrderBy(x => Random.Shared.Next())
-        .ToList();
-        foreach (var x in Organizations.All
-            .Where(o => o.Name != org.Name))
-        {
-            Game.Current.Others.Add(new Team()
-            {
-                Organization = x,
-                Money = moneys[0]
-            });
-            moneys.RemoveAt(0);
-        }
-        Game.Current.Tournament = new Tournament(
-            Game.Current.Others.Append(
-                Game.Current.Team
-            ).ToArray()
-        );
-        Game.Current.FreeAgent.AddRange(Players.All);
-
+        Game.New();
+        Game.Current.Init(org);
         openTeamPage();
-
     };
     crrPage = teamSelectorPage;
 }

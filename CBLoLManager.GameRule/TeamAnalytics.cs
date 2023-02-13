@@ -9,11 +9,15 @@ public static class TeamAnalytics
     public static float SillyPower(this Team team)
     {
         var players = team.GetAll();
-        return players.Sum(p => 
+
+        if (players.Count == 0)
+            return .7f;
+
+        return (float)players.Average(p => 
             (p.GameVision +
             p.LanePhase +
             p.MechanicSkill +
-            p.TeamFigth) / 400f - .8f);
+            p.TeamFigth)) / 400f;
     }
 
     public static Player AveragePlayer(this Team team)

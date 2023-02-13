@@ -13,11 +13,10 @@ public class ProposeSystem
 {
     public float AcceptChance(Propose propose)
     {
-        if (propose.Time < 1f || propose.Wage < 1f ||
-            propose.RescissionFee < 1f)
+        if (propose.Time < 1f || propose.Wage < 1f)
             return 0f;
 
-        var sillyPower = propose.Team.SillyPower();
+        var sillyPower = sigmoid(propose.Team.SillyPower(), .6f, .9f);
 
         var avaliation = (
             propose.Player.LanePhase + propose.Player.Leadership +
@@ -28,22 +27,17 @@ public class ProposeSystem
         var deviationPower = deviation * deviation;
         var expectedValue = deviationPower * 1000f + 1000f;
         var diff = propose.Wage - expectedValue;
-        var diffPower = .25f + diff / 5000f;
+        var diffPower = diff > 0 ? 1f : sigmoid(diff / expectedValue, -.2f, -.1f);
 
-        var roundPower = propose.Round / 15f;
+        var roundPower = sigmoid(propose.Round, -2, 4);
 
-        var rescissionFeePound = expectedValue * 12 - propose.RescissionFee;
-        var condition1Power = .5f + rescissionFeePound / 120000f;
+        var rescissionFeePound = 1 - (propose.RescissionFee - 6 * expectedValue) / (6 * expectedValue);
+        var condition1Power = sigmoid(rescissionFeePound, -1, 0);
 
-        var timePound = 2f - propose.Time;
-        var condition2Power = .5f + propose.Time / 4f;
+        var timePound = 2 - propose.Time;
+        var condition2Power = sigmoid(timePound, -4, 0);
 
-        return 
-            .5f * diffPower + 
-            .1f * roundPower + 
-            .1f * condition1Power + 
-            .1f * condition2Power + 
-            .2f * sillyPower;
+        return diffPower * condition1Power * condition2Power * sillyPower * roundPower;
     }
 
     public bool TryAccept(Propose propose)
@@ -67,8 +61,8 @@ public class ProposeSystem
         while (!TryAccept(propose))
         {
             first = false;
-            propose.Wage *= 1f + Random.Shared.NextSingle();
-            propose.RescissionFee *= 1.1f;
+            propose.Wage *= 1f + Random.Shared.NextSingle() / 2;
+            propose.RescissionFee *= 0.9f - Random.Shared.NextSingle() / 10;
         }
 
         Contract contract = new Contract();
@@ -76,7 +70,7 @@ public class ProposeSystem
         contract.Team = propose.Team;
         contract.Wage = propose.Wage;
         contract.RescissionFee = propose.RescissionFee;
-        contract.End = propose.Time + Game.Current.Week / 24;
+        contract.End = propose.Time + Game.Current.Week / 26;
         contract.Accepted = first;
 
         Game.Current.Contracts.Add(contract);
@@ -95,12 +89,10 @@ public class ProposeSystem
             );
         
         if (players.Count() == 0)
-        {
             return null;
-        }
 
         var player = players
-            .Skip(Random.Shared.Next(players.Count() / 3))
+            .Skip(Random.Shared.Next(players.Count() / 5))
             .FirstOrDefault();
         
         var budget = team.Money / 100 //~(2 splits + 1 future) * (5 players) * (6 months)
@@ -114,8 +106,7 @@ public class ProposeSystem
         propose.Round = round;
         propose.Time = Random.Shared.Next(4) + 1;
         propose.Wage = budget;
-        propose.RescissionFee = propose.Wage *
-            ((2 * Random.Shared.NextSingle() + 1f) * 6 * propose.Time);
+        propose.RescissionFee = propose.Wage * 2 * (2 * Random.Shared.NextSingle() + 1f);
 
         return propose;
     }
@@ -263,6 +254,19 @@ public class ProposeSystem
                     Game.Current.EndContract.Remove(contract.Player);
                 }
             }
+    }
+
+    private float sigmoid(float x, float zp, float mp)
+    {
+        const float maxPoint = 4.5f;
+        // simoid(f(zp)) = 0.5 -> a zp + b = 0
+        // sigmoid(f(mp)) = ~0.99 -> a mp + b = maxPoint
+        // b = - a zp
+        // a mp - a zp = maxPoint
+        // a = 5 / (mp - zp)
+        float a = maxPoint / (mp - zp);
+        float b = -a * zp;
+        return sigmoid(x, 1f, 1 / a, b);
     }
 
     private float sigmoid(float x, float K, float a, float b)

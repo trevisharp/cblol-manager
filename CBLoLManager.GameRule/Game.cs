@@ -14,25 +14,23 @@ public class Game
     public static Game Current => crr;
     public Game() { }
 
+    public int StartYear { get; private set; } = DateTime.Now.Year;
+    public int BaseGold { get; set; } = 300_000;
     public Team Team { get; set;}
-    public List<Team> Others { get; set; } = new List<Team>();
+    public int Week { get; set; }
+    public List<Team> Others { get; private set; } = new List<Team>();
+    public IEnumerable<Team> Teams => Others.Prepend(Team);
 
-    public Tournament Tournament { get; set; }
-
-    public void EndSeason()
-    {
-        Week += 26 - ((Week - 1) % 26);
-        Week -= 2; // Go To Administrative Week
-    }
+    public Tournament Tournament { get; private set; }
     
-    public List<Player> FreeAgent { get; set; } = new List<Player>();
-    public List<Player> EndContract { get; set; } = new List<Player>();
-    public List<Player> SeeingProposes { get; set; } = new List<Player>();
+    public List<Player> FreeAgent { get; private set; } = new List<Player>();
+    public List<Player> EndContract { get; private set; } = new List<Player>();
+    public List<Player> SeeingProposes { get; private set; } = new List<Player>();
 
     public IEnumerable<Player> PlayersInMarket =>
         FreeAgent.Union(EndContract).Union(SeeingProposes);
 
-    public List<Contract> Contracts { get; set; } = new List<Contract>();
+    public List<Contract> Contracts { get; private set; } = new List<Contract>();
 
     public bool EndContractStep
     {
@@ -62,13 +60,11 @@ public class Game
         }
     }
 
-    public int Week { get; set; } = 1;
-
     public WeekEvent CurrentWeekEvent
     {
         get
         {
-            int week = (Week - 1) % 26;
+            int week = Week % 26;
 
             if (week == 0)
                 return WeekEvent.Sponsorship;
@@ -84,6 +80,67 @@ public class Game
                 return WeekEvent.ContractWeek;
             else
                 return WeekEvent.None;
+        }
+    }
+
+    public void EndSeason()
+    {
+        Week += 26 - (Week % 26);
+        Week -= 2; // Go To Administrative Week
+    }
+
+    public void Init(Organization org)
+    {
+        Team team = new Team();
+        team.Organization = org;
+
+        this.Team = team;
+        team.Money = BaseGold;
+        
+        List<float> moneys = new List<float>()
+        {
+            BaseGold, 
+            2 * BaseGold, 2 * BaseGold,
+            3 * BaseGold, 3 * BaseGold, 
+            5 * BaseGold, 5 * BaseGold,
+            8 * BaseGold, 8 * BaseGold
+        }
+        .OrderBy(x => Random.Shared.Next())
+        .ToList();
+        
+        foreach (var x in Organizations.All
+            .Where(o => o.Name != org.Name))
+        {
+            this.Others.Add(new Team()
+            {
+                Organization = x,
+                Money = moneys[0]
+            });
+            moneys.RemoveAt(0);
+        }
+
+        this.Tournament = new Tournament(
+            this.Others.Append(
+                this.Team
+            ).ToArray()
+        );
+        this.FreeAgent.AddRange(Players.All);
+
+        MakeAdministrativeWeek(true);
+    }
+
+    public void MakeAdministrativeWeek(bool firstTime = false)
+    {
+        TeamHistorySystem sys = new TeamHistorySystem();
+        foreach (var team in Teams)
+        {
+            var hist = sys.Create(team, firstTime);
+            team.History.Add(hist);
+
+            if (firstTime)
+                continue;
+            
+            team.Money += hist.CBLoLAward + 200 * hist.ShirtSale;
         }
     }
 

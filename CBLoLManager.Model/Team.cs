@@ -17,6 +17,7 @@ public class Team
     public Shirt Shirt { get; set; }
     public float Money { get; set; }
     public float Popularity { get; set; }
+    public List<TeamHistory> History { get; set; } = new List<TeamHistory>();
 
     public void Add(Player player)
     {

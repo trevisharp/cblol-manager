@@ -11,6 +11,7 @@ public class AdministrativeView : BaseView
 {
     OptionsView options = null;
     PointF cursor = PointF.Empty;
+    TeamHistory hist;
     bool down = false;
 
     protected override void draw(Bitmap bmp, Graphics g)
@@ -27,6 +28,9 @@ public class AdministrativeView : BaseView
 
     public override void Load(Bitmap bmp, Graphics g)
     {
+        Game.Current.MakeAdministrativeWeek();
+        this.hist = Game.Current.Team.History.LastOrDefault();
+        
         g.Clear(Color.Black);
 
         options = new OptionsView("Sair");

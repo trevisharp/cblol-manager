@@ -238,9 +238,12 @@ public class ShirtSponsorPage : BaseView
         org = Bitmap.FromFile("Img/" + team.Organization.Photo);
         iorg = Bitmap.FromFile("Img/i" + team.Organization.Photo);
 
-        shirt.HemStyle = 1;
-        shirt.SleeveStyle = 1;
-        shirt.CollarStyle = 1;
+        shirt.HemStyle = 0;
+        shirt.SleeveStyle = 0;
+        shirt.CollarStyle = 0;
+        shirt.HemColor = 1;
+        shirt.SleeveColor = 1;
+        shirt.CollarColor = 1;
 
         var wid = (float)bmp.Width;
         var hei = bmp.Height * 0.8f;
@@ -408,17 +411,17 @@ public class ShirtSponsorPage : BaseView
         y += 1.5f * btSize;
         optColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
         y += 1.5f * btSize;
-        optCollarColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
-        y += 1.5f * btSize;
         optCollar = new RectangleF(xmargin + size + 40, y, btSize, btSize);
         y += 1.5f * btSize;
-        optSleeveColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        optCollarColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
         y += 1.5f * btSize;
         optSleeve  = new RectangleF(xmargin + size + 40, y, btSize, btSize);
         y += 1.5f * btSize;
-        optHemColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        optSleeveColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
         y += 1.5f * btSize;
         optHem = new RectangleF(xmargin + size + 40, y, btSize, btSize);
+        y += 1.5f * btSize;
+        optHemColor = new RectangleF(xmargin + size + 40, y, btSize, btSize);
 
         end = new ButtonView();
         end.Rect = new RectangleF(5, bmp.Height - 80, 200, 60);
