@@ -1,16 +1,25 @@
+### Versão 0.6.0 beta
+
+- [ ] Torneios Internacionais
+
 ### Versão 0.5.0 beta
 
-- [ ] Abrir sempre os Jogadores com quem você tem propostas
-- [ ] Tela de Opções
-- [ ] Bans e sistema de Pool
-- [ ] Torneios Internacionais
+- [ ] Sistema de Bans
+- [ ] Sistema de Patchs
+- [ ] Sistema de Couchs
+- [ ] Sistema de Pools
 
 ### Versão 0.4.0 beta
 
 - [ ] Impacto da Mentalidade na Simulação
 - [ ] Tela de tutorial para Draft/Game
-- [ ] Finalização do CBLoL/Premiações
 - [ ] Sala de Troféu
+- [ ] Abrir sempre os Jogadores com quem você tem propostas
+- [ ] Tela de Opções
+- [ ] Possibilidade de Falência
+- [ ] Sistema de Empréstimo
+- [ ] Sistema de Pacotes de Jogadores/Organizações/Campeões
+- [ ] Melhorar Sistema de Músicas
 
 ### Versão 0.3.0 beta
 
@@ -28,7 +37,7 @@
 - [ ] Rebalanceamento dos Campeões
 - [ ] Inicio de um novo ciclo ao final do CBLoL
 - [ ] Possibilidade de Finalizar Contratos
-- [ ] Tela de Resultados Administrativos
+- [x] Tela de Resultados Administrativos
 - [ ] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
 - [ ] Melhoramento do Updater para sua versão final
 

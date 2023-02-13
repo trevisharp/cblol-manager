@@ -63,43 +63,6 @@ public class TeamPage : BaseView
                 maphei
             ));
         }
-
-        if (options == null)
-        {
-            g.Clear(Color.Black);
-            options = new OptionsView(
-                "Salvar",
-                "Próxima Semana"
-            );
-
-            options.OnOptionClick += s =>
-            {
-                switch (s)
-                {
-                    case "Salvar":
-                        Game.Save();
-                        break;
-                    
-                    case "Próxima Semana":
-                        var weekEvent = Game.Current.CurrentWeekEvent;
-                        
-                        if (weekEvent == WeekEvent.MarketWeek)
-                            OnOpenMarket();
-                        else if (weekEvent == WeekEvent.GameEvent)
-                            NextGame();
-                        else if (weekEvent == WeekEvent.Sponsorship)
-                            Sponsorship();
-                        else if (weekEvent == WeekEvent.AdministrativeWeek)
-                            AdministrativeWeek();
-                        else if (weekEvent == WeekEvent.None)
-                            g.Clear(Color.Black);
-                        
-                        Game.Current.Week++;
-                        
-                        break;
-                }
-            };
-        }
         
         var brush = new SolidBrush(
             Color.FromArgb(32, 42, 68)
@@ -154,13 +117,54 @@ public class TeamPage : BaseView
         playerView = null;
         teamStatus = null;
         map = null;
-        options = null;
         await Audio.ConfiaNaCall();
     }
 
     public override async void Load(Bitmap bmp, Graphics g)
     {
         g.Clear(Color.Black);
+
+        options = new OptionsView(
+            "Salvar",
+            "Próxima Semana",
+            "Estatísticas"
+        );
+
+        options.OnOptionClick += s =>
+        {
+            switch (s)
+            {
+                case "Salvar":
+                    Game.Save();
+                    break;
+                
+                case "Estatísticas":
+                    AdministrativeWeek();
+                    break;
+                
+                case "Próxima Semana":
+                    var weekEvent = Game.Current.CurrentWeekEvent;
+                    
+                    if (weekEvent == WeekEvent.MarketWeek)
+                        OnOpenMarket();
+                    else if (weekEvent == WeekEvent.GameEvent)
+                        NextGame();
+                    else if (weekEvent == WeekEvent.Sponsorship)
+                        Sponsorship();
+                    else if (weekEvent == WeekEvent.AdministrativeWeek)
+                    {
+                        Game.Current.MakeAdministrativeWeek();
+                        AdministrativeWeek();
+                    }
+                    else if (weekEvent == WeekEvent.None)
+                        g.Clear(Color.Black);
+                    
+                    Game.Current.Week++;
+                    
+                    break;
+            }
+        };
+
         await Audio.ConfiaNaCall();
     }
 
