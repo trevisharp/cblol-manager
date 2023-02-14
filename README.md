@@ -8,6 +8,7 @@
 - [ ] Sistema de Patchs
 - [ ] Sistema de Couchs
 - [ ] Sistema de Pools
+- [ ] Lista de Campeões
 
 ### Versão 0.4.0 beta
 

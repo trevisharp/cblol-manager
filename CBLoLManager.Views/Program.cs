@@ -287,6 +287,11 @@ void openTeamPage()
         };
         crrPage = adminisrative;
     };
+    teamPage.OpenContracts += () =>
+    {
+        var contractView = new ContractView();
+        crrPage = contractView;
+    };
     
     crrPage = teamPage;
 }

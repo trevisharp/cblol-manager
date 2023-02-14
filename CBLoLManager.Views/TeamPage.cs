@@ -156,6 +156,10 @@ public class TeamPage : BaseView
                         Game.Current.MakeAdministrativeWeek();
                         AdministrativeWeek();
                     }
+                    else if (weekEvent == WeekEvent.ContractWeek)
+                    {
+                        OpenContracts();
+                    }
                     else if (weekEvent == WeekEvent.None)
                     {
                         g.Clear(Color.Black);
@@ -181,4 +185,5 @@ public class TeamPage : BaseView
     public event Action AdministrativeWeek;
     public event Action NextGame;
     public event Action Sponsorship;
+    public event Action OpenContracts;
 }
