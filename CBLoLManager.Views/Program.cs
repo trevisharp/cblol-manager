@@ -13,8 +13,6 @@ using CBLoLManager.GameRule;
 using CBLoLManager.RandomGen;
 using CBLoLManager.Configuration;
 
-// TODO: Move Game initializations to GameRule or Configuration Namespace
-
 Graphics g = null;
 
 // App Config
