@@ -20,6 +20,8 @@
 - [ ] Sistema de Empréstimo
 - [ ] Sistema de Pacotes de Jogadores/Organizações/Campeões
 - [ ] Melhorar Sistema de Músicas
+- [ ] Garantir que o Updater esteja perfeito
+- [ ] Sistema de Escolhas durante a semana
 
 ### Versão 0.3.0 beta
 
@@ -33,13 +35,13 @@
 - [x] Corrigir Bug sequência sem elementos na tela pos-jogo
 - [x] Nerfar o DraftDiff
 - [x] Melhorar a interface da escolha do uniforme
-- [ ] Sistema de Escolhas durante a semana
-- [ ] Rebalanceamento dos Campeões
+- [x] Rebalanceamento dos Campeões
 - [ ] Inicio de um novo ciclo ao final do CBLoL
 - [ ] Possibilidade de Finalizar Contratos
 - [x] Tela de Resultados Administrativos
 - [ ] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
 - [ ] Melhoramento do Updater para sua versão final
+- [x] Corrigir bugs nos PlayOffs
 
 ### Versão 0.2.0 beta (publicada)
 

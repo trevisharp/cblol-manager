@@ -157,7 +157,10 @@ public class TeamPage : BaseView
                         AdministrativeWeek();
                     }
                     else if (weekEvent == WeekEvent.None)
+                    {
                         g.Clear(Color.Black);
+                        map = null;
+                    }
                     
                     Game.Current.Week++;
                     

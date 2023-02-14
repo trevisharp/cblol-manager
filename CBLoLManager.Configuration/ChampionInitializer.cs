@@ -14,464 +14,170 @@ public class ChampionInitializer : Initializer
         if (champs.Count() > 0)
             return;
 
-        // TOP
+        #region Top
 
-        champs.Add(new Champion()
-        {
-            Name = "Aatrox",
-            Role = Position.TopLaner,
-            AD = true,
-            Photo = "aatrox.jpg",
-
-            Control = 0,
-            Damage = 2,
-            Defence = 1,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Kennen",
-            Role = Position.TopLaner,
-            AD = false,
-            Photo = "kennen.jpg",
-
-            Control = 2,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Gnar",
-            Role = Position.TopLaner,
-            AD = true,
-            Photo = "gnar.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 1,
-            Mobility = 0,
-            Range = 1,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Mordekaiser",
-            Role = Position.TopLaner,
-            AD = false,
-            Photo = "mordekaiser.jpg",
-
-            Control = 1,
-            Damage = 1,
-            Defence = 1,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Ornn",
-            Role = Position.TopLaner,
-            AD = true,
-            Photo = "ornn.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 2,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-    
-        champs.Add(new Champion()
-        {
-            Name = "Shen",
-            Role = Position.TopLaner,
-            AD = true,
-            Photo = "shen.jpg",
-
-            Control = 0,
-            Damage = 0,
-            Defence = 2,
-            Mobility = 1,
-            Range = 0,
-            Support = 0
-        });
-
-        // MID
+        ad("Gnar", Position.TopLaner,
+            control: 1, damage: 1, defence: 1, mobility: 0, range: 0, support: 0);
+            
+        ad("Ornn", Position.TopLaner,
+            control: 1, damage: 0, defence: 2, mobility: 0, range: 0, support: 0);
+            
+        ad("Shen", Position.TopLaner,
+            control: 0, damage: 0, defence: 2, mobility: 1, range: 0, support: 0);
+            
+        ad("Olaf", Position.TopLaner,
+            control: 0, damage: 2, defence: 1, mobility: 0, range: 0, support: 0);
+            
+        ad("Jayce", Position.TopLaner,
+            control: 0, damage: 2, defence: 0, mobility: 0, range: 1, support: 0);
+            
+        ap("Kennen", Position.TopLaner,
+            control: 1, damage: 2, defence: 0, mobility: 0, range: 0, support: 0);
+            
+        ap("Gwen", Position.TopLaner,
+            control: 0, damage: 3, defence: 0, mobility: 0, range: 0, support: 0);
+            
+        ap("Mordekaiser", Position.TopLaner,
+            control: 0, damage: 1, defence: 2, mobility: 0, range: 0, support: 0);
         
-        champs.Add(new Champion()
-        {
-            Name = "Swain",
-            Role = Position.MidLaner,
-            AD = false,
-            Photo = "swain.jpg",
+        #endregion
 
-            Control = 1,
-            Damage = 1,
-            Defence = 1,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
+        #region Jg
         
-        champs.Add(new Champion()
-        {
-            Name = "Taliyah",
-            Role = Position.MidLaner,
-            AD = false,
-            Photo = "taliyah.jpg",
+        ap("Diana", Position.Jungler,
+            control: 1, damage: 2, defence: 0, mobility: 0, range: 0, support: 0);
 
-            Control = 1,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 1,
-            Range = 0,
-            Support = 0
-        });
+        ap("Elise", Position.Jungler,
+            control: 0, damage: 3, defence: 0, mobility: 0, range: 0, support: 0);
+
+        ap("Maokai", Position.Jungler,
+            control: 1, damage: 1, defence: 0, mobility: 0, range: 1, support: 0);
+
+        ap("Gragas", Position.Jungler,
+            control: 2, damage: 0, defence: 1, mobility: 0, range: 0, support: 0);
+            
+        ad("Xin Zhao", Position.Jungler,
+            control: 1, damage: 0, defence: 2, mobility: 0, range: 0, support: 0);
+            
+        ad("Wukong", Position.Jungler,
+            control: 1, damage: 1, defence: 1, mobility: 0, range: 0, support: 0);
+            
+        ad("Viego", Position.Jungler,
+            control: 0, damage: 2, defence: 1, mobility: 0, range: 0, support: 0);
+            
+        ad("Hecarim", Position.Jungler,
+            control: 1, damage: 0, defence: 1, mobility: 1, range: 0, support: 0);
+
+        #endregion
+
+        #region Mid
+
+        ap("Azir", Position.MidLaner,
+            control: 1, damage: 2, defence: 0, mobility: 0, range: 0, support: 0);
+            
+        ap("Akali", Position.MidLaner,
+            control: 0, damage: 3, defence: 0, mobility: 0, range: 0, support: 0);
+            
+        ap("Galio", Position.MidLaner,
+            control: 1, damage: 0, defence: 1, mobility: 1, range: 0, support: 0);
+            
+        ap("Swain", Position.MidLaner,
+            control: 1, damage: 1, defence: 1, mobility: 0, range: 0, support: 0);
+            
+        ap("Syndra", Position.MidLaner,
+            control: 0, damage: 2, defence: 0, mobility: 0, range: 1, support: 0);
+            
+        ad("Irelia", Position.MidLaner,
+            control: 0, damage: 2, defence: 1, mobility: 0, range: 0, support: 0);
+            
+        ad("Yone", Position.MidLaner,
+            control: 1, damage: 2, defence: 0, mobility: 0, range: 0, support: 0);
+            
+        ad("Talon", Position.MidLaner,
+            control: 0, damage: 2, defence: 0, mobility: 1, range: 0, support: 0);
         
-        champs.Add(new Champion()
-        {
-            Name = "Azir",
-            Role = Position.MidLaner,
-            AD = false,
-            Photo = "azir.jpg",
-
-            Control = 1,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 1,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Ryze",
-            Role = Position.MidLaner,
-            AD = false,
-            Photo = "ryze.jpg",
-
-            Control = 0,
-            Damage = 2,
-            Defence = 0,
-            Mobility = 1,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Zed",
-            Role = Position.MidLaner,
-            AD = true,
-            Photo = "zed.jpg",
-
-            Control = 0,
-            Damage = 3,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Syndra",
-            Role = Position.MidLaner,
-            AD = false,
-            Photo = "syndra.jpg",
-
-            Control = 1,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 1,
-            Support = 0
-        });
-
-        // JG
-
-        champs.Add(new Champion()
-        {
-            Name = "Wukong",
-            Role = Position.Jungler,
-            AD = true,
-            Photo = "wukong.jpg",
-
-            Control = 1,
-            Damage = 1,
-            Defence = 1,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Xin Zhao",
-            Role = Position.Jungler,
-            AD = true,
-            Photo = "xinzhao.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 2,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Hecarim",
-            Role = Position.Jungler,
-            AD = true,
-            Photo = "hecarim.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 1,
-            Mobility = 1,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Lillia",
-            Role = Position.Jungler,
-            AD = false,
-            Photo = "lillia.jpg",
-
-            Control = 1,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 1,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Fiddlesticks",
-            Role = Position.Jungler,
-            AD = false,
-            Photo = "fiddlesticks.jpg",
-
-            Control = 2,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Diana",
-            Role = Position.Jungler,
-            AD = false,
-            Photo = "diana.jpg",
-
-            Control = 1,
-            Damage = 2,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        // ADC
-
-        champs.Add(new Champion()
-        {
-            Name = "Caitlyn",
-            Role = Position.AdCarry,
-            AD = true,
-            Photo = "caitlyn.jpg",
-
-            Control = 0,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 2,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Jinx",
-            Role = Position.AdCarry,
-            AD = true,
-            Photo = "jinx.jpg",
-
-            Control = 0,
-            Damage = 2,
-            Defence = 0,
-            Mobility = 0,
-            Range = 1,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Kai'Sa",
-            Role = Position.AdCarry,
-            AD = true,
-            Photo = "kaisa.jpg",
-
-            Control = 0,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 1,
-            Range = 1,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Ashe",
-            Role = Position.AdCarry,
-            AD = true,
-            Photo = "ashe.jpg",
-
-            Control = 1,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 1,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Seraphine",
-            Role = Position.AdCarry,
-            AD = false,
-            Photo = "seraphine.jpg",
-
-            Control = 2,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
+        #endregion
         
-        champs.Add(new Champion()
-        {
-            Name = "Samira",
-            Role = Position.AdCarry,
-            AD = true,
-            Photo = "samira.jpg",
+        #region Adc
 
-            Control = 0,
-            Damage = 3,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        // SUP
-
-        champs.Add(new Champion()
-        {
-            Name = "Leona",
-            Role = Position.Support,
-            AD = false,
-            Photo = "leona.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 2,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Senna",
-            Role = Position.Support,
-            AD = true,
-            Photo = "senna.jpg",
-
-            Control = 0,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 1,
-            Support = 1
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Tahm Kench",
-            Role = Position.Support,
-            AD = true,
-            Photo = "tahmkench.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 1,
-            Mobility = 1,
-            Range = 0,
-            Support = 0
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Lulu",
-            Role = Position.Support,
-            AD = false,
-            Photo = "lulu.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 2
-        });
-
-        champs.Add(new Champion()
-        {
-            Name = "Nautilus",
-            Role = Position.Support,
-            AD = false,
-            Photo = "nautilus.jpg",
-
-            Control = 1,
-            Damage = 0,
-            Defence = 2,
-            Mobility = 0,
-            Range = 0,
-            Support = 0
-        });
+        ad("Kai'Sa", Position.AdCarry,
+            control: 0, damage: 1, defence: 0, mobility: 1, range: 1, support: 0);
+            
+        ad("Varus", Position.AdCarry,
+            control: 1, damage: 1, defence: 0, mobility: 0, range: 1, support: 0);
+            
+        ad("Samira", Position.AdCarry,
+            control: 0, damage: 3, defence: 0, mobility: 0, range: 0, support: 0);
+            
+        ad("Ashe", Position.AdCarry,
+            control: 1, damage: 2, defence: 0, mobility: 0, range: 0, support: 0);
+            
+        ad("Caitlyn", Position.AdCarry,
+            control: 0, damage: 1, defence: 0, mobility: 0, range: 2, support: 0);
+            
+        ap("Seraphine", Position.AdCarry,
+            control: 1, damage: 0, defence: 0, mobility: 0, range: 1, support: 1);
+            
+        ap("Ziggs", Position.AdCarry,
+            control: 0, damage: 2, defence: 0, mobility: 0, range: 1, support: 0);
         
-        champs.Add(new Champion()
-        {
-            Name = "Nami",
-            Role = Position.Support,
-            AD = false,
-            Photo = "nami.jpg",
+        #endregion
 
-            Control = 1,
-            Damage = 1,
-            Defence = 0,
-            Mobility = 0,
-            Range = 0,
-            Support = 1
-        });
+        #region Sup
+
+        ap("Nami", Position.Support,
+            control: 1, damage: 0, defence: 0, mobility: 0, range: 1, support: 1);
+            
+        ap("Karma", Position.Support,
+            control: 0, damage: 2, defence: 0, mobility: 0, range: 0, support: 1);
+            
+        ap("Lulu", Position.Support,
+            control: 1, damage: 0, defence: 0, mobility: 0, range: 0, support: 2);
+            
+        ap("Yuumi", Position.Support,
+            control: 0, damage: 0, defence: 0, mobility: 0, range: 0, support: 3);
+            
+        ap("Nautilus", Position.Support,
+            control: 1, damage: 0, defence: 2, mobility: 0, range: 0, support: 0);
+            
+        ap("Leona", Position.Support,
+            control: 0, damage: 0, defence: 3, mobility: 0, range: 0, support: 0);
+        
+        ad("Tahm Kench", Position.Support,
+            control: 1, damage: 0, defence: 1, mobility: 1, range: 0, support: 0);
+        
+        ad("Senna", Position.Support,
+            control: 0, damage: 0, defence: 0, mobility: 0, range: 1, support: 2);
+
+        #endregion
+
+        void ad(string name, Position role, 
+            int control, int damage, int defence, int mobility, int range, int support)
+            => add(name, role, true, control, damage, defence, mobility, range, support);
+        
+        void ap(string name, Position role, 
+            int control, int damage, int defence, int mobility, int range, int support)
+            => add(name, role, false, control, damage, defence, mobility, range, support);
+
+        void add(string name, Position role, bool ad,
+            int control, int damage, int defence, int mobility, int range, int support)
+        {
+            champs.Add(new Champion()
+            {
+                Name = name,
+                Role = role,
+                AD = ad,
+                Photo = name
+                    .Replace(" ", "")
+                    .Replace("'", "")
+                    .ToLower() + ".jpg",
+                Control = control,
+                Damage = damage,
+                Defence = defence,
+                Mobility = mobility,
+                Range = range,
+                Support = support
+            });
+        }
     }
 }

@@ -27,7 +27,8 @@ public static class TournamentExtension
         else if (playoff.WinnerBracketFinalA != null && playoff.WinnerBracketFinalB != null && 
                 playoff.LoserBracketSecondPhaseA != null && playoff.LoserBracketSecondPhaseB != null) // Week 2
         {
-            if (winner == playoff.WinnerBracketFinalA || winner == playoff.WinnerBracketFinalB)
+            if (winner.Organization.Name == playoff.WinnerBracketFinalA.Organization.Name || 
+                winner.Organization.Name == playoff.WinnerBracketFinalB.Organization.Name)
             {
                 playoff.FinalA = winner;
                 playoff.LoserBracketFinalA = looser;

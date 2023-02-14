@@ -160,8 +160,8 @@ public class TorunamentView : BaseView
                     var oponent = tournament.SimulatePlayOffRound();
                     if (oponent == null)
                     {
-                        while (tournament.PlayOffs.Champion == null)
-                            tournament.SimulatePlayOffRound();
+                        while (tournament.PlayOffs.Champion == null && oponent == null)
+                            oponent = tournament.SimulatePlayOffRound();
                         
                         drawPlayOffs(bmp, g);
                     }
