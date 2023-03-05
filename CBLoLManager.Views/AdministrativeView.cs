@@ -43,7 +43,7 @@ public class AdministrativeView : BaseView
         
         subtitle("Geral");
         text($"Ano atual: {hist.Year}");
-        text($"Split atual: {hist.Split}");
+        text($"Split atual: {hist.Split + 1}");
 
         subtitle("Conquistas Esportivas");
         text($"PlayOffs disputados: {hist.PlayOffsPlayed}");
