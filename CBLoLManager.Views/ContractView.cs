@@ -136,6 +136,9 @@ public class ContractView : BaseView
 
     private void exit()
     {
+        ContractSystem sys = new ContractSystem();
+        sys.Run();
+        
         if (Exit != null)
             Exit();
     }

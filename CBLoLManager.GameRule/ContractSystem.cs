@@ -4,5 +4,8 @@ using Model;
 
 public class ContractSystem
 {
-    
+    public void Run()
+    {
+        
+    }
 }

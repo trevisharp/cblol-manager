@@ -288,6 +288,11 @@ void openTeamPage()
     teamPage.OpenContracts += () =>
     {
         var contractView = new ContractView();
+        contractView.Exit += delegate
+        {
+            crrPage = teamPage;
+            teamPage.Reopen();
+        };
         crrPage = contractView;
     };
     
