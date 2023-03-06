@@ -82,6 +82,8 @@ public class ContractView : BaseView
     public override void Load(Bitmap bmp, Graphics g)
     {
         this.sys = new ContractSystem();
+        this.sys.ClearUncloseContracts();
+
         this.players = Game.Current.Team.GetAll();
         var contracts = Game.Current.Contracts;
 
@@ -167,12 +169,26 @@ public class ContractView : BaseView
                 }
                 else if (s == "Tentar Extender Contrato por mais 2 Splits")
                 {
-                    Game.Current.EndContract
-                        .Add(contract.Player);
-                    Game.Current.Team
-                        .Remove(contract.Player);
-                    var newContract = sys.TryKeepContract(contract);
-                    Game.Current.Contracts.Add(newContract);
+                    ProposeSystem psys = new ProposeSystem();
+
+                    Propose propose = new Propose();
+                    propose.Player = contract.Player;
+                    propose.RescissionFee = contract.RescissionFee;
+                    propose.Team = contract.Team;
+                    propose.Wage = contract.Wage;
+                    propose.Round = 1;
+                    propose.Time = 2;
+                    
+                    var newContract = psys.MakeContract(propose);
+                    if (newContract.Accepted)
+                        newContract.Closed = true;
+                    else
+                    {
+                        Game.Current.EndContract
+                            .Add(contract.Player);
+                        Game.Current.Team
+                            .Remove(contract.Player);
+                    }
                     
                     updateCarrousel(contract.Player);
                 }

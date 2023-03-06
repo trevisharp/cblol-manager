@@ -21,21 +21,14 @@ public class ContractSystem
 
     public void MakeContractStep(Team team)
     {
-        
+
     }
-
-    public Contract TryKeepContract(Contract oldContract)
+    
+    public void ClearUncloseContracts()
     {
-        var newContract = new Contract();
-
-        newContract.Team = oldContract.Team;
-        newContract.Player = oldContract.Player;
-        newContract.RescissionFee = oldContract.RescissionFee;
-        newContract.Wage = oldContract.Wage;
-        newContract.End = oldContract.End + 2;
-        newContract.Accepted = false;
-
-        return newContract;
+        Game.Current.Contracts.RemoveAll(
+            c => !c.Closed
+        );
     }
 
     public Contract UpdateContract(Contract oldContract)
