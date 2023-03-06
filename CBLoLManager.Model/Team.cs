@@ -37,6 +37,49 @@ public class Team
             this.Support = player;
     }
 
+    public void Remove(Player player)
+    {
+        if (player.Role == Position.TopLaner)
+        {
+            if (player.Nickname == this.TopLaner.Nickname)
+                this.TopLaner = null;
+            
+            return;
+        }
+        
+        if (player.Role == Position.Jungler)
+        {
+            if (player.Nickname == this.Jungler.Nickname)
+                this.Jungler = null;
+            
+            return;
+        }
+        
+        if (player.Role == Position.MidLaner)
+        {
+            if (player.Nickname == this.MidLaner.Nickname)
+                this.MidLaner = null;
+            
+            return;
+        }
+        
+        if (player.Role == Position.Support)
+        {
+            if (player.Nickname == this.Support.Nickname)
+                this.Support = null;
+            
+            return;
+        }
+        
+        if (player.Role == Position.AdCarry)
+        {
+            if (player.Nickname == this.AdCarry.Nickname)
+                this.AdCarry = null;
+            
+            return;
+        }
+    }
+
     public List<Player> GetAll()
     {
         var list = new List<Player>();
