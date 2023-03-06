@@ -145,4 +145,7 @@ public abstract class BaseView
             new Rectangle(0, 0, bmp.Width, bmp.Height),
             GraphicsUnit.Pixel);
     }
+
+    protected void reset(string code)
+        => this.structures.Remove(code);
 }

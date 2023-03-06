@@ -136,6 +136,9 @@ public class ContractView : BaseView
                 {
                     Game.Current.SeeingProposes
                         .Add(contract.Player);
+                    Game.Current.Team
+                        .Remove(contract.Player);
+                    
                     updateCarrousel(contract.Player);
                 }
                 else if (s == "Manter")
@@ -148,7 +151,7 @@ public class ContractView : BaseView
         {
             opt = new OptionsView(
                 "Recontratar por Nova Proposta",
-                "Tentar Manter Proposta Antiga",
+                "Tentar Extender Contrato por mais 2 Splits",
                 "Dispensar"
             );
 
@@ -162,10 +165,12 @@ public class ContractView : BaseView
 
                     updateCarrousel(contract.Player);
                 }
-                else if (s == "Tentar Extender Contrato (2 splits)")
+                else if (s == "Tentar Extender Contrato por mais 2 Splits")
                 {
                     Game.Current.EndContract
                         .Add(contract.Player);
+                    Game.Current.Team
+                        .Remove(contract.Player);
                     var newContract = sys.TryKeepContract(contract);
                     Game.Current.Contracts.Add(newContract);
                     

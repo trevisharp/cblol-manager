@@ -23,6 +23,7 @@
 - [ ] Melhorar Sistema de Músicas
 - [ ] Garantir que o Updater esteja perfeito
 - [ ] Sistema de Escolhas durante a semana
+- [ ] Sistema de Progressão de Jogadores
 
 ### Versão 0.3.0 beta
 
@@ -43,6 +44,7 @@
 - [ ] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
 - [ ] Melhoramento do Updater para sua versão final
 - [x] Corrigir bugs nos PlayOffs
+- [ ] Jogador escolhe melhor proposta no mercado
 
 ### Versão 0.2.0 beta (publicada)
 

@@ -117,6 +117,7 @@ public class TeamPage : BaseView
         playerView = null;
         teamStatus = null;
         map = null;
+        reset("shirt");
         await Audio.ConfiaNaCall();
     }
 
