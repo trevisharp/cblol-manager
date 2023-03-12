@@ -119,14 +119,19 @@ public class Game
             moneys.RemoveAt(0);
         }
 
+        this.NewTournament();
+        this.FreeAgent.AddRange(Players.All);
+
+        MakeAdministrativeWeek(true);
+    }
+
+    public void NewTournament()
+    {
         this.Tournament = new Tournament(
             this.Others.Append(
                 this.Team
             ).ToArray()
         );
-        this.FreeAgent.AddRange(Players.All);
-
-        MakeAdministrativeWeek(true);
     }
 
     public void MakeAdministrativeWeek(bool firstTime = false)

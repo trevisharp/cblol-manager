@@ -147,6 +147,7 @@ public class ProposeSystem
         }
         .OrderBy(x => Random.Shared.Next())
         .ToList();
+        
         foreach (var team in Game.Current.Others
             .OrderByDescending(t => t.Money))
         {

@@ -1,5 +1,3 @@
-// #define MATCHPAGETEST
-
 using System;
 using System.Linq;
 using System.Drawing;
@@ -14,8 +12,6 @@ using CBLoLManager.RandomGen;
 using CBLoLManager.Configuration;
 
 Graphics g = null;
-
-// App Config
 
 // App Logic
 
@@ -39,13 +35,6 @@ bool firstTimeInSponsorship = true;
 int playCount = 0;
 
 crrPage = main;
-
-#if MATCHPAGETEST
-var randomDraft = Organizations.All.Rand(
-    Players.All, Champions.All, 0, 1
-);
-makeMatch(randomDraft);
-#endif
 
 main.OnPlay += delegate
 {
@@ -76,6 +65,7 @@ market.ProposeMaked += p =>
 market.CloseMarket += () =>
 {
     sys.Complete();
+    Game.Current.NewTournament();
 
     posmarket = new PosMarketPage();
     crrPage = posmarket;
