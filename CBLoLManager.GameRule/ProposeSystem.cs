@@ -9,6 +9,8 @@ using Util;
 
 // TODO: Implementar saída de um time
 // TODO: Abater custo da multa recisória
+// TODO: Times tendem a continuar negociações paradas
+// TODO: Jogadores optam pela melhor oferta
 public class ProposeSystem
 {
     public Contract TryExtendContract(Contract contract)
