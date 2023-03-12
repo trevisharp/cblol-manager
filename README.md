@@ -41,10 +41,10 @@
 - [x] Inicio de um novo ciclo ao final do CBLoL
 - [x] Possibilidade de Finalizar Contratos
 - [x] Tela de Resultados Administrativos
-- [ ] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
+- [x] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
 - [ ] Melhoramento do Updater para sua versão final
 - [x] Corrigir bugs nos PlayOffs
-- [ ] Jogador escolhe melhor proposta no mercado
+- [ ] Corrigir sistema de mercado com várias melhorias
 
 ### Versão 0.2.0 beta (publicada)
 
