@@ -38,7 +38,7 @@
 - [x] Nerfar o DraftDiff
 - [x] Melhorar a interface da escolha do uniforme
 - [x] Rebalanceamento dos Campeões
-- [ ] Inicio de um novo ciclo ao final do CBLoL
+- [x] Inicio de um novo ciclo ao final do CBLoL
 - [x] Possibilidade de Finalizar Contratos
 - [x] Tela de Resultados Administrativos
 - [ ] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
