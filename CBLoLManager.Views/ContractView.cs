@@ -170,16 +170,8 @@ public class ContractView : BaseView
                 else if (s == "Tentar Extender Contrato por mais 2 Splits")
                 {
                     ProposeSystem psys = new ProposeSystem();
-
-                    Propose propose = new Propose();
-                    propose.Player = contract.Player;
-                    propose.RescissionFee = contract.RescissionFee;
-                    propose.Team = contract.Team;
-                    propose.Wage = contract.Wage;
-                    propose.Round = 1;
-                    propose.Time = 2;
+                    var newContract = psys.TryExtendContract(contract);
                     
-                    var newContract = psys.MakeContract(propose);
                     if (newContract.Accepted)
                         newContract.Closed = true;
                     else

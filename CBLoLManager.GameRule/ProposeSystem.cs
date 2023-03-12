@@ -11,6 +11,20 @@ using Util;
 // TODO: Abater custo da multa recisória
 public class ProposeSystem
 {
+    public Contract TryExtendContract(Contract contract)
+    {
+        Propose propose = new Propose();
+        propose.Player = contract.Player;
+        propose.RescissionFee = contract.RescissionFee;
+        propose.Team = contract.Team;
+        propose.Wage = contract.Wage;
+        propose.Round = 1;
+        propose.Time = 2;
+        
+        var newContract = MakeContract(propose);
+        return newContract;
+    }
+
     public float AcceptChance(Propose propose)
     {
         if (propose.Time < 1f || propose.Wage < 1f)

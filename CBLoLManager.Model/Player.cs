@@ -18,4 +18,10 @@ public class Player
     public int MechanicSkill { get; set; }
     public int Leadership { get; set; }
     public int TeamFigth { get; set; }
+
+    public static bool operator ==(Player p, Player q)
+        => (p?.Nickname ?? "") == (q?.Nickname ?? "");
+        
+    public static bool operator !=(Player p, Player q)
+        => !(p == q);
 }
