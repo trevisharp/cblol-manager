@@ -17,6 +17,8 @@ public class ContractSystem
             
             MakeContractStep(team);
         }
+
+        ClearContracts();
     }
 
     public void MakeContractStep(Team team)
@@ -80,10 +82,16 @@ public class ContractSystem
         }
     }
     
-    public void ClearUncloseContracts()
+    public void ClearContracts()
     {
+        int split = Game.Current.Week / 26;
+
         Game.Current.Contracts.RemoveAll(
             c => !c.Closed
+        );
+
+        Game.Current.Contracts.RemoveAll(
+            c => c.End <= split
         );
     }
 

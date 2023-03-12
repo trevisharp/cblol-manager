@@ -82,7 +82,7 @@ public class ContractView : BaseView
     public override void Load(Bitmap bmp, Graphics g)
     {
         this.sys = new ContractSystem();
-        this.sys.ClearUncloseContracts();
+        this.sys.ClearContracts();
 
         this.players = Game.Current.Team.GetAll();
         var contracts = Game.Current.Contracts;
