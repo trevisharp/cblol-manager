@@ -1,8 +1,8 @@
-### Versão 0.6.0
+### Versão 1.2.0
 
 - [ ] Torneios Internacionais
 
-### Versão 0.5.0
+### Versão 1.1.0
 
 - [ ] Sistema de Bans
 - [ ] Sistema de Patchs
@@ -14,7 +14,7 @@
 - [ ] Sistema de Empréstimo (?)
 - [ ] Melhorar Sistema de Músicas e Sons
 
-### Versão 0.4.0
+### Versão 1.0.0
 
 - [ ] Impacto da Mentalidade na Simulação
 - [ ] Abrir sempre os Jogadores com quem você tem propostas
