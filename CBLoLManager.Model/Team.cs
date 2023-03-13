@@ -101,4 +101,10 @@ public class Team
 
         return list;
     }
+
+    public static bool operator ==(Team teamA, Team teamB)
+        => teamA?.Organization == teamB?.Organization;
+    
+    public static bool operator !=(Team teamA, Team teamB)
+        => !(teamA == teamB);
 }

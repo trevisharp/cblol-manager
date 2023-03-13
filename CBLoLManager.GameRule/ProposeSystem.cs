@@ -7,12 +7,36 @@ namespace CBLoLManager.GameRule;
 using Model;
 using Util;
 
-// TODO: Implementar saída de um time
-// TODO: Abater custo da multa recisória
-// TODO: Times tendem a continuar negociações paradas
-// TODO: Jogadores optam pela melhor oferta
 public class ProposeSystem
 {
+    public Team TestTransference(Contract contract)
+    {
+        if (!Game.Current.SeeingProposes.Exists(p => p == contract.Player))
+            return null;
+        
+        var split = Game.Current.Week / 26;
+        
+        var contractQuery =
+            from c in Game.Current.Contracts
+            where c.Closed
+            where c.End > split
+            where c.Team != contract.Team
+            select c;
+        
+        var oldContract = contractQuery
+            .LastOrDefault();
+        
+        if (oldContract == null)
+            return null;
+
+        var fee = oldContract.RescissionFee;
+        contract.Team.Money -= fee;
+        oldContract.Team.Money += fee;
+        Game.Current.Contracts.Remove(oldContract);
+
+        return oldContract.Team;
+    }
+
     public Contract TryExtendContract(Contract contract)
     {
         Propose propose = new Propose();
@@ -111,6 +135,11 @@ public class ProposeSystem
             .Skip(Random.Shared.Next(players.Count() / 5))
             .FirstOrDefault();
         
+        return MakeRandomPropose(team, player, round);
+    }
+
+    public Propose MakeRandomPropose(Team team, Player player, int round)
+    {
         var budget = team.Money / 100 //~(2 splits + 1 future) * (5 players) * (6 months)
             * (3 + 4 * Random.Shared.NextSingle()) / 5; // random weigth [0.6 - 1.4]
         budget = sigmoid(budget, 40000, 10000, -2);
@@ -147,22 +176,35 @@ public class ProposeSystem
         }
         .OrderBy(x => Random.Shared.Next())
         .ToList();
-        
+
         foreach (var team in Game.Current.Others
             .OrderByDescending(t => t.Money))
         {
             int i = 0;
+            var players = team.GetAll();
             Propose propose = null;
             while (i < list.Count)
             {
-                if (team.GetAll().Select(p => p.Role).Contains(list[i]))
+                if (players.Select(p => p.Role).Contains(list[i]))
                 {
                     i++;
                     continue;
                 }
 
-                propose = MakeRandomPropose(team,
-                    list[i], round);
+                var contractQuery = 
+                    from con in Game.Current.Contracts
+                    where !con.Closed
+                    where con.Team == team
+                    where con.Player.Role == list[i]
+                    select con.Player;
+                
+                var player = contractQuery
+                    .FirstOrDefault();
+                
+                propose = player is null ?
+                    MakeRandomPropose(team, list[i], round) :
+                    MakeRandomPropose(team, player, round);
+                
                 list.RemoveAt(i);
                 break;
             }
@@ -176,14 +218,39 @@ public class ProposeSystem
             var c = MakeContract(propose);
 
             string formatedPlayer = Formatter.FormatPlayer(c.Player.Nickname, c.Player.Name);
+
             if (c.Accepted)
-            {
+            { 
+                var bestQuery = 
+                    from con in Game.Current.Contracts
+                    where !con.Closed
+                    where con.Player == c.Player
+                    where con.Wage > c.Wage
+                    select con;
+                
+                if (bestQuery.Count() > 0)
+                {
+                    var bestContract = bestQuery
+                        .OrderByDescending(c => c.Wage)
+                        .FirstOrDefault();
+                    
+                    c = bestContract;
+                    events.Add($"{team.Organization.Name} tentou contratar {formatedPlayer}," +
+                        $" mas {c.Team.Organization.Name} teve uma proposta melhor e ficou com o jogador!.");
+                }
+                else events.Add($"{c.Team.Organization.Name} contratou {formatedPlayer}.");
+
                 c.Closed = true;
-                team.Add(c.Player);
+                c.Team.Add(c.Player);
+
+                // Player Seeing Proposes
+                var oldTeam = TestTransference(c);
+                if (oldTeam != null)
+                    events.Add($"{formatedPlayer} saiu da {oldTeam.Organization.Name}.");
+
                 Game.Current.FreeAgent.Remove(c.Player);
                 Game.Current.SeeingProposes.Remove(c.Player);
                 Game.Current.EndContract.Remove(c.Player);
-                events.Add($"{team.Organization.Name} contratou {formatedPlayer}.");
             }
             else
             {

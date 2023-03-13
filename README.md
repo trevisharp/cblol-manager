@@ -44,7 +44,7 @@
 - [x] Adaptação das telas de patrocinio e mercado de transferência a nova temporada
 - [ ] Melhoramento do Updater para sua versão final
 - [x] Corrigir bugs nos PlayOffs
-- [ ] Corrigir sistema de mercado com várias melhorias
+- [x] Corrigir sistema de mercado com várias melhorias
 
 ### Versão 0.2.0 beta (publicada)
 
