@@ -1,26 +1,26 @@
-### Versão 0.6.0 beta
+### Versão 0.6.0
 
 - [ ] Torneios Internacionais
 
-### Versão 0.5.0 beta
+### Versão 0.5.0
 
 - [ ] Sistema de Bans
 - [ ] Sistema de Patchs
 - [ ] Sistema de Couchs
 - [ ] Sistema de Pools
 - [ ] Lista de Campeões
+- [ ] Sala de Troféu
+- [ ] Tela de tutorial para Draft/Game
+- [ ] Sistema de Empréstimo (?)
+- [ ] Melhorar Sistema de Músicas e Sons
 
-### Versão 0.4.0 beta
+### Versão 0.4.0
 
 - [ ] Impacto da Mentalidade na Simulação
-- [ ] Tela de tutorial para Draft/Game
-- [ ] Sala de Troféu
 - [ ] Abrir sempre os Jogadores com quem você tem propostas
 - [ ] Tela de Opções
 - [ ] Possibilidade de Falência
-- [ ] Sistema de Empréstimo
 - [ ] Sistema de Pacotes de Jogadores/Organizações/Campeões
-- [ ] Melhorar Sistema de Músicas
 - [ ] Garantir que o Updater esteja perfeito
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Sistema de Progressão de Jogadores
