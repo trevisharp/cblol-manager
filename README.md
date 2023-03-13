@@ -30,7 +30,7 @@
 - [x] Implementar Playoffs
 - [x] Verificar Mentalidade incorreta em alguns jogadores
 - [x] Tornar mercado mais competitivo
-- [ ] Rebalanciar Jogadores
+- [x] Rebalanciar Jogadores
 - [x] Impacto do Draft na Simulação
 - [x] Corrigir Bug onde o jogador sempre vence
 - [x] Corrigir Bug do tempo negativo para o pick
