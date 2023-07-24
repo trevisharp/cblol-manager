@@ -24,6 +24,7 @@
 - [ ] Garantir que o Updater esteja perfeito
 - [ ] Sistema de Escolhas durante a semana
 - [ ] Sistema de Progressão de Jogadores
+- [ ] Melhoramento da estrutura como um todo
 
 ### Versão 0.3.0 beta
 

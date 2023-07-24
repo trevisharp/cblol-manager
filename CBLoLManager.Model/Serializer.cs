@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace CBLoLManager.Util;
+namespace CBLoLManager.Model;
 
 public static class Serializer
 {

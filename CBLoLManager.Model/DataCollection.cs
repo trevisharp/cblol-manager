@@ -6,8 +6,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CBLoLManager.Model;
 
-using Util;
-
 [Serializable]
 public abstract class DataCollection<T, E> : IEnumerable<E>
     where T : DataCollection<T, E>, new()

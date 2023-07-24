@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using CBLoLManager.Model;
 using CBLoLManager.Views;
 using CBLoLManager.GameRule;
-using CBLoLManager.RandomGen;
 using CBLoLManager.Configuration;
 
 Graphics g = null;

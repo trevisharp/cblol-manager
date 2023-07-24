@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace CBLoLManager.RandomGen;
+namespace CBLoLManager.Util;
 
 using Model;
 
