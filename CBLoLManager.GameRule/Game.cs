@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace CBLoLManager.GameRule;
 
 using Model;
-using Util;
 
 [Serializable]
 public class Game
