@@ -2,10 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CBLoLManager.Model\CBLoLManager.Model.csproj" />
+    <ProjectReference Include="..\CBLoLManager.Util\CBLoLManager.Util.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
