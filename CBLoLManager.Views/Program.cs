@@ -92,6 +92,34 @@ void openTornament()
     {
         makeMD5(op);
     };
+    torunament.AutoPlayNext += oponent =>
+    {
+        var team = Game.Current.Team;
+
+        playCount++;
+        var matchSys = new MatchSystem();
+        var win = matchSys.GetWinner(
+            team,
+            oponent
+        );
+
+        if (win)
+        {
+            Game.Current?
+                .Tournament?
+                .AddWin(team);
+            PopularitySystem.OnWin(team);
+        }
+        else
+        {
+            Game.Current?
+                .Tournament?
+                .AddWin(oponent);
+            PopularitySystem.OnWin(oponent);
+        }
+        
+        openTornament();
+    };
     torunament.PlayNext += op =>
     {
         playCount++;

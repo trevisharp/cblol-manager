@@ -15,8 +15,7 @@ public class TorunamentView : BaseView
     private (Team team, int wins)[] teams;
     private Bitmap[] thumbs;
     private bool hasNext;
-
-    Bitmap bg = null;
+    private Bitmap bg = null;
 
     public TorunamentView(bool hasNext = true)
         => this.hasNext = hasNext;
@@ -38,26 +37,6 @@ public class TorunamentView : BaseView
         var tournament = Game.Current.Tournament;
 
         g.Clear(Color.Black);
-        if (hasNext)
-            options = new OptionsView(
-                "Ir para partida"
-            );
-        else options = new OptionsView(
-                "Voltar para página do time"
-            );
-        options.OnOptionClick += s =>
-        {
-            if (s == "Ir para partida")
-            {
-                var oponent = tournament.SimulateRound();
-                PlayNext(oponent);
-            }
-            else if (s == "Voltar para página do time")
-            {
-                Exit();
-            }
-        };
-
         this.teams = tournament.Teams
             .Zip(tournament.Wins)
             .OrderByDescending(t => t.Second)
@@ -89,7 +68,33 @@ public class TorunamentView : BaseView
 
     void drawTorunament(Bitmap bmp, Graphics g)
     {
-        var torunament = Game.Current.Tournament;
+        var tournament = Game.Current.Tournament;
+        
+        if (hasNext)
+            options = new OptionsView(
+                "Jogar partida",
+                "Pular (partida automática)"
+            );
+        else options = new OptionsView(
+                "Voltar para página do time"
+            );
+        options.OnOptionClick += s =>
+        {
+            if (s == "Jogar partida")
+            {
+                var oponent = tournament.SimulateRound();
+                PlayNext(oponent);
+            }
+            else if (s == "Pular (partida automática)")
+            {
+                var oponent = tournament.SimulateRound();
+                AutoPlayNext(oponent);
+            }
+            else if (s == "Voltar para página do time")
+            {
+                Exit();
+            }
+        };
 
         int wid = bmp.Width;
         int hei = bmp.Height;
@@ -125,7 +130,7 @@ public class TorunamentView : BaseView
             g.DrawString(team.wins.ToString(), font, Brushes.White, 
                 new RectangleF(textRect.X + textRect.Width + .06f * tableWid, y, rowHei, rowHei),
                 format);
-            g.DrawString((torunament.Round - team.wins).ToString(), font, Brushes.White, 
+            g.DrawString((tournament.Round - team.wins).ToString(), font, Brushes.White, 
                 new RectangleF(textRect.X + textRect.Width + .175f * tableWid, y, rowHei, rowHei),
                 format);
             
@@ -250,6 +255,7 @@ public class TorunamentView : BaseView
     }
 
     public event Action<Team> PlayNext;
+    public event Action<Team> AutoPlayNext;
     public event Action<Team> PlayMatch;
     public event Action Exit;
 }
